@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Atchui</string>
+    <string name="alert_message_y">푸시 알림을 허용하셨습니다.</string>
+    <string name="alert_message_n">푸시 알림을 해제하셨습니다.</string>
+    <string name="sound_message_y">사운드 허용</string>
+    <string name="sound_message_n">사운드 해제</string>
+    <string name="vibration_message_y">진동 허용</string>
+    <string name="vibration_message_n">진동 해제</string>
 </resources>
