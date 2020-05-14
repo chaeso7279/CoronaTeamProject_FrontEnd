@@ -39,4 +39,11 @@ dependencies {
     // 네이버 지도 SDK
     implementation 'com.naver.maps:map-sdk:3.8.0'
     implementation 'com.google.android.gms:play-services-location:16.0.0'
+
+    //  Retrofit 서버 통신 라이브러리
+    implementation 'com.squareup.retrofit2:retrofit:2.5.0'
+
+    // JSON 사용 라이브러리
+    complie 'com.google.code.gson:gson:2.8.2'
+    complie 'com.squareup.retrofit2:converter-gson:2.4.0'
 }
