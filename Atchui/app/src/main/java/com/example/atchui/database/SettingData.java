@@ -5,20 +5,21 @@ import com.google.gson.annotations.SerializedName;
 public class SettingData {
 
     @SerializedName("radius_setting")
-    int m_iRadius;
+    public int m_iRadius;
 
     @SerializedName("period_setting")
-    int m_iPeriod;
+    public int m_iPeriod;
 
     @SerializedName("push_agreement")
-    boolean m_bPushAgreement;
+    public boolean m_bPushAgreement;
 
     @SerializedName("sound_setting")
-    boolean m_bOnSound;
+    public boolean m_bOnSound;
 
     @SerializedName("gps_agreement")
-    boolean m_bGPSAgreement;
+    public boolean m_bGPSAgreement;
 
+    public SettingData() {}
     public SettingData(boolean bPushAgreement, boolean bOnSound, boolean bGPSAgreement, int iRadius, int iPeriod)
     {
         this.m_bPushAgreement = bPushAgreement;

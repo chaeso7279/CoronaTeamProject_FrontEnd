@@ -11,9 +11,13 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
+import com.example.atchui.database.SettingData;
+
 public class SettingPreferenceFragment extends PreferenceFragment {
     private static final String TAG = "SettingPreference";
     SharedPreferences prefs;
+
+    private SettingData m_Data; // db 테스트 데이터
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -35,7 +39,7 @@ public class SettingPreferenceFragment extends PreferenceFragment {
                     if(getActivity() != null){
                         Toast.makeText(getActivity(), getString(R.string.alert_message_y), Toast.LENGTH_SHORT).show();
                         //TODO: Alert on일 때 동작
-                        boolean now_value = true; //DB테스트를 위해 임시로 담아놓음
+                        m_Data.m_bPushAgreement = true; //DB테스트를 위해 임시로 담아놓음
                     }
                 }
                 //사용안함
@@ -43,7 +47,7 @@ public class SettingPreferenceFragment extends PreferenceFragment {
                     if(getActivity() != null){
                         Toast.makeText(getActivity(),getString(R.string.alert_message_n), Toast.LENGTH_SHORT).show();
                         //TODO: Alert off일 때 동작
-                        boolean now_value = false; //DB테스트를 위해 임시로 담아놓음
+                        m_Data.m_bPushAgreement = false; //DB테스트를 위해 임시로 담아놓음
                     }
                 }
             }
@@ -54,7 +58,7 @@ public class SettingPreferenceFragment extends PreferenceFragment {
                     if(getActivity() != null){
                         Toast.makeText(getActivity(), getString(R.string.sound_message_y), Toast.LENGTH_SHORT).show();
                         //TODO: sound on일 때 동작
-                        boolean now_value = false;//DB테스트를 위해 임시로 담아놓음
+                        m_Data.m_bOnSound = true;//DB테스트를 위해 임시로 담아놓음
                     }
                 }
                 //사용안함
@@ -62,7 +66,7 @@ public class SettingPreferenceFragment extends PreferenceFragment {
                     if(getActivity() != null){
                         Toast.makeText(getActivity(),getString(R.string.sound_message_n), Toast.LENGTH_SHORT).show();
                         //TODO: sound off일 때 동작
-                        boolean now_value = true;//DB테스트를 위해 임시로 담아놓음
+                        m_Data.m_bOnSound = false;//DB테스트를 위해 임시로 담아놓음
                     }
                 }
             }
@@ -97,6 +101,7 @@ public class SettingPreferenceFragment extends PreferenceFragment {
                     //summary에 사용자 설정 값 Set
                     connectionPref.setSummary(new_summary);
 
+                    m_Data.m_iRadius = now_value;
                 }
             }
         }
