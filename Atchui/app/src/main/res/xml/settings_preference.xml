@@ -11,22 +11,25 @@
 
         <SwitchPreference
             android:key="sound"
+            android:dependency="alert"
             android:defaultValue="true"
             android:title="소리 설정"
             android:summaryOn="소리"
             android:summaryOff="진동"/>
+    </PreferenceCategory>
 
+    <PreferenceCategory android:title="분석 설정">
         <SeekBarPreference
             android:key="range"
             android:title="반경 설정"
-            android:summary="반경 5km 내 확진자 동선 알림을 받습니다."
+            android:summary="반경 5km 내 확진자 동선을 분석합니다."
             android:max="25"
             android:defaultValue="5" />
 
         <SeekBarPreference
             android:key="period"
             android:title="기간 설정"
-            android:summary="최근 15일 내 확진자 동선과 겹칠 경우, 알림을 받습니다."
+            android:summary="최근 15일 내 확진자 동선을 분석합니다."
             android:max="15"
             android:defaultValue="15" />
 

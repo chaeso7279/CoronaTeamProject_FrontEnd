@@ -7,6 +7,6 @@
     <string name="gps_message_y">gps 수집 허용</string>
     <string name="gps_message_n">gps 수집 해제</string>
 
-    <string name="range_summary">반경 %dkm 내 확진자 동선 알림을 받습니다.</string>
-    <string name="period_summary">최근 %d일 내 확진자 동선과 겹칠 경우, 알림을 받습니다.</string>
+    <string name="range_summary">반경 %dkm 내 확진자 동선을 분석합니다.</string>
+    <string name="period_summary">최근 %d일 내 확진자 동선을 분석합니다.</string>
 </resources>

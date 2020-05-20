@@ -85,7 +85,7 @@ public class SettingPreferenceFragment extends PreferenceFragment {
             }
 
             //기간 설정
-            if(key.equals("range")){
+            if(key.equals("period")){
                 if(getActivity() != null){
                     int now_value = sharedPreferences.getInt(key,0); //현재 값 받아옴
                     Resources res = getResources();
@@ -101,7 +101,7 @@ public class SettingPreferenceFragment extends PreferenceFragment {
             //GPS 수집 동의
             if(key.equals("gps")){
                 //동의
-                if(prefs.getBoolean("vibration", false)){
+                if(prefs.getBoolean("gps", false)){
                     if(getActivity() != null){
                         Toast.makeText(getActivity(), getString(R.string.gps_message_y), Toast.LENGTH_SHORT).show();
                         //TODO: gps on일 때 동작
