@@ -5,10 +5,39 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
-
-    <FrameLayout
-        android:id="@+id/map"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent">
 
+        <FrameLayout
+            android:id="@+id/map"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+<!--        지금은 LinearLayout alignParentRight로 정렬해놨는데 나중에 검색창 추가하면 layout_weight로 비율 설정해주시면 될 것 같습니다-->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_alignParentRight="true"
+            android:padding="5dp">
+            <Button
+                android:id="@+id/notification_list"
+                android:layout_width="33dp"
+                android:layout_height="33dp"
+                android:background="@drawable/btn_notification"
+                />
+            <Button
+                android:id="@+id/setting"
+                android:layout_width="33dp"
+                android:layout_height="33dp"
+                android:background="@drawable/btn_setting"/>
+            <Button
+                android:id="@+id/help"
+                android:layout_width="33dp"
+                android:layout_height="33dp"
+                android:background="@drawable/btn_help"
+                />
+        </LinearLayout>
+
+    </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
