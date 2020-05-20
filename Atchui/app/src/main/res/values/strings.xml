@@ -6,4 +6,5 @@
     <string name="sound_message_n">사운드 해제</string>
     <string name="vibration_message_y">진동 허용</string>
     <string name="vibration_message_n">진동 해제</string>
+    <string name="range_summary">반경 %dKm 내에서 확진자와 동선이 겹칠 경우, 알림을 받을 수 있습니다.</string>
 </resources>

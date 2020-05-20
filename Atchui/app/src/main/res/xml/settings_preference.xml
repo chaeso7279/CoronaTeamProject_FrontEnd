@@ -4,7 +4,10 @@
     <PreferenceCategory android:title="알림">
         <SwitchPreference
             android:key="alert"
-            android:title="푸시 알림 동의"/>
+            android:defaultValue="false"
+            android:summaryOff="비동의"
+            android:summaryOn="동의"
+            android:title="푸시 알림"/>
 
         <SwitchPreference
             android:key="sound"
@@ -16,7 +19,7 @@
         <SeekBarPreference
             android:key="range"
             android:title="반경 설정"
-            android:summary="설정하신 반경 내에서 확진자와 동선이 겹칠 경우, 알림을 받을 수 있습니다."
+            android:summary="반경 0km 내에서 확진자와 동선이 겹칠 경우, 알림을 받을 수 있습니다."
             android:max="25"
             android:defaultValue="0" />
 
