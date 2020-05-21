@@ -9,10 +9,15 @@ import androidx.fragment.app.FragmentManager;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 import com.naver.maps.map.LocationTrackingMode;
 import com.naver.maps.map.MapFragment;
 import com.naver.maps.map.NaverMap;
@@ -31,6 +36,21 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
+
+        //firebase 푸시알림
+        FirebaseInstanceId.getInstance().getInstanceId()
+                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                        if(!task.isSuccessful()){
+                            Log.w("FCM Log", "getInstanced failed", task.getException());
+                            return;
+                        }
+                        String token = task.getResult().getToken();
+                        Log.d("FCM Log", "FCM 토큰"+ token);
+                        Toast.makeText(MainActivity.this, "토큰:"+token, Toast.LENGTH_SHORT).show();
+                    }
+                });
 
         NaverMapSdk.getInstance(this).setClient(
                 new NaverMapSdk.NaverCloudPlatformClient(CLIENT_ID)
@@ -68,15 +88,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         Intent intent = new Intent(MainActivity.this,BackgroundService.class);
         startService(intent);
 
-        //서비스 끝(필요없지만 테스트중이기때문에 임시로 help버튼 누르면 멈추게 해 두었다)
-        btn_help.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getApplicationContext(),"Service 끝",Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(MainActivity.this,BackgroundService.class);
-                stopService(intent);
-            }
-        });
     }
 
     // 위치 권한 설정
@@ -123,4 +134,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
          */
 
     }
+
+
 }
