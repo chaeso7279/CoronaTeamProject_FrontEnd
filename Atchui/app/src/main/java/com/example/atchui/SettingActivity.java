@@ -30,15 +30,13 @@ public class SettingActivity extends AppCompatActivity {
 
     public void sendToServer(SettingData data)
     {
-       m_Service.userOption(data).enqueue(new Callback<SettingResponse>() {
+        m_Service.userOption(data).enqueue(new Callback<SettingResponse>() {
            @Override
            public void onResponse(Call<SettingResponse> call, Response<SettingResponse> response)
            {
                 SettingResponse result = response.body();
-                Toast.makeText(SettingActivity.this, result.getMessage(), Toast.LENGTH_SHORT).show();
-
                 if(result.getCode() == 200)
-                    finish();
+                    Toast.makeText(SettingActivity.this, result.getMessage(), Toast.LENGTH_SHORT).show();
            }
 
            @Override

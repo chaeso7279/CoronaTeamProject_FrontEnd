@@ -10,5 +10,5 @@ import retrofit2.http.POST;
 public interface ServiceAPI {
 
     @POST("/user/option")
-    Call<SettingResponse>  userOption(@Body SettingData settingData);
+    Call<SettingResponse>  userOption(@Body SettingData data);
 }
