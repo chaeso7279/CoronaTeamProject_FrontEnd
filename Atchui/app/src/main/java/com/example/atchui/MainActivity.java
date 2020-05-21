@@ -46,7 +46,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         locationSource = new FusedLocationSource(this, LOCATION_PERMISSION_REQUEST_CODE);
 
-        //button 누를 시 Activity 이동
+        //////////////////////////////////////
+        /*button 누를 시 Activity 이동*/
+
         Button btn_notification = (Button)findViewById(R.id.notification_list);
         Button btn_setting = (Button)findViewById(R.id.setting);
         Button btn_help = (Button)findViewById(R.id.help);
@@ -56,6 +58,23 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, SettingActivity.class);
                 startActivity(intent);
+            }
+        });
+
+        //////////////////////////////////////
+        /*BackgroundService*/
+        //서비스 시작
+        Toast.makeText(getApplicationContext(),"Service 시작",Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(MainActivity.this,BackgroundService.class);
+        startService(intent);
+
+        //서비스 끝(필요없지만 테스트중이기때문에 임시로 help버튼 누르면 멈추게 해 두었다)
+        btn_help.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(),"Service 끝",Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(MainActivity.this,BackgroundService.class);
+                stopService(intent);
             }
         });
     }
@@ -87,11 +106,11 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         map.setLocationTrackingMode(LocationTrackingMode.Follow);
 
         // 위치 변경 이벤트 리스너 등록 (자바 8 이상 람다식 표현)
-        map.addOnLocationChangeListener(location ->
-            Toast.makeText(this,
-            location.getLatitude()+", "+location.getLongitude(),
-                Toast.LENGTH_SHORT).show()
-        );
+//        map.addOnLocationChangeListener(location ->
+//            Toast.makeText(this,
+//            location.getLatitude()+", "+location.getLongitude(),
+//                Toast.LENGTH_SHORT).show()
+//        );
         /* 람다식 표현이 아니면 이렇게
         map.addOnLocationChangeListener(new NaverMap.OnLocationChangeListener() {
             @Override
