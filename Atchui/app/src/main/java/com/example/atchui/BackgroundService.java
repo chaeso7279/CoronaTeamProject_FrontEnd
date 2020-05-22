@@ -40,7 +40,6 @@ public class BackgroundService extends Service {
         super.onCreate();
     }
 
-
     //백그라운드에서 실행되는 동작들이 들어가는 곳입니다.
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -64,7 +63,9 @@ public class BackgroundService extends Service {
         @Override
         public void handleMessage(android.os.Message msg) {
 
-            notificationManager = (NotificationManager) getSystemService( Context.NOTIFICATION_SERVICE );
+            //TODO: GPS 서버 전송, 동선 분석 및 결과 전송
+
+                notificationManager = (NotificationManager) getSystemService( Context.NOTIFICATION_SERVICE );
 
             Intent intent = new Intent(BackgroundService.this, MainActivity.class);
             intent.addFlags( Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP ); //
