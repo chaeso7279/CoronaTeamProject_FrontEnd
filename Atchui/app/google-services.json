@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "267134235595",
+    "firebase_url": "https://atchui.firebaseio.com",
+    "project_id": "atchui",
+    "storage_bucket": "atchui.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:267134235595:android:b5dc5231b650c03d8a7c4e",
+        "android_client_info": {
+          "package_name": "com.example.atchui"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "267134235595-aep35ku40nlc1t7prvj4ktvbnq1t5f1o.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.atchui",
+            "certificate_hash": "ca08e60bbc5f2ca7ae50cfd68a3f1a9690e26909"
+          }
+        },
+        {
+          "client_id": "267134235595-464nerlunvrv8ih8uj6d6ua1tqcvfl6c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBlRjN-zeh7ohjYL5XIEvdpKRoS3dRg0DE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "267134235595-464nerlunvrv8ih8uj6d6ua1tqcvfl6c.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

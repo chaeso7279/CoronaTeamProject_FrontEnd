@@ -9,10 +9,15 @@ import androidx.fragment.app.FragmentManager;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 import com.naver.maps.map.LocationTrackingMode;
 import com.naver.maps.map.MapFragment;
 import com.naver.maps.map.NaverMap;
@@ -32,6 +37,21 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         setContentView(R.layout.activity_main);
 
+        //firebase 푸시알림
+        FirebaseInstanceId.getInstance().getInstanceId()
+                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                        if(!task.isSuccessful()){
+                            Log.w("FCM Log", "getInstanced failed", task.getException());
+                            return;
+                        }
+                        String token = task.getResult().getToken();
+                        Log.d("FCM Log", "FCM 토큰"+ token);
+                        Toast.makeText(MainActivity.this, "토큰:"+token, Toast.LENGTH_SHORT).show();
+                    }
+                });
+
         NaverMapSdk.getInstance(this).setClient(
                 new NaverMapSdk.NaverCloudPlatformClient(CLIENT_ID)
         );
@@ -46,7 +66,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         locationSource = new FusedLocationSource(this, LOCATION_PERMISSION_REQUEST_CODE);
 
-        //button 누를 시 Activity 이동
+        //////////////////////////////////////
+        /*button 누를 시 Activity 이동*/
+
         Button btn_notification = (Button)findViewById(R.id.notification_list);
         Button btn_setting = (Button)findViewById(R.id.setting);
         Button btn_help = (Button)findViewById(R.id.help);
@@ -58,6 +80,14 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 startActivity(intent);
             }
         });
+
+        //////////////////////////////////////
+        /*BackgroundService*/
+        //서비스 시작
+        Toast.makeText(getApplicationContext(),"Service 시작",Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(MainActivity.this,BackgroundService.class);
+        startService(intent);
+
     }
 
     // 위치 권한 설정
@@ -87,11 +117,11 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         map.setLocationTrackingMode(LocationTrackingMode.Follow);
 
         // 위치 변경 이벤트 리스너 등록 (자바 8 이상 람다식 표현)
-        map.addOnLocationChangeListener(location ->
-            Toast.makeText(this,
-            location.getLatitude()+", "+location.getLongitude(),
-                Toast.LENGTH_SHORT).show()
-        );
+//        map.addOnLocationChangeListener(location ->
+//            Toast.makeText(this,
+//            location.getLatitude()+", "+location.getLongitude(),
+//                Toast.LENGTH_SHORT).show()
+//        );
         /* 람다식 표현이 아니면 이렇게
         map.addOnLocationChangeListener(new NaverMap.OnLocationChangeListener() {
             @Override
@@ -104,4 +134,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
          */
 
     }
+
+
 }
