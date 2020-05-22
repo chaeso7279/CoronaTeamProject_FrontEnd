@@ -34,13 +34,13 @@ public class SettingActivity extends AppCompatActivity {
            @Override
            public void onResponse(Call<SettingResponse> call, Response<SettingResponse> response) {
                 SettingResponse result = response.body();
-                if(result.getCode() == 200)
-                    Toast.makeText(SettingActivity.this, result.getMessage(), Toast.LENGTH_SHORT).show();
+               // if(result.getCode() == 200)
+                 //   Toast.makeText(SettingActivity.this, result.getMessage(), Toast.LENGTH_SHORT).show();
            }
 
            @Override
            public void onFailure(Call<SettingResponse> call, Throwable t) {
-                Toast.makeText(SettingActivity.this, "옵션 데이터 베이스 넣기 실패", Toast.LENGTH_SHORT).show();
+               // Toast.makeText(SettingActivity.this, "옵션 데이터 베이스 넣기 실패", Toast.LENGTH_SHORT).show();
                 Log.e("옵션 데이터 베이스 넣기 실패", t.getMessage());
            }
        });
