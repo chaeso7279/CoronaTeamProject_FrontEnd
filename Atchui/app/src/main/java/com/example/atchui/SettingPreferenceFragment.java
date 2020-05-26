@@ -11,9 +11,13 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
+import com.example.atchui.database.SettingData;
+
 public class SettingPreferenceFragment extends PreferenceFragment {
     private static final String TAG = "SettingPreference";
     SharedPreferences prefs;
+
+    private SettingData m_Data = null; // DB 테스트용
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -22,6 +26,9 @@ public class SettingPreferenceFragment extends PreferenceFragment {
         addPreferencesFromResource(R.xml.settings_preference);
         prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
         prefs.registerOnSharedPreferenceChangeListener(prefListener);
+
+        if(m_Data == null)
+            m_Data = new SettingData();
     }
 
     //내장 DB가 변하는 것을 catch하는 리스너
@@ -37,7 +44,7 @@ public class SettingPreferenceFragment extends PreferenceFragment {
                     if(getActivity() != null){
                         Toast.makeText(getActivity(), getString(R.string.alert_message_y), Toast.LENGTH_SHORT).show();
                         //TODO: Alert on일 때 동작
-                        boolean now_value = true; //DB테스트를 위해 임시로 담아놓음
+                        m_Data.m_bPushAgreement = true; //DB 테스트
                     }
                 }
                 //비동의
@@ -45,7 +52,7 @@ public class SettingPreferenceFragment extends PreferenceFragment {
                     if(getActivity() != null){
                         Toast.makeText(getActivity(),getString(R.string.alert_message_n), Toast.LENGTH_SHORT).show();
                         //TODO: Alert off일 때 동작
-                        boolean now_value = false; //DB테스트를 위해 임시로 담아놓음
+                        m_Data.m_bPushAgreement = false; //DB 테스트
                     }
                 }
             }
@@ -57,7 +64,7 @@ public class SettingPreferenceFragment extends PreferenceFragment {
                     if(getActivity() != null){
                         Toast.makeText(getActivity(), getString(R.string.sound_message_y), Toast.LENGTH_SHORT).show();
                         //TODO: sound on일 때 동작
-                        boolean now_value = true;//DB테스트를 위해 임시로 담아놓음
+                        m_Data.m_bOnSound = true;//DB 테스트
                     }
                 }
                 //사용안함(진동)
@@ -65,7 +72,7 @@ public class SettingPreferenceFragment extends PreferenceFragment {
                     if(getActivity() != null){
                         Toast.makeText(getActivity(),getString(R.string.sound_message_n), Toast.LENGTH_SHORT).show();
                         //TODO: sound off일 때 동작
-                        boolean now_value = false;//DB테스트를 위해 임시로 담아놓음
+                        m_Data.m_bOnSound = false;//DB 테스트
                     }
                 }
             }
@@ -81,6 +88,7 @@ public class SettingPreferenceFragment extends PreferenceFragment {
                     //summary에 사용자 설정 값 Set
                     connectionPref.setSummary(new_summary);
 
+                    m_Data.m_iRadius = now_value;//DB 테스트
                 }
             }
 
@@ -95,6 +103,8 @@ public class SettingPreferenceFragment extends PreferenceFragment {
                     //summary에 사용자 설정 값 Set
                     connectionPref.setSummary(new_summary);
 
+                    m_Data.m_iPeriod = now_value; // DB 테스트
+
                 }
             }
 
@@ -105,7 +115,7 @@ public class SettingPreferenceFragment extends PreferenceFragment {
                     if(getActivity() != null){
                         Toast.makeText(getActivity(), getString(R.string.gps_message_y), Toast.LENGTH_SHORT).show();
                         //TODO: gps on일 때 동작
-                        boolean now_value = true;//DB테스트를 위해 임시로 담아놓음
+                        m_Data.m_bGPSAgreement = true;//DB 테스트
                     }
                 }
                 //비동의
@@ -113,10 +123,13 @@ public class SettingPreferenceFragment extends PreferenceFragment {
                     if(getActivity() != null){
                         Toast.makeText(getActivity(),getString(R.string.gps_message_n), Toast.LENGTH_SHORT).show();
                         //TODO: gps off일 때 동작
-                        boolean now_value = false; //DB테스트를 위해 임시로 담아놓음
+                        m_Data.m_bGPSAgreement = false; //DB 테스트
                     }
                 }
             }
+
+           // if(getActivity() != null)
+            //    ((SettingActivity)getActivity()).sendToServer(m_Data);
         }
     };
 }
