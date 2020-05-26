@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
-    tools:ignore="ExtraText">
+    tools:context=".MainActivity">
+
     <fragment
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -12,50 +12,81 @@
         tools:context=".MapsActivity"
         android:name="com.google.android.gms.maps.SupportMapFragment" />
 
-    <RelativeLayout
-
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginLeft="10dp"
-        android:elevation="10dp"
-        android:background="@drawable/white_border"
-        android:id="@+id/relLayout1">
-
-        <ImageView
-            android:layout_width="15dp"
-            android:layout_height="15dp"
-            android:id="@+id/ic_magnify"
-            android:layout_centerVertical="true"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
             android:layout_marginLeft="10dp"
-            android:src="@drawable/ic_magnify" />
+            android:elevation="10dp"
+            android:background="@drawable/white_border"
+            android:id="@+id/relLayout1"
+            android:gravity="center_vertical"
+            android:layout_weight="2"
+            >
+            <ImageView
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:id="@+id/ic_magnify"
+                android:layout_marginLeft="10dp"
+                android:src="@drawable/ic_magnify" />
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textSize="15sp"
+                android:textColor="#000"
+                android:id="@+id/input_search"
+                android:background="@null"
+                android:hint="Enter Address"
+                android:imeOptions="actionSearch"
+                />
+        </LinearLayout>
 
-        <EditText
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_toRightOf="@+id/ic_magnify"
-            android:layout_centerVertical="true"
-            android:textSize="15sp"
-            android:textColor="#000"
-            android:id="@+id/input_search"
-            android:background="@null"
-            android:hint="Enter Address"
-            android:imeOptions="actionSearch"
-            />
-    </RelativeLayout>
-
-
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="8">
+            <Button
+                android:id="@+id/btn_notification_list"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:background="@drawable/btn_notification"
+                />
+            <Button
+                android:id="@+id/btn_setting"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:background="@drawable/btn_setting"
+                />
+            <Button
+                android:id="@+id/btn_help"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:background="@drawable/btn_help"
+                />
+        </LinearLayout>
+    </LinearLayout>
 
     <ImageView
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:layout_below="@+id/relLayout1"
         android:layout_alignParentRight="true"
         android:layout_marginRight="10dp"
         android:layout_marginTop="10dp"
         android:scaleType="centerCrop"
         android:id="@+id/ic_gps"
         android:src="@drawable/ic_gps"
+        android:layout_alignParentBottom="true"
         />
+
+
 </RelativeLayout>
+
