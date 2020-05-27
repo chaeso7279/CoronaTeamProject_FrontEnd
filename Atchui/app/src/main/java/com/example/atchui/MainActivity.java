@@ -111,6 +111,13 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         ImageButton btn_setting = (ImageButton)findViewById(R.id.btn_setting);
         ImageButton btn_help = (ImageButton)findViewById(R.id.btn_help);
 
+        btn_notification.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, NotificationListActivity.class);
+                startActivity(intent);
+            }
+        });
         btn_setting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
