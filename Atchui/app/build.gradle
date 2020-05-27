@@ -54,5 +54,12 @@ dependencies {
     implementation 'com.google.android.libraries.places:places-compat:1.1.0'
 
     //RecyclerView
-    implementation 'androidx.recyclerview:recyclerview:1.0.0'
+    implementation 'com.android.support:recyclerview-v7:28.1.0'
+}
+
+allprojects {
+    repositories {
+        google()
+        jcenter()
+    }
 }

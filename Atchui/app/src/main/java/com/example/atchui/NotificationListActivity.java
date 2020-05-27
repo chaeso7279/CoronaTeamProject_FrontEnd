@@ -17,52 +17,42 @@ import java.util.ArrayList;
 
 public class NotificationListActivity extends AppCompatActivity {
 
-    RecyclerView mRecyclerView = null;
-    NotificationList_RecyclerImageTextAdapter mAdapter = null;
-    ArrayList<NotificationList_RecyclerItem> mList = new ArrayList<NotificationList_RecyclerItem>();
-    int count = -1;
+    Noti_RecyclerAdapter mAdapter = null;
+    ArrayList<Noti_RecyclerItem> mList = new ArrayList<>();
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notification_list);
 
-        mRecyclerView = (RecyclerView)findViewById(R.id.recycler_notification);
+        ////
+        RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.recycler_notification);
 
-        LinearLayoutManager mLinearLayoutManager = new LinearLayoutManager(this);
-        mRecyclerView.setLayoutManager(mLinearLayoutManager);
-
-        //RecyclerView에 SimpleTextAdapter 객체 지정
-        mAdapter = new NotificationList_RecyclerImageTextAdapter(mList);
+        mAdapter = new Noti_RecyclerAdapter(mList);
         mRecyclerView.setAdapter(mAdapter);
 
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mRecyclerView.getContext(),
-                mLinearLayoutManager.getOrientation());
-        mRecyclerView.addItemDecoration(dividerItemDecoration);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        //아이템 추가 테스트
-        Button btn = (Button)findViewById(R.id.btn_insert);
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                count++;
-//                NotificationList_RecyclerItem data = new NotificationList_RecyclerItem(getDrawable(R.color.colorPrimary), "sss","sss");
-                NotificationList_RecyclerItem data = new NotificationList_RecyclerItem(count+" ","sss");
-                mList.add(0,data);
+        //아이템 추가
+        addItem("안녕","제발 되렴");
+        addItem("응?","제발");
+        addItem("응?","개빡치게하지말고");
 
-                mAdapter.notifyDataSetChanged();
-            }
-        });
-//        addItem(getDrawable(R.color.colorPrimary),
-//                "반경 3km 내에 확진자 방문 장소가 확인되었습니다", "1분 전");
+        mAdapter.notifyDataSetChanged();
+
+        int totalElements = mList.size();// arrayList의 요소의 갯수를 구한다.
+        for (int index = 0; index < totalElements; index++) {
+            System.out.println(mList.get(index).getTimeStr());
+        }
     }
 
-//    public void addItem(Drawable label, String text, String time){
-//        NotificationList_RecyclerItem item = new NotificationList_RecyclerItem(label, text, time);
-////
-////        item.setLabel(label);
-////        item.setText(text);
-////        item.setTime(time);
-//    }
+    public void addItem(String text, String time){
+        Noti_RecyclerItem item = new Noti_RecyclerItem();
+
+        item.setTextStr(text);
+        item.setTimeStr(time);
+
+        mList.add(0,item);
+    }
+
 }
