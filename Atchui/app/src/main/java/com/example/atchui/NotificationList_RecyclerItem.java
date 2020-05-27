@@ -3,13 +3,23 @@ package com.example.atchui;
 import android.graphics.drawable.Drawable;
 
 public class NotificationList_RecyclerItem {
-    private Drawable labelDrawable;
+//    private Drawable labelDrawable;
     private String textStr;
     private String timeStr;
 
-    public void setLabel(Drawable label){
-        labelDrawable = label;
+//    NotificationList_RecyclerItem(Drawable label, String text, String time){
+//        labelDrawable = label;
+//        textStr = text;
+//        timeStr = time;
+//    }
+    NotificationList_RecyclerItem( String text, String time){
+        textStr = text;
+        timeStr = time;
     }
+
+//    public void setLabel(Drawable label){
+//        labelDrawable = label;
+//    }
     public void setText(String text){
         textStr = text;
     }
@@ -17,9 +27,9 @@ public class NotificationList_RecyclerItem {
         timeStr = time;
     }
 
-    public Drawable getLabel(){
-        return this.labelDrawable;
-    }
+//    public Drawable getLabel(){
+//        return this.labelDrawable;
+//    }
     public String getText(){
         return this.textStr;
     }
