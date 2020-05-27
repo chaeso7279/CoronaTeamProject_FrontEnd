@@ -6,9 +6,9 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".HelpActivity">
-    
+
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerView"
+        android:id="@+id/recyclerView_Help"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#F0F0F0"/>

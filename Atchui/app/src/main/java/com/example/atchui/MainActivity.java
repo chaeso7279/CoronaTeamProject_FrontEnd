@@ -118,6 +118,14 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });
 
+        btn_help.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, HelpActivity.class);
+                startActivity(intent);
+            }
+        });
+
         //////////////////////////////////////
         /*BackgroundService*/
         //서비스 시작
