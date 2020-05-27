@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -106,9 +107,9 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         //////////////////////////////////////
         /*button 누를 시 Activity 이동*/
 
-        Button btn_notification = (Button)findViewById(R.id.btn_notification_list);
-        Button btn_setting = (Button)findViewById(R.id.btn_setting);
-        Button btn_help = (Button)findViewById(R.id.btn_help);
+        ImageButton btn_notification = (ImageButton)findViewById(R.id.btn_notification_list);
+        ImageButton btn_setting = (ImageButton)findViewById(R.id.btn_setting);
+        ImageButton btn_help = (ImageButton)findViewById(R.id.btn_help);
 
         btn_setting.setOnClickListener(new View.OnClickListener() {
             @Override
