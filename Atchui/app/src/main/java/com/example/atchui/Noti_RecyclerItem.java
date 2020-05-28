@@ -4,10 +4,12 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 
 public class Noti_RecyclerItem {
+    private int itemType;
     private int labelColor;
     private String contentStr;
     private String timeStr;
 
+    public void setItemType(int type) {itemType = type;}
     public void setLabelColor(int label){
         labelColor = label;
     }
@@ -19,7 +21,8 @@ public class Noti_RecyclerItem {
     }
 
 
-    public int getLabelColor() {return labelColor;}
+    public int getItemType() { return itemType;}
+    public int getLabelColor() { return labelColor;}
     public String getTextStr(){
         return contentStr;
     }

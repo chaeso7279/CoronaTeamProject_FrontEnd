@@ -18,6 +18,9 @@ import java.util.ArrayList;
 
 public class NotificationListActivity extends AppCompatActivity implements Noti_RecyclerAdapter.OnListItemSelectedInterface {
 
+    private static final int CURRENT_NOTIFICATION = 1;
+    private static final int PATH_NOTIFICATION = 2;
+
     private Noti_RecyclerAdapter mAdapter;
     private RecyclerView mRecyclerView;
     @Override
@@ -40,27 +43,23 @@ public class NotificationListActivity extends AppCompatActivity implements Noti_
     }
 
     private void setData() {
+        //ItemType: CURRENT_NOTIFICATION: 현위치 알림, PATH_NOTIFICATION: 지난경로 알림
+
         Noti_RecyclerItem item = new Noti_RecyclerItem();
-
-
+        item.setItemType(CURRENT_NOTIFICATION);
         item.setLabelColor(this.getResources().getColor(R.color.label_green));
         item.setTextStr("반경 1km 내에 확진자 동선이 확인되었습니다.");
         item.setTimeStr("5분 전");
 
         mAdapter.addItem(item);
 
-        System.out.println(item.getLabelColor());
-        System.out.println(item.getTimeStr());
-
         item = new Noti_RecyclerItem();
+        item.setItemType(PATH_NOTIFICATION);
         item.setLabelColor(this.getResources().getColor(R.color.label_red));
         item.setTextStr("강남구청 근방에서 2020-05-28에 동선겹침이 확인되었습니다.");
         item.setTimeStr("1분 전");
 
         mAdapter.addItem(item);
-
-        System.out.println(item.getLabelColor());
-        System.out.println(item.getTimeStr());
 
         mAdapter.notifyDataSetChanged();
 
@@ -72,11 +71,22 @@ public class NotificationListActivity extends AppCompatActivity implements Noti_
                 (Noti_RecyclerAdapter.Noti_ItemViewHolder)mRecyclerView.findViewHolderForAdapterPosition(position);
         Toast.makeText(this, viewHolder.textTime.getText().toString(), Toast.LENGTH_SHORT).show();
 
-        Intent intent = new Intent(getApplicationContext(), PathResultActivity.class);
+        if(viewHolder.itemType == 1){
+            Intent intent = new Intent(getApplicationContext(), CurrentResultActivity.class);
 
-        //데이터 송신(position)
-        intent.putExtra("position",position);
+            //데이터(position) 송신
+            intent.putExtra("position",position);
 
-        startActivity(intent);
+            startActivity(intent);
+        }
+        else if(viewHolder.itemType == 2){
+            Intent intent = new Intent(getApplicationContext(), PathResultActivity.class);
+
+            //데이터(position) 송신
+            intent.putExtra("position",position);
+
+            startActivity(intent);
+        }
+
     }
 }
