@@ -8,4 +8,5 @@
     <color name="label_green">#2F9D27</color>
     <color name="scrollThumb">#747474</color>
     <color name="scrollTrack">#EAEAEA</color>
+    <color name="background_newItem">#D9E5FF</color>
 </resources>

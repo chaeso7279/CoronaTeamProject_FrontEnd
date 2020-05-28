@@ -52,8 +52,16 @@ public class Noti_Fragment extends Fragment implements Noti_RecyclerAdapter.OnLi
         //ItemType: CURRENT_NOTIFICATION: 현위치 알림, PATH_NOTIFICATION: 지난경로 알림
 
         Noti_RecyclerItem item = new Noti_RecyclerItem();
+        item.setItemType(PATH_NOTIFICATION);
+        item.setLabelColor(this.getResources().getColor(R.color.label_red));
+        item.setTextStr("강남구청 근방에서 2020-05-28에 동선겹침이 확인되었습니다.");
+        item.setTimeStr("6분 전");
+
+        adapter.addItem(item);
+
+        item = new Noti_RecyclerItem();
         item.setItemType(CURRENT_NOTIFICATION);
-        item.setLabelColor(this.getResources().getColor(R.color.label_green));
+        item.setLabelColor(this.getResources().getColor(R.color.label_yellow));
         item.setTextStr("반경 1km 내에 확진자 동선이 확인되었습니다.");
         item.setTimeStr("5분 전");
 

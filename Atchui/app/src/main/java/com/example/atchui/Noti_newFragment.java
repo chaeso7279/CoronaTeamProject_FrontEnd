@@ -16,7 +16,7 @@ public class Noti_newFragment extends Fragment implements Noti_RecyclerAdapter.O
     private static final int CURRENT_NOTIFICATION = 1;
     private static final int PATH_NOTIFICATION = 2;
 
-    private Noti_RecyclerAdapter new_adapter;
+    private Noti_newRecyclerAdapter new_adapter;
     private RecyclerView new_recyclerView;
 
     @Override
@@ -46,13 +46,23 @@ public class Noti_newFragment extends Fragment implements Noti_RecyclerAdapter.O
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         new_recyclerView.setLayoutManager(linearLayoutManager);
 
-        new_adapter = new Noti_RecyclerAdapter(this);
+        new_adapter = new Noti_newRecyclerAdapter(this);
         new_recyclerView.setAdapter(new_adapter);
+
     }
     private void setData() {
         //ItemType: CURRENT_NOTIFICATION: 현위치 알림, PATH_NOTIFICATION: 지난경로 알림
 
         Noti_RecyclerItem item = new Noti_RecyclerItem();
+
+        item.setItemType(CURRENT_NOTIFICATION);
+        item.setLabelColor(this.getResources().getColor(R.color.label_green));
+        item.setTextStr("반경 1km 내에 확진자 동선이 확인되었습니다.");
+        item.setTimeStr("1분 전");
+
+        new_adapter.addItem(item);
+
+        item = new Noti_RecyclerItem();
         item.setItemType(PATH_NOTIFICATION);
         item.setLabelColor(this.getResources().getColor(R.color.label_red));
         item.setTextStr("강남구청 근방에서 2020-05-28에 동선겹침이 확인되었습니다.");
