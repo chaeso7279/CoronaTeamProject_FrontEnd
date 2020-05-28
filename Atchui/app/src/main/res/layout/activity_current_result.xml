@@ -117,7 +117,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin = "8dp"
 
-                android:text="확진자 정보"
+                android:text="내 주변 확진자 동선 정보"
                 android:textSize="18sp"
                 android:textColor="@android:color/black"
                 android:textStyle="bold"/>
