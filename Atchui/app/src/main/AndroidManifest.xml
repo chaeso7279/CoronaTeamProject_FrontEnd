@@ -13,7 +13,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".CurrentResultActivity"></activity>
+        <activity android:name=".Noti_Fragment"></activity>
+        <activity android:name=".Noti_newFragment" />
+        <activity android:name=".CurrentResultActivity" />
         <activity android:name=".PathResultActivity" />
         <activity android:name=".NotificationListActivity" />
         <activity android:name=".HelpActivity" />

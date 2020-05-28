@@ -17,7 +17,7 @@
         android:text="알림 목록"
 
         android:padding="10dp"
-        app:layout_constraintBottom_toTopOf="@id/recycler_noti"
+        app:layout_constraintBottom_toTopOf="@id/newNotiLayout"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -28,16 +28,56 @@
         android:textStyle="bold"
         android:background="#F0F0F0"
         />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_noti"
+    <LinearLayout
+        android:id="@+id/newNotiLayout"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/title_noti"
-        android:background="#F0F0F0"
-        />
+        app:layout_constraintBottom_toTopOf="@id/NotiLayout"
+        android:orientation="vertical"
+        android:layout_marginLeft="10dp">
+        <TextView
+            android:id="@+id/textview_newNoti"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:textColor="@android:color/black"
+            android:text="새로운 알림"
+            />
+        <fragment
+            android:id="@+id/noti_newfragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:name="com.example.atchui.Noti_newFragment"
+            tools:layout="@layout/activity_notification_list"
+            />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/NotiLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/newNotiLayout"
+        android:orientation="vertical"
+        android:layout_marginLeft="10dp">
+        <TextView
+            android:id="@+id/textview_Noti"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:textColor="@android:color/black"
+            android:text="이전 알림"
+            />
+        <fragment
+            android:id="@+id/noti_fragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:name="com.example.atchui.Noti_Fragment"
+            tools:layout="@layout/activity_notification_list"
+            />
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
