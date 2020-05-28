@@ -3,9 +3,7 @@
     package="com.example.atchui">
 
     <uses-permission android:name="android.permission.INTERNET" />
-
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-
 
     <application
         android:allowBackup="true"
@@ -15,16 +13,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
-        <activity android:name=".NotificationListActivity"></activity>
-
-        <activity android:name=".HelpActivity"></activity>
-
+        <activity android:name=".PathResultActivity"></activity>
+        <activity android:name=".NotificationListActivity" />
+        <activity android:name=".HelpActivity" />
 
         <service
             android:name=".BackgroundService"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true" />
 
         <activity android:name=".SettingActivity" />
 

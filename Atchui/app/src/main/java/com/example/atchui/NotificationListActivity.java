@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -52,8 +53,8 @@ public class NotificationListActivity extends AppCompatActivity implements Noti_
         System.out.println(item.getTimeStr());
 
         item = new Noti_RecyclerItem();
-        item.setLabelColor(this.getResources().getColor(R.color.label_yellow));
-        item.setTextStr("반경 1km 내에 확진자 동선이 확인되었습니다.");
+        item.setLabelColor(this.getResources().getColor(R.color.label_red));
+        item.setTextStr("강남구청 근방에서 2020-05-28에 동선겹침이 확인되었습니다.");
         item.setTimeStr("1분 전");
 
         mAdapter.addItem(item);
@@ -70,5 +71,12 @@ public class NotificationListActivity extends AppCompatActivity implements Noti_
         Noti_RecyclerAdapter.Noti_ItemViewHolder viewHolder =
                 (Noti_RecyclerAdapter.Noti_ItemViewHolder)mRecyclerView.findViewHolderForAdapterPosition(position);
         Toast.makeText(this, viewHolder.textTime.getText().toString(), Toast.LENGTH_SHORT).show();
+
+        Intent intent = new Intent(getApplicationContext(), PathResultActivity.class);
+
+        //데이터 송신(position)
+        intent.putExtra("position",position);
+
+        startActivity(intent);
     }
 }
