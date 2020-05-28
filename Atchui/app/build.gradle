@@ -53,8 +53,10 @@ dependencies {
     implementation 'com.google.android.gms:play-services-places:16.0.0'
     implementation 'com.google.android.libraries.places:places-compat:1.1.0'
 
-    //RecyclerView
+
+
     implementation 'com.android.support:recyclerview-v7:28.1.0'
+
 }
 
 allprojects {
@@ -62,4 +64,6 @@ allprojects {
         google()
         jcenter()
     }
+
+
 }
