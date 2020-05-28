@@ -78,8 +78,8 @@ public class Help_RecyclerAdapter extends RecyclerView.Adapter<Help_RecyclerAdap
 
             textQuestion.setText(data.getQuesiton());
             textContent.setText(data.getContent());
-            imgButtonExpand.setImageResource(data.getResID());
-            imgViewContent.setImageResource(data.getResID());
+            imgButtonExpand.setImageResource(R.drawable.ic_logo);
+            imgViewContent.setImageResource(R.drawable.img_test);
 
             changeVisibility(selectedItem.get(position));
 
