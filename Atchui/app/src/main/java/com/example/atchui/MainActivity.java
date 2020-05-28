@@ -90,7 +90,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                         }
                         String token = task.getResult().getToken();
                         Log.d("FCM Log", "FCM 토큰"+ token);
-                        Toast.makeText(MainActivity.this, "토큰:"+token, Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(MainActivity.this, "토큰:"+token, Toast.LENGTH_SHORT).show();
                     }
                 });
 
