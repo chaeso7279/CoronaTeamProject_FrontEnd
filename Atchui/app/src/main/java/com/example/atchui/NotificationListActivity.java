@@ -15,44 +15,60 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-public class NotificationListActivity extends AppCompatActivity {
+public class NotificationListActivity extends AppCompatActivity implements Noti_RecyclerAdapter.OnListItemSelectedInterface {
 
-    Noti_RecyclerAdapter mAdapter = null;
-    ArrayList<Noti_RecyclerItem> mList = new ArrayList<>();
-
+    private Noti_RecyclerAdapter mAdapter;
+    private RecyclerView mRecyclerView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notification_list);
 
-        ////
-        RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.recycler_notification);
+        Initialize();
+        setData();
+    }
 
-        mAdapter = new Noti_RecyclerAdapter(mList);
+    private void Initialize() {
+        mRecyclerView = findViewById(R.id.recycler_noti);
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(linearLayoutManager);
+
+        mAdapter = new Noti_RecyclerAdapter(this);
         mRecyclerView.setAdapter(mAdapter);
+    }
 
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+    private void setData() {
+        Noti_RecyclerItem item = new Noti_RecyclerItem();
 
-        //아이템 추가
-        addItem("안녕","제발 되렴");
-        addItem("응?","제발");
-        addItem("응?","개빡치게하지말고");
+
+        item.setLabelColor(this.getResources().getColor(R.color.label_green));
+        item.setTextStr("반경 1km 내에 확진자 동선이 확인되었습니다.");
+        item.setTimeStr("5분 전");
+
+        mAdapter.addItem(item);
+
+        System.out.println(item.getLabelColor());
+        System.out.println(item.getTimeStr());
+
+        item = new Noti_RecyclerItem();
+        item.setLabelColor(this.getResources().getColor(R.color.label_yellow));
+        item.setTextStr("반경 1km 내에 확진자 동선이 확인되었습니다.");
+        item.setTimeStr("1분 전");
+
+        mAdapter.addItem(item);
+
+        System.out.println(item.getLabelColor());
+        System.out.println(item.getTimeStr());
 
         mAdapter.notifyDataSetChanged();
 
-        int totalElements = mList.size();// arrayList의 요소의 갯수를 구한다.
-        for (int index = 0; index < totalElements; index++) {
-            System.out.println(mList.get(index).getTimeStr());
-        }
     }
 
-    public void addItem(String text, String time){
-        Noti_RecyclerItem item = new Noti_RecyclerItem();
-
-        item.setTextStr(text);
-        item.setTimeStr(time);
-
-        mList.add(0,item);
+    @Override
+    public void onItemSelected(View v, int position) {
+        Noti_RecyclerAdapter.Noti_ItemViewHolder viewHolder =
+                (Noti_RecyclerAdapter.Noti_ItemViewHolder)mRecyclerView.findViewHolderForAdapterPosition(position);
+        Toast.makeText(this, viewHolder.textTime.getText().toString(), Toast.LENGTH_SHORT).show();
     }
-
 }

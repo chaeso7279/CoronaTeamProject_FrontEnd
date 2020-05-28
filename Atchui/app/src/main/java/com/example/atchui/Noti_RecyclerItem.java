@@ -1,30 +1,30 @@
 package com.example.atchui;
 
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+
 public class Noti_RecyclerItem {
-    //    private Drawable labelDrawable;
-    private String textStr;
+    private int labelColor;
+    private String contentStr;
     private String timeStr;
 
-//    public void setLabel(Drawable label) {
-//        labelDrawable = label ;
-//    }
-
+    public void setLabelColor(int label){
+        labelColor = label;
+    }
     public void setTextStr(String text){
-        textStr = text;
+        contentStr = text;
     }
     public void setTimeStr(String time){
         timeStr = time;
     }
 
-    //    public Drawable getLabel(){
-//        return this.labelDrawable;
-//    }
-    public String getTextStr(){
-        return this.textStr;
-    }
 
+    public int getLabelColor() {return labelColor;}
+    public String getTextStr(){
+        return contentStr;
+    }
     public String getTimeStr(){
-        return this.timeStr;
+        return timeStr;
     }
 
 }
