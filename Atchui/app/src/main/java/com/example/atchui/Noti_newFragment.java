@@ -74,13 +74,13 @@ public class Noti_newFragment extends Fragment implements Noti_RecyclerAdapter.O
     }
     @Override
     public void onItemSelected(View v, int position) {
-        Noti_RecyclerAdapter.Noti_ItemViewHolder viewHolder =
-                (Noti_RecyclerAdapter.Noti_ItemViewHolder)new_recyclerView.findViewHolderForAdapterPosition(position);
+        Noti_newRecyclerAdapter.Noti_newItemViewHolder viewHolder =
+                (Noti_newRecyclerAdapter.Noti_newItemViewHolder)new_recyclerView.findViewHolderForAdapterPosition(position);
 
         if(viewHolder.itemType == 1){
             Intent intent = new Intent(getActivity(), CurrentResultActivity.class);
 
-            //데이터(position) 송신
+            //데이터(position) 송신 - 실제 포지션에 맞는 정보 출력할 때 사용
             intent.putExtra("position",position);
 
             startActivity(intent);
