@@ -56,7 +56,7 @@ public class Help_RecyclerAdapter extends RecyclerView.Adapter<Help_RecyclerAdap
 
         private TextView textQuestion;
         private TextView textContent;
-        private ImageButton imgButtonExpand;
+        //private ImageButton imgButtonExpand;
         private ImageView imgViewContent;
 
         private HelpData data;
@@ -68,7 +68,7 @@ public class Help_RecyclerAdapter extends RecyclerView.Adapter<Help_RecyclerAdap
 
             textQuestion = itemView.findViewById(R.id.textView_Question);
             textContent = itemView.findViewById(R.id.textView_Content);
-            imgButtonExpand = itemView.findViewById(R.id.imageBtn_Expand);
+            //imgButtonExpand = itemView.findViewById(R.id.imageBtn_Expand);
             imgViewContent = itemView.findViewById(R.id.imgView_Content);
         }
 
@@ -78,7 +78,7 @@ public class Help_RecyclerAdapter extends RecyclerView.Adapter<Help_RecyclerAdap
 
             textQuestion.setText(data.getQuesiton());
             textContent.setText(data.getContent());
-            imgButtonExpand.setImageResource(R.drawable.ic_logo);
+            //imgButtonExpand.setImageResource(R.drawable.ic_logo);
             imgViewContent.setImageResource(R.drawable.img_test);
 
             changeVisibility(selectedItem.get(position));
@@ -86,7 +86,7 @@ public class Help_RecyclerAdapter extends RecyclerView.Adapter<Help_RecyclerAdap
             itemView.setOnClickListener(this);
             textQuestion.setOnClickListener(this);
             textContent.setOnClickListener(this);
-            imgButtonExpand.setOnClickListener(this);
+            //imgButtonExpand.setOnClickListener(this);
         }
 
         @Override
@@ -111,15 +111,15 @@ public class Help_RecyclerAdapter extends RecyclerView.Adapter<Help_RecyclerAdap
 
                     iPrePos = iPos;
                     break;
-                case R.id.imageBtn_Expand:
-                    Toast.makeText(context, "버튼 눌림", Toast.LENGTH_SHORT).show();
-                    break;
+                //case R.id.imageBtn_Expand:
+                 //   Toast.makeText(context, "버튼 눌림", Toast.LENGTH_SHORT).show();
+                //    break;
             }
         }
 
         private void changeVisibility(final boolean isExpanded) {
 
-            int iDPValue = 150;
+            int iDPValue = 500;
             float fDensity = context.getResources().getDisplayMetrics().density;
             int iHeight = (int)(iDPValue * fDensity);
 

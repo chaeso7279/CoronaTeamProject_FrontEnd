@@ -128,8 +128,8 @@ public class SettingPreferenceFragment extends PreferenceFragment {
                 }
             }
 
-           // if(getActivity() != null)
-            //    ((SettingActivity)getActivity()).sendToServer(m_Data);
+            if(getActivity() != null)
+                ((SettingActivity)getActivity()).sendToServer(m_Data);
         }
     };
 }

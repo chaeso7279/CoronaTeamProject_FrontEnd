@@ -14,6 +14,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.example.atchui.database.PatientRouteData;
+import com.example.atchui.database.PatientRouteResponse;
+import com.example.atchui.database.SettingResponse;
+import com.example.atchui.network.RetrofitClient;
+import com.example.atchui.network.ServerFunction;
+import com.example.atchui.network.ServiceAPI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.iid.FirebaseInstanceId;
@@ -54,6 +60,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 
 public class MainActivity extends FragmentActivity implements OnMapReadyCallback {
     private GoogleMap mMap;
@@ -70,6 +80,9 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
     //vars
     private Boolean mLocationPermissionsGranted =false;
+
+    // Sever
+    public ServiceAPI service;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,6 +107,9 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                     }
                 });
 
+        // Server 연동
+        service = RetrofitClient.getClient().create(ServiceAPI.class);
+        ServerFunction.getInstance().Initialize(service);
 
         MapFragment mapFragment1 = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(MainActivity.this);
@@ -121,8 +137,13 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         btn_help.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, HelpActivity.class);
-                startActivity(intent);
+                //Intent intent = new Intent(MainActivity.this, HelpActivity.class);
+                //startActivity(intent);
+
+                // 경로 가져올 때 이 함수를 쓰시면 ServiceFunction 객체 내에 데이터가 저장됩니다
+                ServerFunction.getInstance().GetLatestPatientRouteData();
+                // 이걸로 접근하시면 됩니다!
+               // ServerFunction.getInstance().patientRouteResponse.m_latitude
             }
         });
 
