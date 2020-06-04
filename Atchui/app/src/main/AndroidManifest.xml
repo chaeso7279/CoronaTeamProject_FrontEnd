@@ -14,16 +14,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
-        <activity android:name=".NotificationListActivity"></activity>
-
-        <activity android:name=".HelpActivity"></activity>
-
+        <activity android:name=".Noti_Fragment"></activity>
+        <activity android:name=".Noti_newFragment" />
+        <activity android:name=".CurrentResultActivity" />
+        <activity android:name=".PathResultActivity" />
+        <activity android:name=".NotificationListActivity" />
+        <activity android:name=".HelpActivity" />
 
         <service
             android:name=".BackgroundService"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true" />
 
         <activity android:name=".SettingActivity" />
 
@@ -42,11 +43,14 @@
             </intent-filter>
         </activity>
 
-        <service android:name=".MyFirebaseMessagingService">
+        <service android:name=".MyFirebaseMessagingService"
+
+            android:exported="false">
             <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+                <action android:name = "com.google.firebases.MESSAGING_EVENT"/>
             </intent-filter>
         </service>
+
     </application>
 
 </manifest>

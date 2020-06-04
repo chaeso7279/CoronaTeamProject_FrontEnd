@@ -3,4 +3,10 @@
     <color name="colorPrimary">#6200EE</color>
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#03DAC5</color>
+    <color name="label_red">#CC3D3D</color>
+    <color name="label_yellow">#F2CB61</color>
+    <color name="label_green">#2F9D27</color>
+    <color name="scrollThumb">#747474</color>
+    <color name="scrollTrack">#EAEAEA</color>
+    <color name="background_newItem">#D9E5FF</color>
 </resources>
