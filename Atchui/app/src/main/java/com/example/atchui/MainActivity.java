@@ -148,6 +148,11 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
             Log.e("실패", "고유 ID 생성 실패");
         }
 
+        // 경로 가져올 때 이 함수를 쓰시면 ServiceFunction 객체 내에 데이터가 저장됩니다
+        ServerFunction.getInstance().GetLatestPatientRouteData();
+        // 이걸로 접근하시면 됩니다!
+        double latitude =  ServerFunction.getInstance().patientRouteResponse.m_latitude;
+
         MapFragment mapFragment1 = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(MainActivity.this);
 
@@ -181,7 +186,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                 ServerFunction.getInstance().GetLatestPatientRouteData();
                 // 이걸로 접근하시면 됩니다!
                 double latitude =  ServerFunction.getInstance().patientRouteResponse.m_latitude;
-                Log.e("latitude", "get");
+                Log.e("latitude", latitude + "");
             }
         });
 
@@ -592,6 +597,8 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
             m_DeviceID = data.toString();
             Log.e("UUID", m_DeviceID + "파일 불러오기 완료");
             buffer.close();
+
+            ServerFunction.getInstance().SendUserOption(m_DeviceID, 5, 30);
 
         } catch (Exception e) {
             // 파일이 존재하지 않으면 새로 할당받아 파일을 작성해줌

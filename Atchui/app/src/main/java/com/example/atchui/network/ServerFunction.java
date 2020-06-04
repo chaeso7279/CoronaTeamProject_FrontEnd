@@ -39,8 +39,15 @@ public class ServerFunction {
         service.cnfPatientRoute(data).enqueue(new Callback<PatientRouteResponse>() {
             @Override
             public void onResponse(Call<PatientRouteResponse> call, Response<PatientRouteResponse> response) {
-                patientRouteResponse = response.body();
-                Log.e("GET RESPONSE", "데이터 가져오기 성공");
+                patientRouteResponse.m_cnfID = response.body().m_cnfID;
+                patientRouteResponse.m_cnfRouteID = response.body().m_cnfRouteID;
+                patientRouteResponse.m_address = response.body().m_address;
+                patientRouteResponse.m_latitude = response.body().m_latitude;
+                patientRouteResponse.m_longitude = response.body().m_longitude;
+                patientRouteResponse.m_locationName = response.body().m_locationName;
+                patientRouteResponse.m_visitDatetime = response.body().m_visitDatetime;
+
+                Log.e("GET RESPONSE", response.body().m_latitude + "");
 
                // Toast.makeText(getApplicationContext(), "성공", Toast.LENGTH_SHORT);
             }
