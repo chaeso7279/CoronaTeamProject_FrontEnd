@@ -5,10 +5,13 @@ import android.widget.Toast;
 
 import com.example.atchui.SettingActivity;
 import com.example.atchui.database.AnalData;
+import com.example.atchui.database.AnalResponse;
 import com.example.atchui.database.PatientRouteData;
 import com.example.atchui.database.PatientRouteResponse;
 import com.example.atchui.database.SettingData;
 import com.example.atchui.database.SettingResponse;
+
+import org.json.JSONArray;
 
 import java.util.ArrayList;
 
@@ -24,6 +27,7 @@ public class ServerFunction {
     public PatientRouteResponse patientRouteResponse;
 
     public ArrayList<AnalData> lstAnal;
+    public JSONArray jArray;
 
     public String user_id = "";
     private boolean bInit = false;
@@ -33,7 +37,10 @@ public class ServerFunction {
         bInit = true;
 
         patientRouteResponse = new PatientRouteResponse();
+
+        jArray = new JSONArray();
         lstAnal = new ArrayList<AnalData>();
+
     }
     public void SetUserID(String user_id) { this.user_id = user_id; }
 
@@ -132,21 +139,17 @@ public class ServerFunction {
             return;
 
         AnalData data = new AnalData();
-        service.GetAnalList(data).enqueue(new Callback<AnalData>() {
+        service.GetAnalList(data).enqueue(new Callback<AnalResponse>() {
             @Override
-            public void onResponse(Call<AnalData> call, Response<AnalData> response) {
+            public void onResponse(Call<AnalResponse> call, Response<AnalResponse> response) {
                 if(!lstAnal.isEmpty())
                     lstAnal.clear();
 
-                AnalData tempData = new AnalData();
-                tempData = response.body();
-
-                lstAnal.add(tempData);
-                Log.e("성공", "AnalList 가져오기");
+                Log.e("성공", response.body().jArray);
             }
 
             @Override
-            public void onFailure(Call<AnalData> call, Throwable t) {
+            public void onFailure(Call<AnalResponse> call, Throwable t) {
                 Log.e("실패", "AnalList 가져오기");
             }
         });
