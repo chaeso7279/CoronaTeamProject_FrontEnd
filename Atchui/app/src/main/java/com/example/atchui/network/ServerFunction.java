@@ -4,10 +4,13 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.example.atchui.SettingActivity;
+import com.example.atchui.database.AnalData;
 import com.example.atchui.database.PatientRouteData;
 import com.example.atchui.database.PatientRouteResponse;
 import com.example.atchui.database.SettingData;
 import com.example.atchui.database.SettingResponse;
+
+import java.util.ArrayList;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -20,6 +23,7 @@ public class ServerFunction {
     public ServiceAPI service;
     public PatientRouteResponse patientRouteResponse;
 
+    public ArrayList<AnalData> lstAnal;
 
     public String user_id = "";
     private boolean bInit = false;
@@ -27,7 +31,9 @@ public class ServerFunction {
     public void Initialize(ServiceAPI service) {
         this.service = service;
         bInit = true;
+
         patientRouteResponse = new PatientRouteResponse();
+        lstAnal = new ArrayList<AnalData>();
     }
     public void SetUserID(String user_id) { this.user_id = user_id; }
 
@@ -118,6 +124,32 @@ public class ServerFunction {
                 });
                 break;
         }
+    }
+
+    // 분석결과(알림목록) 가져오기
+    public void GetAnalysisList() {
+        if(!bInit)
+            return;
+
+        AnalData data = new AnalData();
+        service.GetAnalList(data).enqueue(new Callback<AnalData>() {
+            @Override
+            public void onResponse(Call<AnalData> call, Response<AnalData> response) {
+                if(!lstAnal.isEmpty())
+                    lstAnal.clear();
+
+                AnalData tempData = new AnalData();
+                tempData = response.body();
+
+                lstAnal.add(tempData);
+                Log.e("성공", "AnalList 가져오기");
+            }
+
+            @Override
+            public void onFailure(Call<AnalData> call, Throwable t) {
+                Log.e("실패", "AnalList 가져오기");
+            }
+        });
     }
 
     // 싱글톤

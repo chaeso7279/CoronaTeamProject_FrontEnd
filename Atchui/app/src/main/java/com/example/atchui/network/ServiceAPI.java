@@ -1,5 +1,6 @@
 package com.example.atchui.network;
 
+import com.example.atchui.database.AnalData;
 import com.example.atchui.database.PatientRouteData;
 import com.example.atchui.database.PatientRouteResponse;
 import com.example.atchui.database.SettingData;
@@ -23,4 +24,7 @@ public interface ServiceAPI {
 
     @POST("/cnf_patient/route")
     Call<PatientRouteResponse> cnfPatientRoute(@Body PatientRouteData data);
+
+    @POST("/analysis")
+    Call<AnalData> GetAnalList(@Body AnalData data);
 }
