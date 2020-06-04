@@ -15,6 +15,8 @@ import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.provider.Settings;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -62,17 +64,23 @@ import com.google.maps.android.clustering.ClusterManager;
 import com.google.maps.android.clustering.view.DefaultClusterRenderer;
 
 
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.http.HEAD;
 
-public class MainActivity extends FragmentActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks,GoogleApiClient.OnConnectionFailedListener,GoogleMap.OnMyLocationChangeListener
- {
+public class MainActivity extends FragmentActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, GoogleMap.OnMyLocationChangeListener {
 
     private GoogleMap mMap;
     private FusedLocationProviderClient mFusedLocationProviderClient;
@@ -93,11 +101,13 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     private ImageView mGps;
 
     //vars
-    private Boolean mLocationPermissionsGranted =false;
-
+    private Boolean mLocationPermissionsGranted = false;
 
     // Sever
     public ServiceAPI service;
+    // Android UUID
+    public String m_DeviceID = " ";
+
     // pre-circle
     private Circle preCircle = null;
 
@@ -122,9 +132,18 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                         String token = task.getResult().getToken();
                         Log.d("FCM Log", "FCM 토큰" + token);
 
-                        Toast.makeText(MainActivity.this, "토큰:" + token, Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(MainActivity.this, "토큰:" + token, Toast.LENGTH_SHORT).show();
                     }
                 });
+
+        // Android 고유 ID 가져오기
+
+        try {
+            InitDeviceUUID();
+        } catch (IOException e) {
+           Log.e("실패", "파일 저장 실패");
+        }
+
 
         // Server 연동
         service = RetrofitClient.getClient().create(ServiceAPI.class);
@@ -175,16 +194,16 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         startService(intent);
     }
 
-    private void init(){
-        Log.d(TAG,"init: initializing");
+    private void init() {
+        Log.d(TAG, "init: initializing");
 
         mSearchText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
-                if(actionId == EditorInfo.IME_ACTION_SEARCH
+                if (actionId == EditorInfo.IME_ACTION_SEARCH
                         || actionId == EditorInfo.IME_ACTION_DONE
                         || keyEvent.getAction() == keyEvent.ACTION_DOWN
-                        || keyEvent.getAction() == keyEvent.KEYCODE_ENTER){
+                        || keyEvent.getAction() == keyEvent.KEYCODE_ENTER) {
                     //searching을 실행한다
                     geoLocate();
                 }
@@ -203,14 +222,14 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
 
-    private void geoLocate(){
+    private void geoLocate() {
         String serchString = mSearchText.getText().toString();
         Geocoder geocoder = new Geocoder(MainActivity.this);
         List<Address> list = new ArrayList<>();
 
-        try{
-            list = geocoder.getFromLocationName(serchString,1);
-        }catch (IOException e){
+        try {
+            list = geocoder.getFromLocationName(serchString, 1);
+        } catch (IOException e) {
             Log.e(TAG, "geoLocate : IOException: " + e.getMessage());
         }
 
@@ -218,36 +237,40 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
             Address address = list.get(0);
             Log.d(TAG, "geoLocate: found a location: " + address.toString());
 //          Toast.makeText(this,address.toString(),Toast.LENGTH_SHORT).show();
-            moveCamera(new LatLng(address.getLatitude(), address.getLongitude()),DEFAULT_ZOOM,
+            moveCamera(new LatLng(address.getLatitude(), address.getLongitude()), DEFAULT_ZOOM,
                     address.getAddressLine(0));
         }
     }
-     @Override
-     public void onMyLocationChange(Location location) {
-         current_lat= location.getLatitude();
-         current_long= location.getLongitude();
-         Toast.makeText(this, current_lat+", "+ current_long, Toast.LENGTH_SHORT).show();
-         LatLng center = new LatLng(current_lat, current_long);
-         if (preCircle != null) { preCircle.remove(); }
-         preCircle = mMap.addCircle(new CircleOptions()
-                 .center(center)
-                 .radius(500)
-                 .strokeColor(Color.RED)
-                 .fillColor(Color.TRANSPARENT)
-         );
-     }
+
+    @Override
+    public void onMyLocationChange(Location location) {
+        current_lat = location.getLatitude();
+        current_long = location.getLongitude();
+        Toast.makeText(this, current_lat + ", " + current_long, Toast.LENGTH_SHORT).show();
+        LatLng center = new LatLng(current_lat, current_long);
+        if (preCircle != null) {
+            preCircle.remove();
+        }
+        preCircle = mMap.addCircle(new CircleOptions()
+                .center(center)
+                .radius(500)
+                .strokeColor(Color.RED)
+                .fillColor(Color.TRANSPARENT)
+        );
+    }
+
     @Override
     public void onMapReady(final GoogleMap googleMap) {
-        Toast.makeText(this,"map is Ready",Toast.LENGTH_SHORT).show();
-        Log.d(TAG,"onMapReady : map is ready");
+        Toast.makeText(this, "map is Ready", Toast.LENGTH_SHORT).show();
+        Log.d(TAG, "onMapReady : map is ready");
         mMap = googleMap;
 
-        if(mLocationPermissionsGranted){
+        if (mLocationPermissionsGranted) {
             getDeviceLocation();
             //자신의 위치 나타내기
-            if(ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                    !=PackageManager.PERMISSION_GRANTED&&ActivityCompat.checkSelfPermission(this,
-                    Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED){
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                    != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this,
+                    Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 return;
             }
             mMap.setMyLocationEnabled(true);
@@ -258,7 +281,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
             init();
         }
         //클러스터
-        mClusterManager = new ClusterManager<>(this,mMap);
+        mClusterManager = new ClusterManager<>(this, mMap);
         mMap.setOnCameraIdleListener(mClusterManager);
         mMap.setOnMarkerClickListener(mClusterManager);
 
@@ -271,14 +294,15 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         addItems();
 
     }
-     // 확진자 추가 함수
+
+    // 확진자 추가 함수
     private void addItems() {
-    // Set some lat/lng coordinates to start with.
+        // Set some lat/lng coordinates to start with.
         int Corona_Confirmer = 16;
         double[] lat = new double[Corona_Confirmer];
         double[] lng = new double[Corona_Confirmer];
 
-    //  Set the title and snippet strings.
+        //  Set the title and snippet strings.
         String[] title = new String[Corona_Confirmer];
         String[] snippet = new String[Corona_Confirmer];
 
@@ -322,90 +346,91 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                     snippet[i] = "어대역 뚜레쥬르";
                     color_code = BitmapDescriptorFactory.HUE_RED;
                     break;
-                 case 5:
-                     lat[i] = 37.552964;
-                     lng[i] = 127.076774;
-                     title[i] = "확진자5";
-                     snippet[i] = "어대역 도미노피자";
-                     color_code = BitmapDescriptorFactory.HUE_RED;
-                     break;
-                 case 6:
-                     lat[i] = 37.554498;
-                     lng[i] = 127.075193;
-                     title[i] = "확진자6";
-                     snippet[i] = "6";
-                     color_code = BitmapDescriptorFactory.HUE_ORANGE;
-                     break;
-                 case 7:
-                     lat[i] = 37.543009;
-                     lng[i] = 127.077311;
-                     title[i] = "확진자7";
-                     snippet[i] = "7";
-                     color_code = BitmapDescriptorFactory.HUE_ORANGE;
-                     break;
-                 case 8:
-                     lat[i] = 37.548985;
-                     lng[i] = 127.074646;
-                     title[i] = "확진자8";
-                     snippet[i] = "8";
-                     color_code = BitmapDescriptorFactory.HUE_ORANGE;
-                     break;
-                 case 9:
-                     lat[i] = 37.544590;
-                     lng[i] = 127.075963;
-                     title[i] = "확진자9";
-                     snippet[i] = "9";
-                     color_code = BitmapDescriptorFactory.HUE_ORANGE;
-                     break;
-                 case 10:
-                     lat[i] = 37.554364;
-                     lng[i] = 127.075774;
-                     title[i] = "확진자10";
-                     snippet[i] = "10";
-                     color_code = BitmapDescriptorFactory.HUE_ORANGE;
-                     break;
-                 case 11:
-                     lat[i] = 37.550698;
-                     lng[i] = 127.073093;
-                     title[i] = "확진자11";
-                     snippet[i] = "11";
-                     color_code = BitmapDescriptorFactory.HUE_GREEN;
-                     break;
-                 case 12:
-                     lat[i] = 37.541439;
-                     lng[i] = 127.079711;
-                     title[i] = "확진자12";
-                     snippet[i] = "12";
-                     color_code = BitmapDescriptorFactory.HUE_GREEN;
-                     break;
-                 case 13:
-                     lat[i] = 37.547485;
-                     lng[i] = 127.074146;
-                     title[i] = "확진자13";
-                     snippet[i] = "13";
-                     color_code = BitmapDescriptorFactory.HUE_GREEN;
-                     break;
-                 case 14:
-                     lat[i] = 37.546190;
-                     lng[i] = 127.074263;
-                     title[i] = "확진자14";
-                     snippet[i] = "14";
-                     color_code = BitmapDescriptorFactory.HUE_GREEN;
-                     break;
-                 case 15:
-                     lat[i] = 37.552464;
-                     lng[i] = 127.076574;
-                     title[i] = "확진자15";
-                     snippet[i] = "15";
-                     color_code = BitmapDescriptorFactory.HUE_GREEN;
-                     break;
+                case 5:
+                    lat[i] = 37.552964;
+                    lng[i] = 127.076774;
+                    title[i] = "확진자5";
+                    snippet[i] = "어대역 도미노피자";
+                    color_code = BitmapDescriptorFactory.HUE_RED;
+                    break;
+                case 6:
+                    lat[i] = 37.554498;
+                    lng[i] = 127.075193;
+                    title[i] = "확진자6";
+                    snippet[i] = "6";
+                    color_code = BitmapDescriptorFactory.HUE_ORANGE;
+                    break;
+                case 7:
+                    lat[i] = 37.543009;
+                    lng[i] = 127.077311;
+                    title[i] = "확진자7";
+                    snippet[i] = "7";
+                    color_code = BitmapDescriptorFactory.HUE_ORANGE;
+                    break;
+                case 8:
+                    lat[i] = 37.548985;
+                    lng[i] = 127.074646;
+                    title[i] = "확진자8";
+                    snippet[i] = "8";
+                    color_code = BitmapDescriptorFactory.HUE_ORANGE;
+                    break;
+                case 9:
+                    lat[i] = 37.544590;
+                    lng[i] = 127.075963;
+                    title[i] = "확진자9";
+                    snippet[i] = "9";
+                    color_code = BitmapDescriptorFactory.HUE_ORANGE;
+                    break;
+                case 10:
+                    lat[i] = 37.554364;
+                    lng[i] = 127.075774;
+                    title[i] = "확진자10";
+                    snippet[i] = "10";
+                    color_code = BitmapDescriptorFactory.HUE_ORANGE;
+                    break;
+                case 11:
+                    lat[i] = 37.550698;
+                    lng[i] = 127.073093;
+                    title[i] = "확진자11";
+                    snippet[i] = "11";
+                    color_code = BitmapDescriptorFactory.HUE_GREEN;
+                    break;
+                case 12:
+                    lat[i] = 37.541439;
+                    lng[i] = 127.079711;
+                    title[i] = "확진자12";
+                    snippet[i] = "12";
+                    color_code = BitmapDescriptorFactory.HUE_GREEN;
+                    break;
+                case 13:
+                    lat[i] = 37.547485;
+                    lng[i] = 127.074146;
+                    title[i] = "확진자13";
+                    snippet[i] = "13";
+                    color_code = BitmapDescriptorFactory.HUE_GREEN;
+                    break;
+                case 14:
+                    lat[i] = 37.546190;
+                    lng[i] = 127.074263;
+                    title[i] = "확진자14";
+                    snippet[i] = "14";
+                    color_code = BitmapDescriptorFactory.HUE_GREEN;
+                    break;
+                case 15:
+                    lat[i] = 37.552464;
+                    lng[i] = 127.076574;
+                    title[i] = "확진자15";
+                    snippet[i] = "15";
+                    color_code = BitmapDescriptorFactory.HUE_GREEN;
+                    break;
             }
             MyItem offsetItem = new MyItem(lat[i], lng[i], title[i], snippet[i], color_code);
 
             mClusterManager.addItem(offsetItem);
         }
     }
-     public class MyClusterRenderer extends DefaultClusterRenderer<MyItem> {
+
+    public class MyClusterRenderer extends DefaultClusterRenderer<MyItem> {
         public MyClusterRenderer(Context context, GoogleMap map, ClusterManager<MyItem> clusterManager) {
             super(context, map, clusterManager);
         }
@@ -420,21 +445,21 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
 
     //현위치 가져오기
-    private void getDeviceLocation(){
-        Log.d(TAG,"getDeviceLocation: getting the current devices location");
+    private void getDeviceLocation() {
+        Log.d(TAG, "getDeviceLocation: getting the current devices location");
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
 
-        try{
-            if(mLocationPermissionsGranted){
+        try {
+            if (mLocationPermissionsGranted) {
                 final Task location = mFusedLocationProviderClient.getLastLocation();
                 location.addOnCompleteListener(new OnCompleteListener() {
                     @Override
                     public void onComplete(@NonNull Task task) {
-                        if(task.isSuccessful()){
-                            Log.d(TAG,"onComplete: found location!");
-                            Location currentLocation = (Location)task.getResult();
+                        if (task.isSuccessful()) {
+                            Log.d(TAG, "onComplete: found location!");
+                            Location currentLocation = (Location) task.getResult();
 
-                            moveCamera(new LatLng(currentLocation.getLatitude(),currentLocation.getLongitude()),
+                            moveCamera(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()),
                                     DEFAULT_ZOOM,
                                     "My Location");
 //                            LatLng center = new LatLng(currentLocation.getLatitude(),currentLocation.getLongitude());
@@ -451,24 +476,24 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 //                                            center
 //                                    )
 //                            );
-                        }else{
-                            Log.d(TAG,"onComplete: current location is null");
-                            Toast.makeText(MainActivity.this,"unable to get current location",Toast.LENGTH_SHORT).show();
+                        } else {
+                            Log.d(TAG, "onComplete: current location is null");
+                            Toast.makeText(MainActivity.this, "unable to get current location", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
             }
-        }catch(SecurityException e){
+        } catch (SecurityException e) {
             Log.e(TAG, "getDeviceLocation: SecurityException: " + e.getMessage());
         }
     }
 
 
-    private void moveCamera(LatLng latLng,float zoom, String title){
-        Log.d(TAG, "moveCamera: moving the camera to: lat: "+ latLng.latitude + ", lng: "+ latLng.longitude);
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,zoom));
+    private void moveCamera(LatLng latLng, float zoom, String title) {
+        Log.d(TAG, "moveCamera: moving the camera to: lat: " + latLng.latitude + ", lng: " + latLng.longitude);
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
 
-        if(!title.equals("My Location")){
+        if (!title.equals("My Location")) {
             MarkerOptions options = new MarkerOptions()
                     .position(latLng)
                     .title(title);
@@ -477,30 +502,30 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         hideSoftKeyboard();
     }
 
-    private void initMap(){
-        Log.d(TAG,"initMap:initializing map");
-        SupportMapFragment mapFragment = (SupportMapFragment)getSupportFragmentManager().findFragmentById(R.id.map);
+    private void initMap() {
+        Log.d(TAG, "initMap:initializing map");
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(MainActivity.this);
     }
 
     //위치정보 동의
-    private void getLocationPermission(){
-        Log.d(TAG,"getLocationPermission: getting location permission");
+    private void getLocationPermission() {
+        Log.d(TAG, "getLocationPermission: getting location permission");
         String[] permissions = {Manifest.permission.ACCESS_FINE_LOCATION,
                 Manifest.permission.ACCESS_COARSE_LOCATION};
 
-        if(ContextCompat.checkSelfPermission(this.getApplicationContext(),
-                FINE_LOCATION)== PackageManager.PERMISSION_GRANTED){
-            if(ContextCompat.checkSelfPermission(this.getApplicationContext(),
-                    COURSE_LOCATION)== PackageManager.PERMISSION_GRANTED){
+        if (ContextCompat.checkSelfPermission(this.getApplicationContext(),
+                FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            if (ContextCompat.checkSelfPermission(this.getApplicationContext(),
+                    COURSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                 mLocationPermissionsGranted = true;
                 initMap();
-            }else{
+            } else {
                 ActivityCompat.requestPermissions(this,
                         permissions,
                         LOCATION_PERMISSION_REQUEST_CODE);
             }
-        }else{
+        } else {
             ActivityCompat.requestPermissions(this,
                     permissions,
                     LOCATION_PERMISSION_REQUEST_CODE);
@@ -509,20 +534,20 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
 
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        Log.d(TAG,"onRequestPermissionsResult: called");
-        mLocationPermissionsGranted=false;
+        Log.d(TAG, "onRequestPermissionsResult: called");
+        mLocationPermissionsGranted = false;
 
-        switch (requestCode){
-            case LOCATION_PERMISSION_REQUEST_CODE:{
-                if(grantResults.length > 0){
-                    for(int i = 0; i < grantResults.length;i++){
-                        if(grantResults[i] != PackageManager.PERMISSION_GRANTED){
+        switch (requestCode) {
+            case LOCATION_PERMISSION_REQUEST_CODE: {
+                if (grantResults.length > 0) {
+                    for (int i = 0; i < grantResults.length; i++) {
+                        if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
                             mLocationPermissionsGranted = false;
-                            Log.d(TAG,"onRequestPermissionsResult: failed");
+                            Log.d(TAG, "onRequestPermissionsResult: failed");
                             return;
                         }
                     }
-                    Log.d(TAG,"onRequestPermissionsResult: permission granted");
+                    Log.d(TAG, "onRequestPermissionsResult: permission granted");
 
                     mLocationPermissionsGranted = true;
                     //initialize our map
@@ -532,7 +557,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
-    private void hideSoftKeyboard(){
+    private void hideSoftKeyboard() {
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
     }
 
@@ -549,5 +574,33 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
+    }
+
+    /* 안드로이드 고유 아이디 (UUID) 초기화 및 사용자옵션 데이터베이스에서 가져옴 */
+    public void InitDeviceUUID() throws IOException {
+        try {
+            FileInputStream fis = openFileInput("UUID.txt");
+            StringBuffer data = new StringBuffer();
+            fis = openFileInput("UUID.txt");
+            BufferedReader buffer = new BufferedReader(new InputStreamReader(fis));
+            String strTemp = buffer.readLine();
+            while (strTemp != null) {
+                data.append(strTemp + "\n");
+                strTemp = buffer.readLine();
+            }
+            m_DeviceID = data.toString();
+            Log.e("UUID", m_DeviceID + "파일 불러오기 완료");
+            buffer.close();
+
+        } catch (Exception e) {
+            // 파일이 존재하지 않으면 새로 할당받아 파일을 작성해줌
+            m_DeviceID = UUID.randomUUID().toString();
+
+            FileOutputStream fos = openFileOutput("UUID.txt", Context.MODE_APPEND);
+            PrintWriter out = new PrintWriter(fos);
+            out.println(m_DeviceID);
+            out.close();
+            Log.e("UUID", m_DeviceID + "파일 저장 완료");
+        }
     }
 }
