@@ -24,6 +24,7 @@ import android.widget.Toast;
 
 import com.example.atchui.database.PatientRouteData;
 import com.example.atchui.database.PatientRouteResponse;
+import com.example.atchui.database.SettingData;
 import com.example.atchui.database.SettingResponse;
 import com.example.atchui.network.RetrofitClient;
 import com.example.atchui.network.ServerFunction;
@@ -108,6 +109,9 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     // Android UUID
     public String m_DeviceID = " ";
 
+    // Option Data
+    private SettingData Option;
+
     // pre-circle
     private Circle preCircle = null;
 
@@ -148,10 +152,27 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
             Log.e("실패", "고유 ID 생성 실패");
         }
 
+        /* 옵션 가져옴 */
+        SettingData data = new SettingData();
+        data.m_strUserID = m_DeviceID;
+        service.GetUserOption(data).enqueue(new Callback<SettingData>() {
+            @Override
+            public void onResponse(Call<SettingData> call, Response<SettingData> response) {
+                Log.e("성공", "옵션 가져오기");
+                Option = new SettingData();
+                Option = response.body();
+            }
+
+            @Override
+            public void onFailure(Call<SettingData> call, Throwable t) {
+                Log.e("실패", "옵션 가져오기");
+            }
+        });
+
         // 경로 가져올 때 이 함수를 쓰시면 ServiceFunction 객체 내에 데이터가 저장됩니다
-        ServerFunction.getInstance().GetLatestPatientRouteData();
+        //ServerFunction.getInstance().GetLatestPatientRouteData();
         // 이걸로 접근하시면 됩니다!
-        double latitude =  ServerFunction.getInstance().patientRouteResponse.m_latitude;
+        //double latitude =  ServerFunction.getInstance().patientRouteResponse.m_latitude;
 
         MapFragment mapFragment1 = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(MainActivity.this);
@@ -583,6 +604,8 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
     }
 
+    /* 서버 관련 함수 */
+
     /* 안드로이드 고유 아이디 (UUID) 초기화 및 사용자옵션 데이터베이스에서 가져옴 */
     public void InitDeviceUUID() throws IOException {
         try {
@@ -599,8 +622,6 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
             m_DeviceID = data.toString();
             Log.e("UUID", m_DeviceID + "파일 불러오기 완료");
             buffer.close();
-
-            ServerFunction.getInstance().SendUserOption(m_DeviceID, 5, 30);
 
         } catch (Exception e) {
             // 파일이 존재하지 않으면 새로 할당받아 파일을 작성해줌

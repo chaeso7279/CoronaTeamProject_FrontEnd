@@ -23,6 +23,9 @@ public interface ServiceAPI {
     @POST("/user/option/updatePeriod")
     Call<SettingResponse>  userOptionUpdatePeriod(@Body SettingData data);
 
+    @POST("/user/getOption")
+    Call<SettingData> GetUserOption(@Body SettingData data);
+
     @POST("/cnf_patient/route")
     Call<PatientRouteResponse> cnfPatientRoute(@Body PatientRouteData data);
 

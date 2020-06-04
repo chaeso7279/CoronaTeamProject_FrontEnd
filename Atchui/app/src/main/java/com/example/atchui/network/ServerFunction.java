@@ -45,6 +45,7 @@ public class ServerFunction {
     }
     public void SetUserID(String user_id) { this.user_id = user_id; }
 
+    // 확진자 정보 관련
     public void GetLatestPatientRouteData() {
         if(!bInit)
             return;
@@ -73,6 +74,7 @@ public class ServerFunction {
         });
     }
 
+    // 설정 관련
     public void SendUserOption(String user_id, int radius, int period) {
         if(!bInit)
             return;
