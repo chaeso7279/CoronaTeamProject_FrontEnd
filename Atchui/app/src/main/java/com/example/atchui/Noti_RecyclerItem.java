@@ -3,7 +3,12 @@ package com.example.atchui;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 
-public class Noti_RecyclerItem {
+import androidx.annotation.Nullable;
+
+import java.util.Observable;
+import java.util.Observer;
+
+public class Noti_RecyclerItem{
     private int itemType;
     private int labelColor;
     private String contentStr;
@@ -30,4 +35,14 @@ public class Noti_RecyclerItem {
         return timeStr;
     }
 
+    Noti_RecyclerItem(){
+
+    }
+    Noti_RecyclerItem(int type, int label, String content, String time){
+        itemType = type;
+        labelColor = label;
+        contentStr = content;
+        timeStr = time;
+    }
 }
+

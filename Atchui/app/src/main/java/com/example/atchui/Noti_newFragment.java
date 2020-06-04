@@ -3,11 +3,14 @@ package com.example.atchui;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +21,8 @@ public class Noti_newFragment extends Fragment implements Noti_RecyclerAdapter.O
 
     private Noti_newRecyclerAdapter new_adapter;
     private RecyclerView new_recyclerView;
+
+    private SharedViewModel sharedViewModel; //fragment간 text전달을 위해 만듬
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -37,6 +42,8 @@ public class Noti_newFragment extends Fragment implements Noti_RecyclerAdapter.O
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        sharedViewModel = ViewModelProviders.of(getActivity()).get(SharedViewModel.class); //fragment간 text전달을 위해 만듬
     }
 
     private void Initialize(View view) {
@@ -74,14 +81,17 @@ public class Noti_newFragment extends Fragment implements Noti_RecyclerAdapter.O
     }
     @Override
     public void onItemSelected(View v, int position) {
+
         Noti_newRecyclerAdapter.Noti_newItemViewHolder viewHolder =
                 (Noti_newRecyclerAdapter.Noti_newItemViewHolder)new_recyclerView.findViewHolderForAdapterPosition(position);
 
+
+        //itemType에 맞게 activity 이동
         if(viewHolder.itemType == 1){
             Intent intent = new Intent(getActivity(), CurrentResultActivity.class);
 
             //데이터(position) 송신 - 실제 포지션에 맞는 정보 출력할 때 사용
-            intent.putExtra("position",position);
+            intent.putExtra("position", position);
 
             startActivity(intent);
         }
@@ -92,6 +102,18 @@ public class Noti_newFragment extends Fragment implements Noti_RecyclerAdapter.O
             intent.putExtra("position",position);
 
             startActivity(intent);
+        }
+
+        //fragment간 text전달을 위해 만듬
+        if(sharedViewModel!=null){
+            int itemType = viewHolder.itemType;
+            ColorDrawable drawable = (ColorDrawable) viewHolder.labelColor.getBackground();
+            drawable.getColor();
+            int labelColor = drawable.getColor();
+            String contentStr = viewHolder.textContent.getText().toString();
+            String timeStr = viewHolder.textTime.getText().toString();
+            Noti_RecyclerItem item = new Noti_RecyclerItem(itemType, labelColor, contentStr, timeStr);
+            sharedViewModel.setItem(item);
         }
     }
 }

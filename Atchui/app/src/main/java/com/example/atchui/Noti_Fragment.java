@@ -3,20 +3,28 @@ package com.example.atchui;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 public class Noti_Fragment extends Fragment implements Noti_RecyclerAdapter.OnListItemSelectedInterface {
     private static final int CURRENT_NOTIFICATION = 1;
     private static final int PATH_NOTIFICATION = 2;
     private Noti_RecyclerAdapter adapter;
     private RecyclerView recyclerView;
+
+    private SharedViewModel sharedViewModel;
+
+    private Noti_RecyclerItem newItem = new Noti_RecyclerItem();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -36,6 +44,17 @@ public class Noti_Fragment extends Fragment implements Noti_RecyclerAdapter.OnLi
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        sharedViewModel = ViewModelProviders.of(getActivity()).get(SharedViewModel.class);
+
+        sharedViewModel.getItem().observe(this, new Observer<Noti_RecyclerItem>() {
+            @Override
+            public void onChanged(@Nullable Noti_RecyclerItem item) {
+                setItem(item);
+                Log.d("newItem", item.getTextStr() +"");
+
+            }
+        });
     }
 
     private void Initialize(View view) {
@@ -69,6 +88,22 @@ public class Noti_Fragment extends Fragment implements Noti_RecyclerAdapter.OnLi
 
         adapter.notifyDataSetChanged();
     }
+
+    private void setData(int itemType, int labelColor, String contentStr, String timeStr) {
+
+        Noti_RecyclerItem item = new Noti_RecyclerItem(itemType, labelColor, contentStr, timeStr);
+
+        adapter.addItem(item);
+
+        adapter.notifyDataSetChanged();
+    }
+
+    private void setItem(Noti_RecyclerItem item) {
+        adapter.addItem(item);
+
+        adapter.notifyDataSetChanged();
+    }
+
     @Override
     public void onItemSelected(View v, int position) {
         Noti_RecyclerAdapter.Noti_ItemViewHolder viewHolder =
