@@ -16,6 +16,7 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
@@ -55,6 +56,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.sql.DriverManager.println;
+
 
 public class MainActivity extends FragmentActivity implements OnMapReadyCallback {
     private GoogleMap mMap;
@@ -76,26 +79,27 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        getLocationPermission();
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
 
-        //firebase 푸시알림
+        ///////////////////////////
+        /*firebase 푸시알림*/
+        //토큰이 등록되는 시점에 호출되는 메소드입니다.
         FirebaseInstanceId.getInstance().getInstanceId()
-                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                .addOnSuccessListener(this, new OnSuccessListener<InstanceIdResult>(){
                     @Override
-                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
-                        if(!task.isSuccessful()){
-                            Log.w("FCM Log", "getInstanced failed", task.getException());
-                            return;
-                        }
-                        String token = task.getResult().getToken();
-                        Log.d("FCM Log", "FCM 토큰"+ token);
-                        Toast.makeText(MainActivity.this, "토큰:"+token, Toast.LENGTH_SHORT).show();
+                    public void onSuccess(InstanceIdResult instanceIdResult) {
+                        String newToken = instanceIdResult.getToken();
+                        Log.d(TAG, "새토큰"+newToken);
                     }
                 });
 
+        //저장된 토큰을 가지고 오는 메소드
+        String savedToken = FirebaseInstanceId.getInstance().getId();
+        Log.d(TAG, "등록되어 있는 토큰ID:"+  savedToken);
 
+        ////////////////////////////////////////
+        getLocationPermission();
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map);
         MapFragment mapFragment1 = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(MainActivity.this);
 
@@ -318,4 +322,29 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     private void hideSoftKeyboard(){
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
     }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        println("onNewIntent 호출됨");
+
+        //인텐트를 받은 경우만, 값을 Activity로 전달하도록 합니다.
+        if(intent != null)
+        {
+            processIntent(intent);
+        }
+
+        super.onNewIntent(intent);
+    }
+
+    //인텐트를 처리하는 메소드
+    private void processIntent(Intent intent){
+        String from = intent.getStringExtra("from");
+        if(from == null){
+            //from 값이 없는 경우, 값을 전달하지 않습니다. (푸쉬 노티 메시지가 아닌것을 판단하고 처리하지 않는 듯)
+            Log.d(TAG, "보낸 곳이 없습니다.");
+            return;
+        }
+        //메시지를 받은 경우 처리를 합니다.
+        Log.d(TAG, "여기서 메시지 응답 처리를 하면 됩니다.");
+   }
 }
