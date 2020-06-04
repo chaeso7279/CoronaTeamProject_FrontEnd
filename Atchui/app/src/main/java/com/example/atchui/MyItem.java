@@ -10,12 +10,13 @@ public class MyItem implements ClusterItem {
     private final LatLng mPosition;
     private final String mTitle;
     private final String mSnippet;
+    private final float color_code;
 
 
-
-    public MyItem(double lat, double lng, String mTitle, String mSnippet) {
+    public MyItem(double lat, double lng, String mTitle, String mSnippet, float color_code) {
         this.mTitle = mTitle;
         this.mSnippet = mSnippet;
+        this.color_code = color_code;
         mPosition = new LatLng(lat, lng);
     }
     @Override
@@ -31,5 +32,9 @@ public class MyItem implements ClusterItem {
     @Override
     public String getSnippet() {
         return mSnippet;
+    }
+
+    public float getColor_code() {
+        return color_code;
     }
 }
