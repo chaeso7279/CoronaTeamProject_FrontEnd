@@ -7,6 +7,9 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -22,19 +25,18 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.example.atchui.database.PatientRouteData;
-import com.example.atchui.database.PatientRouteResponse;
 import com.example.atchui.database.SettingData;
-import com.example.atchui.database.SettingResponse;
 import com.example.atchui.network.RetrofitClient;
 import com.example.atchui.network.ServerFunction;
 import com.example.atchui.network.ServiceAPI;
+
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -61,13 +63,17 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+
 import com.google.maps.android.clustering.ClusterManager;
 import com.google.maps.android.clustering.view.DefaultClusterRenderer;
 
+import com.google.maps.android.clustering.Cluster;
+import com.google.maps.android.clustering.ClusterManager;
+import com.google.maps.android.clustering.view.DefaultClusterRenderer;
+import com.google.maps.android.ui.IconGenerator;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -79,7 +85,6 @@ import java.util.UUID;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.http.HEAD;
 
 public class MainActivity extends FragmentActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, GoogleMap.OnMyLocationChangeListener {
 
@@ -97,6 +102,10 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     LatLng mposition;
     static double current_lat;
     static double current_long;
+
+    double server_lat;
+    double server_long;
+
     //widgets
     private EditText mSearchText;
     private ImageView mGps;
@@ -201,12 +210,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                 //Intent intent = new Intent(MainActivity.this, HelpActivity.class);
                 //startActivity(intent);
 
-                // 경로 가져올 때 이 함수를 쓰시면 ServiceFunction 객체 내에 데이터가 저장됩니다
-                //ServerFunction.getInstance().GetLatestPatientRouteData();
-                // 이걸로 접근하시면 됩니다!
-                //double latitude =  ServerFunction.getInstance().patientRouteResponse.m_latitude;
-                //Log.e("latitude", latitude + "");
-
+                // 임시로 알림목록 가져오는 중
                 ServerFunction.getInstance().GetAnalysisList();
             }
         });
@@ -334,7 +338,26 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
         LatLng center;
         float color_code = 0;
+
         // Add ten cluster items in close proximity, for purposes of this example.
+
+        Bitmap icon = null;
+        final IconGenerator mClusterIconGenerator = new IconGenerator(getApplicationContext());
+
+        Drawable clusterIcon = getResources().getDrawable(R.drawable.blue);
+        mClusterIconGenerator.setBackground(clusterIcon);
+        icon = mClusterIconGenerator.makeIcon();
+//  서버 추가
+//        server_lat = ServerFunction.getInstance().patientRouteResponse.m_latitude;
+//        server_long = ServerFunction.getInstance().patientRouteResponse.m_longitude;
+//
+//        MyItem offsetItem = new MyItem(37.550498, 127.173193 ,"exercise", "1",  icon);
+//
+//        mClusterManager.addItem(offsetItem);
+
+
+//         Add ten cluster items in close proximity, for purposes of this example.
+
         for (int i = 0; i < Corona_Confirmer; i++) {
             switch (i) {
                 case 0:
@@ -342,21 +365,36 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                     lng[i] = 127.173193;
                     title[i] = "exercise";
                     snippet[i] = "1";
+
                     color_code = BitmapDescriptorFactory.HUE_RED;
+
+                    clusterIcon = getResources().getDrawable(R.drawable.blue);
+                    mClusterIconGenerator.setBackground(clusterIcon);
+                    icon = mClusterIconGenerator.makeIcon();
                     break;
                 case 1:
                     lat[i] = 37.550498;
                     lng[i] = 127.073193;
                     title[i] = "확진자1";
                     snippet[i] = "세종대학교";
+
                     color_code = BitmapDescriptorFactory.HUE_RED;
+
+                    clusterIcon = getResources().getDrawable(R.drawable.red);
+                    mClusterIconGenerator.setBackground(clusterIcon);
+                    icon = mClusterIconGenerator.makeIcon();
                     break;
                 case 2:
                     lat[i] = 37.541009;
                     lng[i] = 127.079311;
                     title[i] = "확진자2";
                     snippet[i] = "건국대학교";
+
                     color_code = BitmapDescriptorFactory.HUE_RED;
+
+                    clusterIcon = getResources().getDrawable(R.drawable.green);
+                    mClusterIconGenerator.setBackground(clusterIcon);
+                    icon = mClusterIconGenerator.makeIcon();
                     break;
                 case 3:
                     lat[i] = 37.547985;
@@ -364,6 +402,10 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                     title[i] = "확진자3";
                     snippet[i] = "어린이대공원역";
                     color_code = BitmapDescriptorFactory.HUE_RED;
+
+                    clusterIcon = getResources().getDrawable(R.drawable.orange);
+                    mClusterIconGenerator.setBackground(clusterIcon);
+                    icon = mClusterIconGenerator.makeIcon();
                     break;
                 case 4:
                     lat[i] = 37.546590;
@@ -371,6 +413,9 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                     title[i] = "확진자4";
                     snippet[i] = "어대역 뚜레쥬르";
                     color_code = BitmapDescriptorFactory.HUE_RED;
+                    clusterIcon = getResources().getDrawable(R.drawable.green);
+                    mClusterIconGenerator.setBackground(clusterIcon);
+                    icon = mClusterIconGenerator.makeIcon();
                     break;
                 case 5:
                     lat[i] = 37.552964;
@@ -378,6 +423,9 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                     title[i] = "확진자5";
                     snippet[i] = "어대역 도미노피자";
                     color_code = BitmapDescriptorFactory.HUE_RED;
+                    clusterIcon = getResources().getDrawable(R.drawable.orange);
+                    mClusterIconGenerator.setBackground(clusterIcon);
+                    icon = mClusterIconGenerator.makeIcon();
                     break;
                 case 6:
                     lat[i] = 37.554498;
@@ -385,6 +433,9 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                     title[i] = "확진자6";
                     snippet[i] = "6";
                     color_code = BitmapDescriptorFactory.HUE_ORANGE;
+                    clusterIcon = getResources().getDrawable(R.drawable.red);
+                    mClusterIconGenerator.setBackground(clusterIcon);
+                    icon = mClusterIconGenerator.makeIcon();
                     break;
                 case 7:
                     lat[i] = 37.543009;
@@ -392,6 +443,9 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                     title[i] = "확진자7";
                     snippet[i] = "7";
                     color_code = BitmapDescriptorFactory.HUE_ORANGE;
+                    clusterIcon = getResources().getDrawable(R.drawable.green);
+                    mClusterIconGenerator.setBackground(clusterIcon);
+                    icon = mClusterIconGenerator.makeIcon();
                     break;
                 case 8:
                     lat[i] = 37.548985;
@@ -399,6 +453,9 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                     title[i] = "확진자8";
                     snippet[i] = "8";
                     color_code = BitmapDescriptorFactory.HUE_ORANGE;
+                    clusterIcon = getResources().getDrawable(R.drawable.red);
+                    mClusterIconGenerator.setBackground(clusterIcon);
+                    icon = mClusterIconGenerator.makeIcon();
                     break;
                 case 9:
                     lat[i] = 37.544590;
@@ -406,6 +463,9 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                     title[i] = "확진자9";
                     snippet[i] = "9";
                     color_code = BitmapDescriptorFactory.HUE_ORANGE;
+                    clusterIcon = getResources().getDrawable(R.drawable.orange);
+                    mClusterIconGenerator.setBackground(clusterIcon);
+                    icon = mClusterIconGenerator.makeIcon();
                     break;
                 case 10:
                     lat[i] = 37.554364;
@@ -413,6 +473,9 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                     title[i] = "확진자10";
                     snippet[i] = "10";
                     color_code = BitmapDescriptorFactory.HUE_ORANGE;
+                    clusterIcon = getResources().getDrawable(R.drawable.green);
+                    mClusterIconGenerator.setBackground(clusterIcon);
+                    icon = mClusterIconGenerator.makeIcon();
                     break;
                 case 11:
                     lat[i] = 37.550698;
@@ -420,6 +483,9 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                     title[i] = "확진자11";
                     snippet[i] = "11";
                     color_code = BitmapDescriptorFactory.HUE_GREEN;
+                    clusterIcon = getResources().getDrawable(R.drawable.red);
+                    mClusterIconGenerator.setBackground(clusterIcon);
+                    icon = mClusterIconGenerator.makeIcon();
                     break;
                 case 12:
                     lat[i] = 37.541439;
@@ -427,6 +493,9 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                     title[i] = "확진자12";
                     snippet[i] = "12";
                     color_code = BitmapDescriptorFactory.HUE_GREEN;
+                    clusterIcon = getResources().getDrawable(R.drawable.green);
+                    mClusterIconGenerator.setBackground(clusterIcon);
+                    icon = mClusterIconGenerator.makeIcon();
                     break;
                 case 13:
                     lat[i] = 37.547485;
@@ -434,6 +503,9 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                     title[i] = "확진자13";
                     snippet[i] = "13";
                     color_code = BitmapDescriptorFactory.HUE_GREEN;
+                    clusterIcon = getResources().getDrawable(R.drawable.orange);
+                    mClusterIconGenerator.setBackground(clusterIcon);
+                    icon = mClusterIconGenerator.makeIcon();
                     break;
                 case 14:
                     lat[i] = 37.546190;
@@ -441,6 +513,9 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                     title[i] = "확진자14";
                     snippet[i] = "14";
                     color_code = BitmapDescriptorFactory.HUE_GREEN;
+                    clusterIcon = getResources().getDrawable(R.drawable.red);
+                    mClusterIconGenerator.setBackground(clusterIcon);
+                    icon = mClusterIconGenerator.makeIcon();
                     break;
                 case 15:
                     lat[i] = 37.552464;
@@ -450,23 +525,57 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                     color_code = BitmapDescriptorFactory.HUE_GREEN;
                     break;
             }
-            MyItem offsetItem = new MyItem(lat[i], lng[i], title[i], snippet[i], color_code);
+            //MyItem offsetItem = new MyItem(lat[i], lng[i], title[i], snippet[i], color_code);
 
-            mClusterManager.addItem(offsetItem);
+            //mClusterManager.addItem(offsetItem);
         }
     }
 
     public class MyClusterRenderer extends DefaultClusterRenderer<MyItem> {
+        private final IconGenerator mClusterIconGenerator = new IconGenerator(getApplicationContext());
+
         public MyClusterRenderer(Context context, GoogleMap map, ClusterManager<MyItem> clusterManager) {
             super(context, map, clusterManager);
         }
 
         @Override
         protected void onBeforeClusterItemRendered(MyItem item, MarkerOptions markerOptions) {
-            BitmapDescriptor markerDescriptor = BitmapDescriptorFactory.defaultMarker(item.getColor_code());
+            //색깔
+//            BitmapDescriptor markerDescriptor = BitmapDescriptorFactory.defaultMarker(item.getColor_code());
+//            markerOptions.icon(markerDescriptor);
 
-            markerOptions.icon(markerDescriptor);
+
+//            final Drawable clusterIcon = getResources().getDrawable(R.drawable.blue);
+//            mClusterIconGenerator.setBackground(clusterIcon);
+//            Bitmap icon = mClusterIconGenerator.makeIcon();
+
+            markerOptions.icon(BitmapDescriptorFactory.fromBitmap(item.getIcon_code()));
         }
+
+        @Override
+        protected void onClusterItemRendered(MyItem clusterItem, Marker marker) {
+            super.onClusterItemRendered(clusterItem, marker);
+        }
+
+//        @Override
+//        protected void onBeforeClusterRendered(Cluster<MyItem> cluster, MarkerOptions markerOptions){
+//
+//            final Drawable clusterIcon = getResources().getDrawable(R.drawable.ic_lens_black_24dp);
+//            clusterIcon.setColorFilter(getResources().getColor(android.R.color.holo_orange_light), PorterDuff.Mode.SRC_ATOP);
+//
+//            mClusterIconGenerator.setBackground(clusterIcon);
+//
+//            //modify padding for one or two digit numbers
+//            if (cluster.getSize() < 10) {
+//                mClusterIconGenerator.setContentPadding(40, 20, 0, 0);
+//            }
+//            else {
+//                mClusterIconGenerator.setContentPadding(30, 20, 0, 0);
+//            }
+//
+//            Bitmap icon = mClusterIconGenerator.makeIcon(String.valueOf(cluster.getSize()));
+//            markerOptions.icon(BitmapDescriptorFactory.fromBitmap(icon));
+//        }
     }
 
 
