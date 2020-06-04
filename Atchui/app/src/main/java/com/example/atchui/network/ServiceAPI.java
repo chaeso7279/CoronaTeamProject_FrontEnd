@@ -15,6 +15,12 @@ public interface ServiceAPI {
     @POST("/user/option")
     Call<SettingResponse>  userOption(@Body SettingData data);
 
+    @POST("/user/option/updateRad")
+    Call<SettingResponse>  userOptionUpdateRad(@Body SettingData data);
+
+    @POST("/user/option/updatePeriod")
+    Call<SettingResponse>  userOptionUpdatePeriod(@Body SettingData data);
+
     @POST("/cnf_patient/route")
     Call<PatientRouteResponse> cnfPatientRoute(@Body PatientRouteData data);
 }

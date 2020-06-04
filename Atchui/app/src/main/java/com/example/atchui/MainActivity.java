@@ -136,17 +136,17 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                     }
                 });
 
-        // Android 고유 ID 가져오기
-        try {
-            InitDeviceUUID();
-        } catch (IOException e) {
-           Log.e("실패", "고유 ID 생성 실패");
-        }
-
-
         // Server 연동
         service = RetrofitClient.getClient().create(ServiceAPI.class);
         ServerFunction.getInstance().Initialize(service);
+
+        // Android 고유 ID 가져오기
+        try {
+            InitDeviceUUID();
+            ServerFunction.getInstance().SetUserID(m_DeviceID);
+        } catch (IOException e) {
+            Log.e("실패", "고유 ID 생성 실패");
+        }
 
         MapFragment mapFragment1 = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(MainActivity.this);
@@ -578,6 +578,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     /* 안드로이드 고유 아이디 (UUID) 초기화 및 사용자옵션 데이터베이스에서 가져옴 */
     public void InitDeviceUUID() throws IOException {
         try {
+            // 파일이 존재하면 파일에서 아이디 가져옴
             FileInputStream fis = openFileInput("UUID.txt");
             StringBuffer data = new StringBuffer();
             fis = openFileInput("UUID.txt");
@@ -600,6 +601,9 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
             out.println(m_DeviceID);
             out.close();
             Log.e("UUID", m_DeviceID + "파일 저장 완료");
+
+            // DB 에 정보 저장
+            ServerFunction.getInstance().SendUserOption(m_DeviceID, 5, 30);
         }
     }
 }
