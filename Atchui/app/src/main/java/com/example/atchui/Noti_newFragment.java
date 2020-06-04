@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -14,6 +15,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 public class Noti_newFragment extends Fragment implements Noti_RecyclerAdapter.OnListItemSelectedInterface {
     private static final int CURRENT_NOTIFICATION = 1;
@@ -31,6 +35,21 @@ public class Noti_newFragment extends Fragment implements Noti_RecyclerAdapter.O
 
         Initialize(view);
         setData();
+
+//        //"새로운 알림" textView Visible, Invisible하게 만드는 코드(나중에 item insert, delete 하는 함수에 넣을 것)
+//        //View view2 = getLayoutInflater().inflate(R.layout.activity_notification_list, container, false);
+//        LayoutInflater layoutInflater = (LayoutInflater)getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+//        View view2 = layoutInflater.inflate(R.layout.activity_notification_list, null);
+//
+//        TextView textView_newnoti = (TextView)view2.findViewById(R.id.textview_newNoti);
+//        if(new_adapter.getItemCount() == 0){
+////            textView_newnoti.setVisibility(View.INVISIBLE);
+//            Log.d("newText", textView_newnoti.getText()+" ");
+//        }else{
+////            textView_newnoti.setVisibility(View.VISIBLE);
+//            Log.d("newText", textView_newnoti.getText()+" ");
+//        }
+
         return view;
     }
 
@@ -60,22 +79,22 @@ public class Noti_newFragment extends Fragment implements Noti_RecyclerAdapter.O
     private void setData() {
         //ItemType: CURRENT_NOTIFICATION: 현위치 알림, PATH_NOTIFICATION: 지난경로 알림
 
-        Noti_RecyclerItem item = new Noti_RecyclerItem();
-
-        item.setItemType(CURRENT_NOTIFICATION);
-        item.setLabelColor(this.getResources().getColor(R.color.label_green));
-        item.setTextStr("반경 1km 내에 확진자 동선이 확인되었습니다.");
-        item.setTimeStr("1분 전");
-
-        new_adapter.addItem(item);
-
-        item = new Noti_RecyclerItem();
-        item.setItemType(PATH_NOTIFICATION);
-        item.setLabelColor(this.getResources().getColor(R.color.label_red));
-        item.setTextStr("강남구청 근방에서 2020-05-28에 동선겹침이 확인되었습니다.");
-        item.setTimeStr("1분 전");
-
-        new_adapter.addItem(item);
+//        Noti_RecyclerItem item = new Noti_RecyclerItem();
+//
+//        item.setItemType(CURRENT_NOTIFICATION);
+//        item.setLabelColor(this.getResources().getColor(R.color.label_green));
+//        item.setTextStr("반경 1km 내에 확진자 동선이 확인되었습니다.");
+//        item.setTimeStr("1분 전");
+//
+//        new_adapter.addItem(item);
+//
+//        item = new Noti_RecyclerItem();
+//        item.setItemType(PATH_NOTIFICATION);
+//        item.setLabelColor(this.getResources().getColor(R.color.label_red));
+//        item.setTextStr("강남구청 근방에서 2020-05-28에 동선겹침이 확인되었습니다.");
+//        item.setTimeStr("1분 전");
+//
+//        new_adapter.addItem(item);
 
         new_adapter.notifyDataSetChanged();
     }

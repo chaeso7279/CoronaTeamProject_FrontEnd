@@ -66,6 +66,14 @@
                     tools:layout="@layout/activity_notification_list"
                     />
             </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_centerInParent="true"
+                android:layout_margin="5dp"
+                android:background="@color/scrollThumb"/>
+
             <LinearLayout
                 android:id="@+id/NotiLayout"
                 android:layout_width="match_parent"
