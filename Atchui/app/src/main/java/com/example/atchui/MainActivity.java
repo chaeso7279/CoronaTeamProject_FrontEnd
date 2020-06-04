@@ -137,11 +137,10 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                 });
 
         // Android 고유 ID 가져오기
-
         try {
             InitDeviceUUID();
         } catch (IOException e) {
-           Log.e("실패", "파일 저장 실패");
+           Log.e("실패", "고유 ID 생성 실패");
         }
 
 

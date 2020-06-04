@@ -22,8 +22,17 @@ import androidx.core.app.NotificationCompat;
 import java.util.Date;
 
 public class BackgroundService extends Service {
+
+    public static final int SEND_PAST_INFO = 0;
+    public static final int SEND_PRESENT_INFO = 1;
+
+    private static final long SLEEP_PAST = 600000; // 10분
+    private static final long SLEEP_PRESENT = 43200000; // 12시간
+
     NotificationManager notificationManager;
-    BackgroundServiceThread thread;
+
+    BackGroundThread_Past thread_past;
+    BackGroundThread_Present thread_present;
 
     public BackgroundService() {
     }
@@ -46,8 +55,12 @@ public class BackgroundService extends Service {
        // Notifi_M = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
         backgroundServiceHandler handler = new backgroundServiceHandler();
 
-        thread = new BackgroundServiceThread(handler);
-        thread.start();
+        thread_past = new BackGroundThread_Past(handler, SLEEP_PAST);
+        thread_present = new BackGroundThread_Present(handler, SLEEP_PRESENT);
+
+        thread_past.start();
+        thread_present.start();
+
         return START_STICKY; //서비스가 런타임에 의해 종료되어도 항상 재시작, 재시작될 때 마다 onstartCommand가 실행됨( 이 때 전달되는 intent는 null)
     }
 
@@ -55,8 +68,12 @@ public class BackgroundService extends Service {
     @Override
     public void onDestroy() {
         backgroundServiceHandler handler = new backgroundServiceHandler();
-        thread = new BackgroundServiceThread(handler);
-        thread.start();
+
+        thread_past = new BackGroundThread_Past(handler, SLEEP_PAST);
+        thread_present = new BackGroundThread_Present(handler, SLEEP_PRESENT);
+
+        thread_past.start();
+        thread_present.start();
     }
 
     class backgroundServiceHandler extends Handler {
@@ -64,7 +81,12 @@ public class BackgroundService extends Service {
         public void handleMessage(android.os.Message msg) {
 
             //TODO: GPS 서버 전송, 동선 분석 및 결과 전송
-
+            switch (msg.what){
+                case SEND_PAST_INFO:
+                    break;
+                case SEND_PRESENT_INFO:
+                    break;
+            }
 //            notificationManager = (NotificationManager) getSystemService( Context.NOTIFICATION_SERVICE );
 //
 //            Intent intent = new Intent(BackgroundService.this, MainActivity.class);
@@ -117,4 +139,66 @@ public class BackgroundService extends Service {
             //Toast.makeText(BackgroundService.this, "안뇽", Toast.LENGTH_SHORT).show();
         }
     };
+}
+
+class BackGroundThread_Past extends Thread{
+    Handler handler;
+
+    long SleepTime = 0;
+    boolean isRun = true;
+
+    //생성자
+    public BackGroundThread_Past(Handler handler, long SleepTime){
+        this.handler = handler;
+        this.SleepTime = SleepTime;
+    }
+
+    //쓰레드 종료할 메소드
+    public void stopForever(){
+        synchronized (this){
+            this.isRun = false;
+        }
+    }
+
+    public void run(){
+        //반복적으로 수행할 작업을 한다.
+        while(isRun){
+            handler.sendEmptyMessage(BackgroundService.SEND_PAST_INFO); //thread에 있는 핸들러에게 메시지 보냄
+            try{
+                Thread.sleep(SleepTime);
+            }catch(Exception e){ }
+
+        }
+    }
+}
+
+class BackGroundThread_Present extends Thread{
+    Handler handler;
+
+    long SleepTime = 0;
+    boolean isRun = true;
+
+    //생성자
+    public BackGroundThread_Present(Handler handler, long SleepTime){
+        this.handler = handler;
+        this.SleepTime = SleepTime;
+    }
+
+    //쓰레드 종료할 메소드
+    public void stopForever(){
+        synchronized (this){
+            this.isRun = false;
+        }
+    }
+
+    public void run(){
+        //반복적으로 수행할 작업을 한다.
+        while(isRun){
+            handler.sendEmptyMessage(BackgroundService.SEND_PRESENT_INFO); //thread에 있는 핸들러에게 메시지 보냄
+            try{
+                Thread.sleep(SleepTime); //10초씩 쉰다.
+            }catch(Exception e){ }
+
+        }
+    }
 }
