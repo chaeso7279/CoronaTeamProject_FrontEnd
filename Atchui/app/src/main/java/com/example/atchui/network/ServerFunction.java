@@ -24,7 +24,11 @@ public class ServerFunction {
     public String user_id = "";
     private boolean bInit = false;
 
-    public void Initialize(ServiceAPI service) { this.service = service;  bInit = true; }
+    public void Initialize(ServiceAPI service) {
+        this.service = service;
+        bInit = true;
+        patientRouteResponse = new PatientRouteResponse();
+    }
     public void SetUserID(String user_id) { this.user_id = user_id; }
 
     public void GetLatestPatientRouteData() {
@@ -35,8 +39,8 @@ public class ServerFunction {
         service.cnfPatientRoute(data).enqueue(new Callback<PatientRouteResponse>() {
             @Override
             public void onResponse(Call<PatientRouteResponse> call, Response<PatientRouteResponse> response) {
-                getInstance().patientRouteResponse = response.body();
-                Log.e("GET RESOPONSE", "데이터 가져오기 성공");
+                patientRouteResponse = response.body();
+                Log.e("GET RESPONSE", "데이터 가져오기 성공");
 
                // Toast.makeText(getApplicationContext(), "성공", Toast.LENGTH_SHORT);
             }

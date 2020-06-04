@@ -23,8 +23,4 @@ public class PatientRouteResponse {
 
     @SerializedName("longitude")
     public double m_longitude;
-
-    //public int get() { return m_iCode; }
-    public String getAddress() { return m_address; }
-
 }
