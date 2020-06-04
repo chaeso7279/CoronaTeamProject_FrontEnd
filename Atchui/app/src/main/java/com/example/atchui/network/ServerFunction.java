@@ -12,6 +12,7 @@ import com.example.atchui.database.SettingData;
 import com.example.atchui.database.SettingResponse;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 
 import java.util.ArrayList;
 
@@ -145,7 +146,12 @@ public class ServerFunction {
                 if(!lstAnal.isEmpty())
                     lstAnal.clear();
 
-                Log.e("성공", response.body().jArray);
+                Log.e("성공", response.body().strArray);
+                try {
+                    response.body().ConvertToData(lstAnal);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override
