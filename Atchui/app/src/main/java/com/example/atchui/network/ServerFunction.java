@@ -28,7 +28,7 @@ public class ServerFunction {
     public PatientRouteResponse patientRouteResponse;
 
     public ArrayList<AnalData> lstAnal;
-    public JSONArray jArray;
+    public ArrayList<PatientRouteData> lstPatientRoute;
 
     public String user_id = "";
     private boolean bInit = false;
@@ -39,14 +39,14 @@ public class ServerFunction {
 
         patientRouteResponse = new PatientRouteResponse();
 
-        jArray = new JSONArray();
         lstAnal = new ArrayList<AnalData>();
+        lstPatientRoute = new ArrayList<PatientRouteData>();
 
     }
     public void SetUserID(String user_id) { this.user_id = user_id; }
 
     // 확진자 정보 관련
-    public void GetLatestPatientRouteData() {
+    public void GetPatientRoutes(){
         if(!bInit)
             return;
 
@@ -54,22 +54,20 @@ public class ServerFunction {
         service.cnfPatientRoute(data).enqueue(new Callback<PatientRouteResponse>() {
             @Override
             public void onResponse(Call<PatientRouteResponse> call, Response<PatientRouteResponse> response) {
-                patientRouteResponse.m_cnfID = response.body().m_cnfID;
-                patientRouteResponse.m_cnfRouteID = response.body().m_cnfRouteID;
-                patientRouteResponse.m_address = response.body().m_address;
-                patientRouteResponse.m_latitude = response.body().m_latitude;
-                patientRouteResponse.m_longitude = response.body().m_longitude;
-                patientRouteResponse.m_locationName = response.body().m_locationName;
-                patientRouteResponse.m_visitDatetime = response.body().m_visitDatetime;
+                if(!lstPatientRoute.isEmpty())
+                    lstPatientRoute.clear();
 
-                Log.e("GET RESPONSE", response.body().m_latitude + "");
-
-               // Toast.makeText(getApplicationContext(), "성공", Toast.LENGTH_SHORT);
+                try {
+                    response.body().ConvertToData(lstPatientRoute);
+                    Log.e("성공", "확진자 정보 가져오기");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override
             public void onFailure(Call<PatientRouteResponse> call, Throwable t) {
-                Log.e("데이터 베이스 가져오기 실패", t.getMessage());
+                Log.e("실패", "확진자 정보 가져오기");
             }
         });
     }

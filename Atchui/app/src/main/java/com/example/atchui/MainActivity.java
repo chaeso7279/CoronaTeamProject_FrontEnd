@@ -169,10 +169,8 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });
 
-        // 경로 가져올 때 이 함수를 쓰시면 ServiceFunction 객체 내에 데이터가 저장됩니다
-        //ServerFunction.getInstance().GetLatestPatientRouteData();
-        // 이걸로 접근하시면 됩니다!
-        //double latitude =  ServerFunction.getInstance().patientRouteResponse.m_latitude;
+        // 확진자 경로 가져오기
+        ServerFunction.getInstance().GetPatientRoutes();
 
         MapFragment mapFragment1 = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(MainActivity.this);
