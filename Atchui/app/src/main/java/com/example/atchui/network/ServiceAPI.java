@@ -6,6 +6,7 @@ import com.example.atchui.database.PatientRouteData;
 import com.example.atchui.database.PatientRouteResponse;
 import com.example.atchui.database.SettingData;
 import com.example.atchui.database.SettingResponse;
+import com.example.atchui.database.UserRouteData;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -28,6 +29,9 @@ public interface ServiceAPI {
 
     @POST("/cnf_patient/route")
     Call<PatientRouteResponse> cnfPatientRoute(@Body PatientRouteData data);
+
+    @POST("/user/SendRoute")
+    Call<UserRouteData> SendUserRoute(@Body UserRouteData data);
 
     @POST("/analysis")
     Call<AnalResponse> GetAnalList(@Body AnalData data);

@@ -8,16 +8,22 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.location.LocationListener;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
+import android.os.Binder;
 import android.os.IBinder;
 import android.os.Message;
 import android.widget.Toast;
+import android.location.Location;
+import android.location.LocationManager;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
+
+import com.google.android.gms.location.LocationServices;
 
 import java.util.Date;
 
@@ -29,10 +35,15 @@ public class BackgroundService extends Service {
     private static final long SLEEP_PAST = 600000; // 10분
     private static final long SLEEP_PRESENT = 43200000; // 12시간
 
-    NotificationManager notificationManager;
-
+    // 스레드
     BackGroundThread_Past thread_past;
     BackGroundThread_Present thread_present;
+
+    // GPS 관련
+    final LocationServiceBinder binder = new LocationServiceBinder();
+    LocationListener locationListener;
+    LocationManager locationManager;
+    NotificationManager notificationManager;
 
     public BackgroundService() {
     }
@@ -42,6 +53,23 @@ public class BackgroundService extends Service {
         // TODO: Return the communication channel to the service.
         return null;
     }
+
+    /*
+    private class LocationListener implements android.location.LocationListener {
+        private Location lastLocation = null;
+        private final String TAG = "LocationListener";
+        private Location m_lastLocation;
+
+        public LocationListener(String provider) {
+            m_lastLocation = new Location(provider);
+        }
+
+        @Override
+        public void OnLocatioChanged(Location location) {
+            m_lastLocation = location;
+
+        }
+    }*/
 
     //최초 생성되었을 때 한 번 실행됩니다
     @Override
@@ -60,6 +88,8 @@ public class BackgroundService extends Service {
 
         thread_past.start();
         thread_present.start();
+
+
 
         return START_STICKY; //서비스가 런타임에 의해 종료되어도 항상 재시작, 재시작될 때 마다 onstartCommand가 실행됨( 이 때 전달되는 intent는 null)
     }
@@ -139,6 +169,12 @@ public class BackgroundService extends Service {
             //Toast.makeText(BackgroundService.this, "안뇽", Toast.LENGTH_SHORT).show();
         }
     };
+
+    public class LocationServiceBinder extends Binder {
+        public BackgroundService GetService() {
+            return BackgroundService.this;
+        }
+    }
 }
 
 class BackGroundThread_Past extends Thread{
