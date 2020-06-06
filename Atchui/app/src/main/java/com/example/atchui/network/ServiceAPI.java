@@ -19,10 +19,10 @@ public interface ServiceAPI {
     Call<SettingResponse>  userOption(@Body SettingData data);
 
     @POST("/user/option/updateRad")
-    Call<SettingResponse>  userOptionUpdateRad(@Body SettingData data);
+    Call<SettingData>  userOptionUpdateRad(@Body SettingData data);
 
     @POST("/user/option/updatePeriod")
-    Call<SettingResponse>  userOptionUpdatePeriod(@Body SettingData data);
+    Call<SettingData>  userOptionUpdatePeriod(@Body SettingData data);
 
     @POST("/user/getOption")
     Call<SettingData> GetUserOption(@Body SettingData data);

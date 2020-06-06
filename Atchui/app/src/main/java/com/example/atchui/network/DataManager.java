@@ -133,31 +133,31 @@ public class DataManager {
         switch (VALUE_ID){
             case VAL_RADIUS:
                 data.m_iRadius = value;
-                service.userOptionUpdateRad(data).enqueue(new Callback<SettingResponse>() {
+                service.userOptionUpdateRad(data).enqueue(new Callback<SettingData>() {
                     @Override
-                    public void onResponse(Call<SettingResponse> call, Response<SettingResponse> response) {
-                        SettingResponse result = response.body();
-                        Log.e("Rad Update 성공",result.getMessage());
+                    public void onResponse(Call<SettingData> call, Response<SettingData> response) {
+                        Option = response.body();
+                        Log.e("성공","Rad Update ");
                     }
 
                     @Override
-                    public void onFailure(Call<SettingResponse> call, Throwable t) {
-                        Log.e("Rad Update 실패", t.getMessage());
+                    public void onFailure(Call<SettingData> call, Throwable t) {
+                        Log.e("실패", "Rad Update ");
                     }
                 });
                 break;
             case VAL_PERIOD:
                 data.m_iPeriod = value;
-                service.userOptionUpdatePeriod(data).enqueue(new Callback<SettingResponse>() {
+                service.userOptionUpdatePeriod(data).enqueue(new Callback<SettingData>() {
                     @Override
-                    public void onResponse(Call<SettingResponse> call, Response<SettingResponse> response) {
-                        SettingResponse result = response.body();
-                        Log.e("Period Update 성공",result.getMessage());
+                    public void onResponse(Call<SettingData> call, Response<SettingData> response) {
+                        Option = response.body();
+                        Log.e("성공","Period Update ");
                     }
 
                     @Override
-                    public void onFailure(Call<SettingResponse> call, Throwable t) {
-                        Log.e("Period Update 실패", t.getMessage());
+                    public void onFailure(Call<SettingData> call, Throwable t) {
+                        Log.e("Period Update 실패", "Period Update ");
                     }
                 });
                 break;

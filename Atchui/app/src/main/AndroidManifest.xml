@@ -22,10 +22,22 @@
         <activity android:name=".NotificationListActivity" />
         <activity android:name=".HelpActivity" />
 
+
         <service
             android:name=".BackgroundService"
             android:enabled="true"
             android:exported="true" />
+        <activity
+            android:name=".SplashActivity"
+            android:theme="@style/SplashTheme"
+            android:screenOrientation="fullSensor">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+        </activity>
 
         <activity android:name=".SettingActivity" />
 
@@ -36,13 +48,7 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyCvAvEsBoA-Q3v1uxcaVaDCdJqI-YUVWSs" />
 
-        <activity android:name=".MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        <activity android:name=".MainActivity"></activity>
 
         <service android:name=".MyFirebaseMessagingService"
 

@@ -117,11 +117,6 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     //vars
     private Boolean mLocationPermissionsGranted = false;
 
-    // Sever
-    public ServiceAPI service;
-    // Android UUID
-    public String m_DeviceID = " ";
-
     // pre-circle
     private Circle preCircle = null;
 
@@ -130,42 +125,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-///////////////////////////
-        /*firebase 푸시알림*/
-        //토큰이 등록되는 시점에 호출되는 메소드입니다.
-        FirebaseInstanceId.getInstance().getInstanceId()
-                .addOnSuccessListener(this, new OnSuccessListener<InstanceIdResult>(){
-                    @Override
-                    public void onSuccess(InstanceIdResult instanceIdResult) {
-                        String newToken = instanceIdResult.getToken();
-                        Log.d(TAG, "새토큰"+newToken);
-                    }
-                });
-
-        //저장된 토큰을 가지고 오는 메소드
-        String savedToken = FirebaseInstanceId.getInstance().getId();
-        Log.d(TAG, "등록되어 있는 토큰ID:"+  savedToken);
-
-        m_DeviceID = savedToken;
-
-//////////////////////
-        // Server 연동
-        service = RetrofitClient.getClient().create(ServiceAPI.class);
-        DataManager.getInstance().Initialize(service);
-
-        //고유 ID(FireBase토큰) DB 입력 및 서버에 userID 설정
-        DataManager.getInstance().SetUserID(m_DeviceID);
-        SendDeviceIDToServer();
-
-
-        // 설정 가져와달라고 서버에 요청
-        DataManager.getInstance().GetUserOption();
-
-        // 확진자 경로 가져오기
-        DataManager.getInstance().GetPatientRoutes();
-
-        ////////////////////////////////////////
+        
         getLocationPermission();
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -218,8 +178,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         startService(intent);
 
         /////////////////////////////////////
-        /*server에서 데이터 받아오기*/
-        DataManager.getInstance().GetAnalysisList(); // Notification_list 관련 정보
+
     }
 
     private void init() {
@@ -685,14 +644,6 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
-    }
-
-    /* 서버 관련 함수 */
-
-    /* 안드로이드 고유 아이디 (UUID) 초기화 및 사용자옵션 데이터베이스에서 가져옴 */
-    public void SendDeviceIDToServer(){
-        // DB 에 정보 저장, 이미 같은 ID 존재하면(최초 접속 아니면) 알아서 걸러질거라고 생각함
-        DataManager.getInstance().SendUserOption(m_DeviceID, 5, 15);
     }
 
     protected void onNewIntent(Intent intent) {
