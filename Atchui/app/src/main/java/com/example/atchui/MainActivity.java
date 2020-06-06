@@ -134,7 +134,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ///////////////////////////
+///////////////////////////
         /*firebase 푸시알림*/
         //토큰이 등록되는 시점에 호출되는 메소드입니다.
         FirebaseInstanceId.getInstance().getInstanceId()
@@ -149,15 +149,16 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         //저장된 토큰을 가지고 오는 메소드
         String savedToken = FirebaseInstanceId.getInstance().getId();
         Log.d(TAG, "등록되어 있는 토큰ID:"+  savedToken);
+
         m_DeviceID = savedToken;
 
+//////////////////////
         // Server 연동
         service = RetrofitClient.getClient().create(ServiceAPI.class);
         DataManager.getInstance().Initialize(service);
 
         //고유 ID(FireBase토큰) DB 입력 및 서버에 userID 설정
         SendDeviceIDToServer();
-        DataManager.getInstance().SetUserID(m_DeviceID);
 
         // 설정 가져와달라고 서버에 요청
         DataManager.getInstance().GetUserOption();
@@ -216,6 +217,10 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         Toast.makeText(getApplicationContext(), "Service 시작", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(MainActivity.this, BackgroundService.class);
         startService(intent);
+
+        /////////////////////////////////////
+        /*server에서 데이터 받아오기*/
+        DataManager.getInstance().GetAnalysisList(); // Notification_list 관련 정보
     }
 
     private void init() {
