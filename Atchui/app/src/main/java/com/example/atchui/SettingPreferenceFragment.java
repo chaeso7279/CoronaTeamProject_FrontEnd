@@ -25,6 +25,20 @@ public class SettingPreferenceFragment extends PreferenceFragment {
         addPreferencesFromResource(R.xml.settings_preference);
         prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
         prefs.registerOnSharedPreferenceChangeListener(prefListener);
+
+        int range = prefs.getInt("range",0);
+        int period = prefs.getInt("period", 0);
+
+        String range_summary = String.format(getResources().getString(R.string.range_summary),range); //format의 %d에 현재 값 넣기
+        Preference rangePref = findPreference("range");
+        //summary에 사용자 설정 값 Set
+        rangePref.setSummary(range_summary);
+
+        String period_summary = String.format(getResources().getString(R.string.period_summary),period); //format의 %d에 현재 값 넣기
+        Preference periodPref = findPreference("period");
+        //summary에 사용자 설정 값 Set
+        periodPref.setSummary(period_summary);
+
     }
 
     //내장 DB가 변하는 것을 catch하는 리스너
