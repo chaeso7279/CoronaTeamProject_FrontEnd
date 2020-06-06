@@ -17,11 +17,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.atchui.database.SettingData;
 import com.example.atchui.network.ServerFunction;
 
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class Noti_newFragment extends Fragment implements Noti_RecyclerAdapter.OnListItemSelectedInterface {
     private static final int CURRENT_NOTIFICATION = 0;
@@ -77,7 +82,7 @@ public class Noti_newFragment extends Fragment implements Noti_RecyclerAdapter.O
             if(ServerFunction.getInstance().lstAnal.get(i).m_IsRead == 0){
                 //
                 int index = i;  //서버 list 내 인덱스
-                int itemType = ServerFunction.getInstance().lstAnal.get(i).m_IsPast;    //TODO:정수 이거에 맞게 코드 고쳐야 함(1,2 -> 0,1)
+                int itemType = ServerFunction.getInstance().lstAnal.get(i).m_IsPast;
                 int labelColor = this.getResources().getColor(R.color.label_green);     //TODO:table에 column 추가 후 제대로 받아오기(현재는 임시)
                 String location = ServerFunction.getInstance().lstAnal.get(i).m_locationName;
                 String user_time = "0000-00-00";                                        //TODO: table에 column 추가 후 제대로 받아오기(현재는 임시)

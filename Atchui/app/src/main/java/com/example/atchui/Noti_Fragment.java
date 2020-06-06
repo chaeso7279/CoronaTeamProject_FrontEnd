@@ -80,11 +80,11 @@ public class Noti_Fragment extends Fragment implements Noti_RecyclerAdapter.OnLi
             if(ServerFunction.getInstance().lstAnal.get(i).m_IsRead == 1){
                 //
                 int index = i;  //서버 list 내 인덱스
-                int itemType = ServerFunction.getInstance().lstAnal.get(i).m_IsPast;    //TODO:정수 이거에 맞게 코드 고쳐야 함(1,2 -> 0,1)
+                int itemType = ServerFunction.getInstance().lstAnal.get(i).m_IsPast;
                 int labelColor = this.getResources().getColor(R.color.label_green);     //TODO:table에 column 추가 후 제대로 받아오기(현재는 임시)
                 String location = ServerFunction.getInstance().lstAnal.get(i).m_locationName;
                 String user_time = "0000-00-00";                                        //TODO: table에 column 추가 후 제대로 받아오기(현재는 임시)
-                String timeStr = ServerFunction.getInstance().lstAnal.get(i).m_analTime;
+                String timeStr = ServerFunction.getInstance().lstAnal.get(i).m_analTime; //TODO: 몇 분 전 or 몇 시간 전 등으로 표기
 
                 //past일 경우
                 if(itemType == PATH_NOTIFICATION){

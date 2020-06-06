@@ -133,7 +133,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ///////////////////////////
+///////////////////////////
         /*firebase 푸시알림*/
         //토큰이 등록되는 시점에 호출되는 메소드입니다.
         FirebaseInstanceId.getInstance().getInstanceId()
@@ -149,7 +149,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         String savedToken = FirebaseInstanceId.getInstance().getId();
         Log.d(TAG, "등록되어 있는 토큰ID:"+  savedToken);
 
-
+//////////////////////
         // Server 연동
         service = RetrofitClient.getClient().create(ServiceAPI.class);
         ServerFunction.getInstance().Initialize(service);
@@ -163,7 +163,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         }
 
         /* 옵션 가져옴 */
-        /*
+
         SettingData data = new SettingData();
         data.m_strUserID = m_DeviceID;
         service.GetUserOption(data).enqueue(new Callback<SettingData>() {
@@ -179,7 +179,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                 Log.e("실패", "옵션 가져오기");
             }
         });
-        */
+
         // 확진자 경로 가져오기
         ServerFunction.getInstance().GetPatientRoutes();
 
