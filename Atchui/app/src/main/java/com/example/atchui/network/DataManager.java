@@ -20,7 +20,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ServerFunction {
+public class DataManager {
     public static final int VAL_RADIUS = 0;
     public static final int VAL_PERIOD = 1;
 
@@ -214,11 +214,11 @@ public class ServerFunction {
     }
 
     // 싱글톤
-    private static ServerFunction instance = null;
+    private static DataManager instance = null;
 
-    public static synchronized ServerFunction getInstance() {
+    public static synchronized DataManager getInstance() {
         if(null == instance)
-            instance = new ServerFunction();
+            instance = new DataManager();
         return instance;
     }
 }

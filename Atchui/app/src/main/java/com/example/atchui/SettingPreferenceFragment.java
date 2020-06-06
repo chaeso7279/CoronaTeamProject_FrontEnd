@@ -12,7 +12,7 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 
 import com.example.atchui.database.SettingData;
-import com.example.atchui.network.ServerFunction;
+import com.example.atchui.network.DataManager;
 
 public class SettingPreferenceFragment extends PreferenceFragment {
     private static final String TAG = "SettingPreference";
@@ -79,7 +79,7 @@ public class SettingPreferenceFragment extends PreferenceFragment {
                     Preference connectionPref = findPreference(key);
                     //summary에 사용자 설정 값 Set
                     connectionPref.setSummary(new_summary);
-                    ServerFunction.getInstance().UpdateUserOption(0, now_value);
+                    DataManager.getInstance().UpdateUserOption(0, now_value);
                 }
             }
 
@@ -93,7 +93,7 @@ public class SettingPreferenceFragment extends PreferenceFragment {
                     Preference connectionPref = findPreference(key);
                     //summary에 사용자 설정 값 Set
                     connectionPref.setSummary(new_summary);
-                    ServerFunction.getInstance().UpdateUserOption(1, now_value);
+                    DataManager.getInstance().UpdateUserOption(1, now_value);
 
                 }
             }

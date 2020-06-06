@@ -29,7 +29,7 @@ import android.widget.Toast;
 import com.example.atchui.database.SettingData;
 import com.example.atchui.network.DataEventListener;
 import com.example.atchui.network.RetrofitClient;
-import com.example.atchui.network.ServerFunction;
+import com.example.atchui.network.DataManager;
 import com.example.atchui.network.ServiceAPI;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -153,17 +153,17 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
         // Server 연동
         service = RetrofitClient.getClient().create(ServiceAPI.class);
-        ServerFunction.getInstance().Initialize(service);
+        DataManager.getInstance().Initialize(service);
 
         //고유 ID(FireBase토큰) DB 입력 및 서버에 userID 설정
         SendDeviceIDToServer();
-        ServerFunction.getInstance().SetUserID(m_DeviceID);
+        DataManager.getInstance().SetUserID(m_DeviceID);
 
         // 설정 가져와달라고 서버에 요청
-        ServerFunction.getInstance().GetUserOption();
+        DataManager.getInstance().GetUserOption();
 
         // 확진자 경로 가져오기
-        ServerFunction.getInstance().GetPatientRoutes();
+        DataManager.getInstance().GetPatientRoutes();
 
         ////////////////////////////////////////
         getLocationPermission();
@@ -205,7 +205,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                 //startActivity(intent);
 
                 // 임시로 알림목록 가져오는 중
-                ServerFunction.getInstance().GetAnalysisList();
+                DataManager.getInstance().GetAnalysisList();
             }
         });
 
@@ -342,8 +342,8 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         mClusterIconGenerator.setBackground(clusterIcon);
         icon = mClusterIconGenerator.makeIcon();
 //  서버 추가
-//        server_lat = ServerFunction.getInstance().patientRouteResponse.m_latitude;
-//        server_long = ServerFunction.getInstance().patientRouteResponse.m_longitude;
+//        server_lat = DataManager.getInstance().patientRouteResponse.m_latitude;
+//        server_long = DataManager.getInstance().patientRouteResponse.m_longitude;
 //
 //        MyItem offsetItem = new MyItem(37.550498, 127.173193 ,"exercise", "1",  icon);
 //
@@ -710,7 +710,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     /* 안드로이드 고유 아이디 (UUID) 초기화 및 사용자옵션 데이터베이스에서 가져옴 */
     public void SendDeviceIDToServer(){
         // DB 에 정보 저장, 이미 같은 ID 존재하면(최초 접속 아니면) 알아서 걸러질거라고 생각함
-        ServerFunction.getInstance().SendUserOption(m_DeviceID, 5, 30);
+        DataManager.getInstance().SendUserOption(m_DeviceID, 5, 30);
     }
 
     public void InitDeviceUUID() throws IOException {
@@ -740,7 +740,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
             Log.e("UUID", m_DeviceID + "파일 저장 완료");
 
             // DB 에 정보 저장
-            ServerFunction.getInstance().SendUserOption(m_DeviceID, 5, 30);
+            DataManager.getInstance().SendUserOption(m_DeviceID, 5, 30);
         }
     }
 
