@@ -121,7 +121,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     public ServiceAPI service;
     // Android UUID
     public String m_DeviceID = " ";
-  
+
     // Option Data
     private SettingData Option;
 
@@ -149,7 +149,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         //저장된 토큰을 가지고 오는 메소드
         String savedToken = FirebaseInstanceId.getInstance().getId();
         Log.d(TAG, "등록되어 있는 토큰ID:"+  savedToken);
-
+        m_DeviceID = savedToken;
 
         // Server 연동
         service = RetrofitClient.getClient().create(ServiceAPI.class);
@@ -162,23 +162,6 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         } catch (IOException e) {
             Log.e("실패", "고유 ID 생성 실패");
         }
-
-        /* 옵션 가져옴 */
-        SettingData data = new SettingData();
-        data.m_strUserID = m_DeviceID;
-        service.GetUserOption(data).enqueue(new Callback<SettingData>() {
-            @Override
-            public void onResponse(Call<SettingData> call, Response<SettingData> response) {
-                Log.e("성공", "옵션 가져오기");
-                Option = new SettingData();
-                Option = response.body();
-            }
-
-            @Override
-            public void onFailure(Call<SettingData> call, Throwable t) {
-                Log.e("실패", "옵션 가져오기");
-            }
-        });
 
         // 확진자 경로 가져오기
         ServerFunction.getInstance().GetPatientRoutes();
@@ -726,6 +709,11 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     /* 서버 관련 함수 */
 
     /* 안드로이드 고유 아이디 (UUID) 초기화 및 사용자옵션 데이터베이스에서 가져옴 */
+    public void SendDeviceIDToServer(){
+        // DB 에 정보 저장, 이미 같은 ID 존재하면(최초 접속 아니면) 알아서 걸러질거라고 생각함
+        ServerFunction.getInstance().SendUserOption(m_DeviceID, 5, 30);
+    }
+
     public void InitDeviceUUID() throws IOException {
         try {
             // 파일이 존재하면 파일에서 아이디 가져옴

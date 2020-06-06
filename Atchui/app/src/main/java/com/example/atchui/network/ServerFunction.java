@@ -33,6 +33,8 @@ public class ServerFunction {
     public String user_id = "";
     private boolean bInit = false;
 
+   public SettingData Option;
+
     // 이벤트 리스너
     private DataEventListener eventListener;
 
@@ -51,7 +53,6 @@ public class ServerFunction {
     public void SetOnReceivedEvent(DataEventListener listener){
         eventListener = listener;
     }
-
 
     public void SetUserID(String user_id) { this.user_id = user_id; }
 
@@ -93,12 +94,31 @@ public class ServerFunction {
             public void onResponse(Call<SettingResponse> call, Response<SettingResponse> response) {
                 SettingResponse result = response.body();
 
-                Log.e("setting database 넣기 성공",result.getMessage());
+                Log.e("성공",result.getMessage());
             }
 
             @Override
             public void onFailure(Call<SettingResponse> call, Throwable t) {
-                Log.e("setting database 넣기 실패", t.getMessage());
+                Log.e("실패", t.getMessage());
+            }
+        });
+    }
+
+    public void GetUserOption(){
+        /* 옵션 가져옴 */
+        SettingData data = new SettingData();
+        data.m_strUserID = user_id;
+        service.GetUserOption(data).enqueue(new Callback<SettingData>() {
+            @Override
+            public void onResponse(Call<SettingData> call, Response<SettingData> response) {
+                Log.e("성공", "옵션 가져오기");
+                Option = new SettingData();
+                Option = response.body();
+            }
+
+            @Override
+            public void onFailure(Call<SettingData> call, Throwable t) {
+                Log.e("실패", "옵션 가져오기");
             }
         });
     }
