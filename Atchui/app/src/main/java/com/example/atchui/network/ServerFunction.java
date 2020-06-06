@@ -161,6 +161,28 @@ public class ServerFunction {
         });
     }
 
+    // 분석결과 읽음 안읽음 업데이트
+    public void UpdateAnalIsRead(int analID, boolean bIsRead) {
+        if(!bInit)
+            return;
+
+        AnalData data = new AnalData();
+        data.m_analID = analID;
+        data.m_IsRead = bIsRead? 1 : 0;
+
+        service.UpdateAnalIsRead(data).enqueue(new Callback<SettingResponse>() {
+            @Override
+            public void onResponse(Call<SettingResponse> call, Response<SettingResponse> response) {
+                Log.e("성공", "Anal Update IsRead");
+            }
+
+            @Override
+            public void onFailure(Call<SettingResponse> call, Throwable t) {
+                Log.e("실패", "Anal Update IsRead");
+            }
+        });
+    }
+
     // 싱글톤
     private static ServerFunction instance = null;
 
