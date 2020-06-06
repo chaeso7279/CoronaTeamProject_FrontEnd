@@ -122,9 +122,6 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     // Android UUID
     public String m_DeviceID = " ";
 
-    // Option Data
-    private SettingData Option;
-
     // pre-circle
     private Circle preCircle = null;
 
@@ -158,7 +155,9 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         DataManager.getInstance().Initialize(service);
 
         //고유 ID(FireBase토큰) DB 입력 및 서버에 userID 설정
+        DataManager.getInstance().SetUserID(m_DeviceID);
         SendDeviceIDToServer();
+
 
         // 설정 가져와달라고 서버에 요청
         DataManager.getInstance().GetUserOption();
@@ -693,38 +692,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     /* 안드로이드 고유 아이디 (UUID) 초기화 및 사용자옵션 데이터베이스에서 가져옴 */
     public void SendDeviceIDToServer(){
         // DB 에 정보 저장, 이미 같은 ID 존재하면(최초 접속 아니면) 알아서 걸러질거라고 생각함
-        DataManager.getInstance().SendUserOption(m_DeviceID, 5, 30);
-    }
-
-    public void InitDeviceUUID() throws IOException {
-        try {
-            // 파일이 존재하면 파일에서 아이디 가져옴
-            FileInputStream fis = openFileInput("UUID.txt");
-            StringBuffer data = new StringBuffer();
-            fis = openFileInput("UUID.txt");
-            BufferedReader buffer = new BufferedReader(new InputStreamReader(fis));
-            String strTemp = buffer.readLine();
-            while (strTemp != null) {
-                data.append(strTemp + "\n");
-                strTemp = buffer.readLine();
-            }
-            m_DeviceID = data.toString();
-            Log.e("UUID", m_DeviceID + "파일 불러오기 완료");
-            buffer.close();
-
-        } catch (Exception e) {
-            // 파일이 존재하지 않으면 새로 할당받아 파일을 작성해줌
-            m_DeviceID = UUID.randomUUID().toString();
-
-            FileOutputStream fos = openFileOutput("UUID.txt", Context.MODE_APPEND);
-            PrintWriter out = new PrintWriter(fos);
-            out.println(m_DeviceID);
-            out.close();
-            Log.e("UUID", m_DeviceID + "파일 저장 완료");
-
-            // DB 에 정보 저장
-            DataManager.getInstance().SendUserOption(m_DeviceID, 5, 30);
-        }
+        DataManager.getInstance().SendUserOption(m_DeviceID, 5, 15);
     }
 
     protected void onNewIntent(Intent intent) {
