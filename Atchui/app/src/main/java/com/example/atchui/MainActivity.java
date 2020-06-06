@@ -155,13 +155,12 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         service = RetrofitClient.getClient().create(ServiceAPI.class);
         ServerFunction.getInstance().Initialize(service);
 
-        // Android 고유 ID 가져오기
-        try {
-            InitDeviceUUID();
-            ServerFunction.getInstance().SetUserID(m_DeviceID);
-        } catch (IOException e) {
-            Log.e("실패", "고유 ID 생성 실패");
-        }
+        //고유 ID(FireBase토큰) DB 입력 및 서버에 userID 설정
+        SendDeviceIDToServer();
+        ServerFunction.getInstance().SetUserID(m_DeviceID);
+
+        // 설정 가져와달라고 서버에 요청
+        ServerFunction.getInstance().GetUserOption();
 
         // 확진자 경로 가져오기
         ServerFunction.getInstance().GetPatientRoutes();
