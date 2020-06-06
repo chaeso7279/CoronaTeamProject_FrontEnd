@@ -364,9 +364,6 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                     lng[i] = 127.173193;
                     title[i] = "exercise";
                     snippet[i] = "1";
-
-                    color_code = BitmapDescriptorFactory.HUE_RED;
-
                     clusterIcon = getResources().getDrawable(R.drawable.blue);
                     mClusterIconGenerator.setBackground(clusterIcon);
                     icon = mClusterIconGenerator.makeIcon();
@@ -376,9 +373,6 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                     lng[i] = 127.073193;
                     title[i] = "확진자1";
                     snippet[i] = "세종대학교";
-
-                    color_code = BitmapDescriptorFactory.HUE_RED;
-
                     clusterIcon = getResources().getDrawable(R.drawable.red);
                     mClusterIconGenerator.setBackground(clusterIcon);
                     icon = mClusterIconGenerator.makeIcon();
@@ -388,9 +382,6 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                     lng[i] = 127.079311;
                     title[i] = "확진자2";
                     snippet[i] = "건국대학교";
-
-                    color_code = BitmapDescriptorFactory.HUE_RED;
-
                     clusterIcon = getResources().getDrawable(R.drawable.green);
                     mClusterIconGenerator.setBackground(clusterIcon);
                     icon = mClusterIconGenerator.makeIcon();
@@ -400,7 +391,6 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                     lng[i] = 127.074646;
                     title[i] = "확진자3";
                     snippet[i] = "어린이대공원역";
-                    color_code = BitmapDescriptorFactory.HUE_RED;
 
                     clusterIcon = getResources().getDrawable(R.drawable.orange);
                     mClusterIconGenerator.setBackground(clusterIcon);
@@ -411,7 +401,6 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                     lng[i] = 127.074963;
                     title[i] = "확진자4";
                     snippet[i] = "어대역 뚜레쥬르";
-                    color_code = BitmapDescriptorFactory.HUE_RED;
                     clusterIcon = getResources().getDrawable(R.drawable.green);
                     mClusterIconGenerator.setBackground(clusterIcon);
                     icon = mClusterIconGenerator.makeIcon();
@@ -421,7 +410,6 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                     lng[i] = 127.076774;
                     title[i] = "확진자5";
                     snippet[i] = "어대역 도미노피자";
-                    color_code = BitmapDescriptorFactory.HUE_RED;
                     clusterIcon = getResources().getDrawable(R.drawable.orange);
                     mClusterIconGenerator.setBackground(clusterIcon);
                     icon = mClusterIconGenerator.makeIcon();
@@ -431,7 +419,6 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                     lng[i] = 127.075193;
                     title[i] = "확진자6";
                     snippet[i] = "6";
-                    color_code = BitmapDescriptorFactory.HUE_ORANGE;
                     clusterIcon = getResources().getDrawable(R.drawable.red);
                     mClusterIconGenerator.setBackground(clusterIcon);
                     icon = mClusterIconGenerator.makeIcon();
@@ -441,7 +428,6 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                     lng[i] = 127.077311;
                     title[i] = "확진자7";
                     snippet[i] = "7";
-                    color_code = BitmapDescriptorFactory.HUE_ORANGE;
                     clusterIcon = getResources().getDrawable(R.drawable.green);
                     mClusterIconGenerator.setBackground(clusterIcon);
                     icon = mClusterIconGenerator.makeIcon();
@@ -451,7 +437,6 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                     lng[i] = 127.074646;
                     title[i] = "확진자8";
                     snippet[i] = "8";
-                    color_code = BitmapDescriptorFactory.HUE_ORANGE;
                     clusterIcon = getResources().getDrawable(R.drawable.red);
                     mClusterIconGenerator.setBackground(clusterIcon);
                     icon = mClusterIconGenerator.makeIcon();
@@ -461,7 +446,6 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                     lng[i] = 127.075963;
                     title[i] = "확진자9";
                     snippet[i] = "9";
-                    color_code = BitmapDescriptorFactory.HUE_ORANGE;
                     clusterIcon = getResources().getDrawable(R.drawable.orange);
                     mClusterIconGenerator.setBackground(clusterIcon);
                     icon = mClusterIconGenerator.makeIcon();
@@ -471,7 +455,6 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                     lng[i] = 127.075774;
                     title[i] = "확진자10";
                     snippet[i] = "10";
-                    color_code = BitmapDescriptorFactory.HUE_ORANGE;
                     clusterIcon = getResources().getDrawable(R.drawable.green);
                     mClusterIconGenerator.setBackground(clusterIcon);
                     icon = mClusterIconGenerator.makeIcon();
@@ -481,7 +464,6 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                     lng[i] = 127.073093;
                     title[i] = "확진자11";
                     snippet[i] = "11";
-                    color_code = BitmapDescriptorFactory.HUE_GREEN;
                     clusterIcon = getResources().getDrawable(R.drawable.red);
                     mClusterIconGenerator.setBackground(clusterIcon);
                     icon = mClusterIconGenerator.makeIcon();
@@ -491,7 +473,6 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                     lng[i] = 127.079711;
                     title[i] = "확진자12";
                     snippet[i] = "12";
-                    color_code = BitmapDescriptorFactory.HUE_GREEN;
                     clusterIcon = getResources().getDrawable(R.drawable.green);
                     mClusterIconGenerator.setBackground(clusterIcon);
                     icon = mClusterIconGenerator.makeIcon();
@@ -501,7 +482,6 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                     lng[i] = 127.074146;
                     title[i] = "확진자13";
                     snippet[i] = "13";
-                    color_code = BitmapDescriptorFactory.HUE_GREEN;
                     clusterIcon = getResources().getDrawable(R.drawable.orange);
                     mClusterIconGenerator.setBackground(clusterIcon);
                     icon = mClusterIconGenerator.makeIcon();
@@ -511,7 +491,6 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                     lng[i] = 127.074263;
                     title[i] = "확진자14";
                     snippet[i] = "14";
-                    color_code = BitmapDescriptorFactory.HUE_GREEN;
                     clusterIcon = getResources().getDrawable(R.drawable.red);
                     mClusterIconGenerator.setBackground(clusterIcon);
                     icon = mClusterIconGenerator.makeIcon();
@@ -521,12 +500,11 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                     lng[i] = 127.076574;
                     title[i] = "확진자15";
                     snippet[i] = "15";
-                    color_code = BitmapDescriptorFactory.HUE_GREEN;
                     break;
             }
-            //MyItem offsetItem = new MyItem(lat[i], lng[i], title[i], snippet[i], color_code);
+            MyItem offsetItem = new MyItem(lat[i], lng[i], title[i], snippet[i], icon);
 
-            //mClusterManager.addItem(offsetItem);
+            mClusterManager.addItem(offsetItem);
         }
     }
 
