@@ -17,38 +17,29 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.atchui.network.ServerFunction;
+
 import org.w3c.dom.Text;
 
+import java.util.ArrayList;
+
 public class Noti_newFragment extends Fragment implements Noti_RecyclerAdapter.OnListItemSelectedInterface {
-    private static final int CURRENT_NOTIFICATION = 1;
-    private static final int PATH_NOTIFICATION = 2;
+    private static final int CURRENT_NOTIFICATION = 0;
+    private static final int PATH_NOTIFICATION = 1;
 
     private Noti_newRecyclerAdapter new_adapter;
     private RecyclerView new_recyclerView;
 
-    private SharedViewModel sharedViewModel; //fragment간 text전달을 위해 만듬
+    //private SharedViewModel sharedViewModel; //fragment간 text전달을 위해 만듬
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_noti_new_fragment, container, false);
 
+
         Initialize(view);
         setData();
-
-//        //"새로운 알림" textView Visible, Invisible하게 만드는 코드(나중에 item insert, delete 하는 함수에 넣을 것)
-//        //View view2 = getLayoutInflater().inflate(R.layout.activity_notification_list, container, false);
-//        LayoutInflater layoutInflater = (LayoutInflater)getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-//        View view2 = layoutInflater.inflate(R.layout.activity_notification_list, null);
-//
-//        TextView textView_newnoti = (TextView)view2.findViewById(R.id.textview_newNoti);
-//        if(new_adapter.getItemCount() == 0){
-////            textView_newnoti.setVisibility(View.INVISIBLE);
-//            Log.d("newText", textView_newnoti.getText()+" ");
-//        }else{
-////            textView_newnoti.setVisibility(View.VISIBLE);
-//            Log.d("newText", textView_newnoti.getText()+" ");
-//        }
 
         return view;
     }
@@ -62,7 +53,7 @@ public class Noti_newFragment extends Fragment implements Noti_RecyclerAdapter.O
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        sharedViewModel = ViewModelProviders.of(getActivity()).get(SharedViewModel.class); //fragment간 text전달을 위해 만듬
+        //sharedViewModel = ViewModelProviders.of(getActivity()).get(SharedViewModel.class); //fragment간 text전달을 위해 만듬
     }
 
     private void Initialize(View view) {
@@ -77,7 +68,37 @@ public class Noti_newFragment extends Fragment implements Noti_RecyclerAdapter.O
 
     }
     private void setData() {
-        //ItemType: CURRENT_NOTIFICATION: 현위치 알림, PATH_NOTIFICATION: 지난경로 알림
+        //ItemType: CURRENT_NOTIFICATION: 현위치 알림(0), PATH_NOTIFICATION: 지난경로 알림(1)
+
+        int size = ServerFunction.getInstance().lstAnal.size(); //리스트의 크기
+
+        for(int i = 0 ; i < size ; i++){
+            //읽지 않은 알림(새로운 알림)일 경우
+            if(ServerFunction.getInstance().lstAnal.get(i).m_IsRead == 0){
+                //
+                int index = i;  //서버 list 내 인덱스
+                int itemType = ServerFunction.getInstance().lstAnal.get(i).m_IsPast;    //TODO:정수 이거에 맞게 코드 고쳐야 함(1,2 -> 0,1)
+                int labelColor = this.getResources().getColor(R.color.label_green);     //TODO:table에 column 추가 후 제대로 받아오기(현재는 임시)
+                String location = ServerFunction.getInstance().lstAnal.get(i).m_locationName;
+                String user_time = "0000-00-00";                                        //TODO: table에 column 추가 후 제대로 받아오기(현재는 임시)
+                String timeStr = ServerFunction.getInstance().lstAnal.get(i).m_analTime;
+
+                //past일 경우
+                if(itemType == PATH_NOTIFICATION){
+                    String context = String.format(getResources().getString(R.string.noti_past),location, user_time);
+                    Noti_RecyclerItem item = new Noti_RecyclerItem(index, itemType, labelColor, context, timeStr);
+                    new_adapter.addItem(item);
+                }
+                //current일 경우
+                else if(itemType == CURRENT_NOTIFICATION){
+                    String context = String.format(getResources().getString(R.string.noti_current),1); //TODO: 반경 Nkm의 N 받아오기(현재는 임시)
+                    Noti_RecyclerItem item = new Noti_RecyclerItem(index, itemType, labelColor, context, timeStr);
+                    new_adapter.addItem(item);
+                }
+
+                new_adapter.notifyDataSetChanged();
+            }
+        }
 
 //        Noti_RecyclerItem item = new Noti_RecyclerItem();
 //
@@ -94,9 +115,7 @@ public class Noti_newFragment extends Fragment implements Noti_RecyclerAdapter.O
 //        item.setTextStr("강남구청 근방에서 2020-05-28에 동선겹침이 확인되었습니다.");
 //        item.setTimeStr("1분 전");
 //
-//        new_adapter.addItem(item);
 
-        new_adapter.notifyDataSetChanged();
     }
     @Override
     public void onItemSelected(View v, int position) {
@@ -106,33 +125,33 @@ public class Noti_newFragment extends Fragment implements Noti_RecyclerAdapter.O
 
 
         //itemType에 맞게 activity 이동
-        if(viewHolder.itemType == 1){
+        if(viewHolder.itemType == CURRENT_NOTIFICATION){
             Intent intent = new Intent(getActivity(), CurrentResultActivity.class);
 
-            //데이터(position) 송신 - 실제 포지션에 맞는 정보 출력할 때 사용
-            intent.putExtra("position", position);
+            //데이터 송신 - 실제 포지션에 맞는 정보 출력할 때 사용
+            intent.putExtra("lstIndex", viewHolder.lstIndex);
 
             startActivity(intent);
         }
-        else if(viewHolder.itemType == 2){
+        else if(viewHolder.itemType == PATH_NOTIFICATION){
             Intent intent = new Intent(getActivity(), PathResultActivity.class);
 
-            //데이터(position) 송신
-            intent.putExtra("position",position);
+            //데이터 송신 - 실제 포지션에 맞는 정보 출력할 때 사용
+            intent.putExtra("lstIndex", viewHolder.lstIndex);
 
             startActivity(intent);
         }
-
-        //fragment간 text전달을 위해 만듬
-        if(sharedViewModel!=null){
-            int itemType = viewHolder.itemType;
-            ColorDrawable drawable = (ColorDrawable) viewHolder.labelColor.getBackground();
-            drawable.getColor();
-            int labelColor = drawable.getColor();
-            String contentStr = viewHolder.textContent.getText().toString();
-            String timeStr = viewHolder.textTime.getText().toString();
-            Noti_RecyclerItem item = new Noti_RecyclerItem(itemType, labelColor, contentStr, timeStr);
-            sharedViewModel.setItem(item);
-        }
+//
+//        //fragment간 text전달을 위해 만듬
+//        if(sharedViewModel!=null){
+//            int itemType = viewHolder.itemType;
+//            ColorDrawable drawable = (ColorDrawable) viewHolder.labelColor.getBackground();
+//            drawable.getColor();
+//            int labelColor = drawable.getColor();
+//            String contentStr = viewHolder.textContent.getText().toString();
+//            String timeStr = viewHolder.textTime.getText().toString();
+//            Noti_RecyclerItem item = new Noti_RecyclerItem(itemType, labelColor, contentStr, timeStr);
+//            sharedViewModel.setItem(item);
+//        }
     }
 }

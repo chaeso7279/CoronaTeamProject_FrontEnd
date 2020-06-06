@@ -55,6 +55,7 @@ public class Noti_RecyclerAdapter extends RecyclerView.Adapter<Noti_RecyclerAdap
     // 아이템 뷰를 저장하는 뷰홀더 클래스.
     public class Noti_ItemViewHolder extends RecyclerView.ViewHolder {
 
+        int lstIndex;
         int itemType;
         ImageView labelColor;
         TextView textContent ;
@@ -65,6 +66,7 @@ public class Noti_RecyclerAdapter extends RecyclerView.Adapter<Noti_RecyclerAdap
         Noti_ItemViewHolder(View itemView) {
             super(itemView) ;
 
+            lstIndex = 0;
             itemType = 0;
             labelColor = (ImageView)itemView.findViewById(R.id.imageView_label);
             textContent = (TextView)itemView.findViewById(R.id.textView_Content) ;
@@ -83,6 +85,7 @@ public class Noti_RecyclerAdapter extends RecyclerView.Adapter<Noti_RecyclerAdap
         }
 
         void onBind(Noti_RecyclerItem item) {
+//            lstIndex = item.getLstIndex();
             itemType = item.getItemType();
             labelColor.setBackgroundColor(item.getLabelColor());
             textContent.setText(item.getTextStr());

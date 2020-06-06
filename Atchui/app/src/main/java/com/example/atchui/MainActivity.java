@@ -163,6 +163,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         }
 
         /* 옵션 가져옴 */
+        /*
         SettingData data = new SettingData();
         data.m_strUserID = m_DeviceID;
         service.GetUserOption(data).enqueue(new Callback<SettingData>() {
@@ -178,7 +179,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                 Log.e("실패", "옵션 가져오기");
             }
         });
-
+        */
         // 확진자 경로 가져오기
         ServerFunction.getInstance().GetPatientRoutes();
 
@@ -233,6 +234,10 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         Toast.makeText(getApplicationContext(), "Service 시작", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(MainActivity.this, BackgroundService.class);
         startService(intent);
+
+        /////////////////////////////////////
+        /*server에서 데이터 받아오기*/
+        ServerFunction.getInstance().GetAnalysisList(); // Notification_list 관련 정보
     }
 
     private void init() {
