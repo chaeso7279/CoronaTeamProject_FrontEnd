@@ -96,7 +96,8 @@ public class Noti_newFragment extends Fragment implements Noti_RecyclerAdapter.O
                 }
                 //current일 경우
                 else if(itemType == CURRENT_NOTIFICATION){
-                    String context = String.format(getResources().getString(R.string.noti_current),1); //TODO: 반경 Nkm의 N 받아오기(현재는 임시)
+                    int range = DataManager.getInstance().Option.m_iRadius;
+                    String context = String.format(getResources().getString(R.string.noti_current),range);
                     Noti_RecyclerItem item = new Noti_RecyclerItem(index, itemType, labelColor, context, timeStr);
                     new_adapter.addItem(item);
                 }
