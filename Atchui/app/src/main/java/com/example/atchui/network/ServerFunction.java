@@ -33,6 +33,9 @@ public class ServerFunction {
     public String user_id = "";
     private boolean bInit = false;
 
+    // 이벤트 리스너
+    private DataEventListener eventListener;
+
     public void Initialize(ServiceAPI service) {
         this.service = service;
         bInit = true;
@@ -43,6 +46,12 @@ public class ServerFunction {
         lstPatientRoute = new ArrayList<PatientRouteData>();
 
     }
+
+    // 리스너 이벤트 등록 함수
+    public void SetOnReceivedEvent(DataEventListener listener){
+        eventListener = listener;
+    }
+
 
     public void SetUserID(String user_id) { this.user_id = user_id; }
 

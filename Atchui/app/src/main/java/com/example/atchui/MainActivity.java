@@ -121,9 +121,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     public ServiceAPI service;
     // Android UUID
     public String m_DeviceID = " ";
-    // 이벤트 리스너
-    private DataEventListener eventListener;
-
+  
     // Option Data
     private SettingData Option;
 
