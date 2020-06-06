@@ -27,6 +27,7 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.example.atchui.database.SettingData;
+import com.example.atchui.network.DataEventListener;
 import com.example.atchui.network.RetrofitClient;
 import com.example.atchui.network.ServerFunction;
 import com.example.atchui.network.ServiceAPI;
@@ -120,6 +121,8 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     public ServiceAPI service;
     // Android UUID
     public String m_DeviceID = " ";
+    // 이벤트 리스너
+    private DataEventListener eventListener;
 
     // Option Data
     private SettingData Option;

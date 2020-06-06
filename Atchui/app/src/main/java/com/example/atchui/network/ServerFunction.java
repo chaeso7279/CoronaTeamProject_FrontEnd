@@ -43,6 +43,7 @@ public class ServerFunction {
         lstPatientRoute = new ArrayList<PatientRouteData>();
 
     }
+
     public void SetUserID(String user_id) { this.user_id = user_id; }
 
     // 확진자 정보 관련
