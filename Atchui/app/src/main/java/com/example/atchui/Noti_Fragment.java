@@ -117,6 +117,8 @@ public class Noti_Fragment extends Fragment implements Noti_RecyclerAdapter.OnLi
 //        item.setLabelColor(this.getResources().getColor(R.color.label_yellow));
 //        item.setTextStr("반경 1km 내에 확진자 동선이 확인되었습니다.");
 //        item.setTimeStr("5분 전");
+//
+//        adapter.addItem(item);
     }
 
     private void setItem(Noti_RecyclerItem item) {
@@ -137,6 +139,7 @@ public class Noti_Fragment extends Fragment implements Noti_RecyclerAdapter.OnLi
             intent.putExtra("lstIndex", viewHolder.lstIndex);
 
             startActivity(intent);
+            getActivity().finish();
         }
         else if(viewHolder.itemType == PATH_NOTIFICATION){
             Intent intent = new Intent(getActivity(), PathResultActivity.class);
@@ -145,6 +148,7 @@ public class Noti_Fragment extends Fragment implements Noti_RecyclerAdapter.OnLi
             intent.putExtra("lstIndex", viewHolder.lstIndex);
 
             startActivity(intent);
+            getActivity().finish();
         }
     }
 }

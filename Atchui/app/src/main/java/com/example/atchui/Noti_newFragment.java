@@ -120,8 +120,8 @@ public class Noti_newFragment extends Fragment implements Noti_RecyclerAdapter.O
 //        item.setLabelColor(this.getResources().getColor(R.color.label_red));
 //        item.setTextStr("강남구청 근방에서 2020-05-28에 동선겹침이 확인되었습니다.");
 //        item.setTimeStr("1분 전");
-//
-
+////
+//        new_adapter.addItem(item);
     }
     @Override
     public void onItemSelected(View v, int position) {
@@ -136,16 +136,19 @@ public class Noti_newFragment extends Fragment implements Noti_RecyclerAdapter.O
 
             //데이터 송신 - 실제 포지션에 맞는 정보 출력할 때 사용
             intent.putExtra("lstIndex", viewHolder.lstIndex);
-
+            DataManager.getInstance().UpdateAnalIsRead(viewHolder.lstIndex, true);
             startActivity(intent);
+            getActivity().finish();
         }
         else if(viewHolder.itemType == PATH_NOTIFICATION){
             Intent intent = new Intent(getActivity(), PathResultActivity.class);
 
             //데이터 송신 - 실제 포지션에 맞는 정보 출력할 때 사용
             intent.putExtra("lstIndex", viewHolder.lstIndex);
-
+            DataManager.getInstance().UpdateAnalIsRead(viewHolder.lstIndex, true);
             startActivity(intent);
+            getActivity().finish();
+
         }
 //
 //        //fragment간 text전달을 위해 만듬
