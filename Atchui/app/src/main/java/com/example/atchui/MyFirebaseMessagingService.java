@@ -1,11 +1,20 @@
 package com.example.atchui;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.util.Log;
+
+import androidx.core.app.NotificationCompat;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+
+import java.util.Map;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
@@ -18,23 +27,32 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     public void onMessageReceived(RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
 
-        //받은 메시지를 출력합니다.
-        Log.e(TAG,"onMessagedReceived 호출됨"+ remoteMessage);
+        showNotification(remoteMessage.getData().get("title"), remoteMessage.getData().get("message"));
 
-        //받은 데이터 중, 내용만 가지고 와 출력하는 메소드(파이어베이스 홈페이지에서 보내면 데이터는 값이 없을 수 있음)
-        String from = remoteMessage.getFrom();
-        Log.d(TAG,
-                "title: " + remoteMessage.getNotification().getTitle()
-                + ", body: " + remoteMessage.getNotification().getBody()
-                + ",data: " + remoteMessage.getData()
-        );
     }
+    private void showNotification(String title, String message){
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
 
+        Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
+                .setSmallIcon(R.drawable.ic_logo)
+                .setContentTitle(title)
+                .setContentText(message)
+                .setAutoCancel(true)
+                .setSound(defaultSoundUri)
+                .setContentIntent(pendingIntent);
+
+        NotificationManager notificationManager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+        notificationManager.notify(0, notificationBuilder.build());
+    }
     //메시지에 사용될 토근을 새로 발급받았을 때, 호출되는 메소드(이 토큰은 각각의 기기를 식별)
     @Override
     public void onNewToken(String token) {
         super.onNewToken(token);
-
         //토큰 정보를 출력합니다.
         Log.e(TAG, "onNewToken 호출됨: " + token);
     }

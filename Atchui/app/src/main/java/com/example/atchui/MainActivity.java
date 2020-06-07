@@ -82,8 +82,13 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.UUID;
 
 import retrofit2.Call;
@@ -108,8 +113,6 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     static double current_lat;
     static double current_long;
 
-    double server_lat;
-    double server_long;
 
     //widgets
     private EditText mSearchText;
@@ -289,186 +292,69 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
     // 확진자 추가 함수
     private void addItems() {
-        // Set some lat/lng coordinates to start with.
-        int Corona_Confirmer = 16;
-        double[] lat = new double[Corona_Confirmer];
-        double[] lng = new double[Corona_Confirmer];
 
-        //  Set the title and snippet strings.
-        String[] title = new String[Corona_Confirmer];
-        String[] snippet = new String[Corona_Confirmer];
-
-        LatLng center;
-        float color_code = 0;
-
+        int size = DataManager.getInstance().lstPatientRoute.size();
         // Add ten cluster items in close proximity, for purposes of this example.
 
         Bitmap icon = null;
         final IconGenerator mClusterIconGenerator = new IconGenerator(getApplicationContext());
 
-        Drawable clusterIcon = getResources().getDrawable(R.drawable.blue);
-        mClusterIconGenerator.setBackground(clusterIcon);
-        icon = mClusterIconGenerator.makeIcon();
+
 //  서버 추가
-//        server_lat = DataManager.getInstance().patientRouteResponse.m_latitude;
-//        server_long = DataManager.getInstance().patientRouteResponse.m_longitude;
+        double server_lat;
+        double server_long;
+        String server_address;
+        String server_LocationName;
+
+        for(int i = 0; i < size; i++){
+            server_lat = DataManager.getInstance().lstPatientRoute.get(i).m_latitude;
+            server_long = DataManager.getInstance().lstPatientRoute.get(i).m_longitude;
+            server_address = DataManager.getInstance().lstPatientRoute.get(i).m_address;
+            server_LocationName = DataManager.getInstance().lstPatientRoute.get(i).m_visitDatetime;
+
+
+//            //시간별 확진자 색깔 따로 찍기
+//            String visitDatetime = DataManager.getInstance().lstPatientRoute.get(1).m_visitDatetime;
+//            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+//            Date mDate = null;
+//            try {
+//                mDate = format.parse(visitDatetime);
+//            } catch (ParseException e) {
+//                e.printStackTrace();
+//            }
 //
-//        MyItem offsetItem = new MyItem(37.550498, 127.173193 ,"exercise", "1",  icon);
+//            //현재시간 가져오기
+//            SimpleDateFormat mSimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+//            Date currentTime = new Date();
+//            String oTime = mSimpleDateFormat.format(currentTime);
+//            Date currentDate = null;
+//            try {
+//                currentDate = mSimpleDateFormat.parse(oTime);
+//            } catch (ParseException e) {
+//                e.printStackTrace();
+//            }
+//            Calendar server_cal = Calendar.getInstance();
+//            server_cal.setTime(mDate);
+//            Calendar current_cal = Calendar.getInstance();
+//            current_cal.setTime(currentDate);
 //
-//        mClusterManager.addItem(offsetItem);
+//            long diff = (current_cal.getTimeInMillis() - server_cal.getTimeInMillis())/1000/(60*60*24);
+//
+//            Log.d("tag","long diff : " + diff);
+
+//            DataManager.getInstance().lstPatientRoute.get(i).
 
 
-//         Add ten cluster items in close proximity, for purposes of this example.
+            Drawable clusterIcon = getResources().getDrawable(R.drawable.blue);
+            mClusterIconGenerator.setBackground(clusterIcon);
+            icon = mClusterIconGenerator.makeIcon();
 
-        for (int i = 0; i < Corona_Confirmer; i++) {
-            switch (i) {
-                case 0:
-                    lat[i] = 37.550498;
-                    lng[i] = 127.173193;
-                    title[i] = "exercise";
-                    snippet[i] = "1";
-                    clusterIcon = getResources().getDrawable(R.drawable.blue);
-                    mClusterIconGenerator.setBackground(clusterIcon);
-                    icon = mClusterIconGenerator.makeIcon();
-                    break;
-                case 1:
-                    lat[i] = 37.550498;
-                    lng[i] = 127.073193;
-                    title[i] = "확진자1";
-                    snippet[i] = "세종대학교";
-                    clusterIcon = getResources().getDrawable(R.drawable.red);
-                    mClusterIconGenerator.setBackground(clusterIcon);
-                    icon = mClusterIconGenerator.makeIcon();
-                    break;
-                case 2:
-                    lat[i] = 37.541009;
-                    lng[i] = 127.079311;
-                    title[i] = "확진자2";
-                    snippet[i] = "건국대학교";
-                    clusterIcon = getResources().getDrawable(R.drawable.green);
-                    mClusterIconGenerator.setBackground(clusterIcon);
-                    icon = mClusterIconGenerator.makeIcon();
-                    break;
-                case 3:
-                    lat[i] = 37.547985;
-                    lng[i] = 127.074646;
-                    title[i] = "확진자3";
-                    snippet[i] = "어린이대공원역";
+            MyItem offsetItem = new MyItem(server_lat, server_long, server_address, server_LocationName, icon);
 
-                    clusterIcon = getResources().getDrawable(R.drawable.orange);
-                    mClusterIconGenerator.setBackground(clusterIcon);
-                    icon = mClusterIconGenerator.makeIcon();
-                    break;
-                case 4:
-                    lat[i] = 37.546590;
-                    lng[i] = 127.074963;
-                    title[i] = "확진자4";
-                    snippet[i] = "어대역 뚜레쥬르";
-                    clusterIcon = getResources().getDrawable(R.drawable.green);
-                    mClusterIconGenerator.setBackground(clusterIcon);
-                    icon = mClusterIconGenerator.makeIcon();
-                    break;
-                case 5:
-                    lat[i] = 37.552964;
-                    lng[i] = 127.076774;
-                    title[i] = "확진자5";
-                    snippet[i] = "어대역 도미노피자";
-                    clusterIcon = getResources().getDrawable(R.drawable.orange);
-                    mClusterIconGenerator.setBackground(clusterIcon);
-                    icon = mClusterIconGenerator.makeIcon();
-                    break;
-                case 6:
-                    lat[i] = 37.554498;
-                    lng[i] = 127.075193;
-                    title[i] = "확진자6";
-                    snippet[i] = "6";
-                    clusterIcon = getResources().getDrawable(R.drawable.red);
-                    mClusterIconGenerator.setBackground(clusterIcon);
-                    icon = mClusterIconGenerator.makeIcon();
-                    break;
-                case 7:
-                    lat[i] = 37.543009;
-                    lng[i] = 127.077311;
-                    title[i] = "확진자7";
-                    snippet[i] = "7";
-                    clusterIcon = getResources().getDrawable(R.drawable.green);
-                    mClusterIconGenerator.setBackground(clusterIcon);
-                    icon = mClusterIconGenerator.makeIcon();
-                    break;
-                case 8:
-                    lat[i] = 37.548985;
-                    lng[i] = 127.074646;
-                    title[i] = "확진자8";
-                    snippet[i] = "8";
-                    clusterIcon = getResources().getDrawable(R.drawable.red);
-                    mClusterIconGenerator.setBackground(clusterIcon);
-                    icon = mClusterIconGenerator.makeIcon();
-                    break;
-                case 9:
-                    lat[i] = 37.544590;
-                    lng[i] = 127.075963;
-                    title[i] = "확진자9";
-                    snippet[i] = "9";
-                    clusterIcon = getResources().getDrawable(R.drawable.orange);
-                    mClusterIconGenerator.setBackground(clusterIcon);
-                    icon = mClusterIconGenerator.makeIcon();
-                    break;
-                case 10:
-                    lat[i] = 37.554364;
-                    lng[i] = 127.075774;
-                    title[i] = "확진자10";
-                    snippet[i] = "10";
-                    clusterIcon = getResources().getDrawable(R.drawable.green);
-                    mClusterIconGenerator.setBackground(clusterIcon);
-                    icon = mClusterIconGenerator.makeIcon();
-                    break;
-                case 11:
-                    lat[i] = 37.550698;
-                    lng[i] = 127.073093;
-                    title[i] = "확진자11";
-                    snippet[i] = "11";
-                    clusterIcon = getResources().getDrawable(R.drawable.red);
-                    mClusterIconGenerator.setBackground(clusterIcon);
-                    icon = mClusterIconGenerator.makeIcon();
-                    break;
-                case 12:
-                    lat[i] = 37.541439;
-                    lng[i] = 127.079711;
-                    title[i] = "확진자12";
-                    snippet[i] = "12";
-                    clusterIcon = getResources().getDrawable(R.drawable.green);
-                    mClusterIconGenerator.setBackground(clusterIcon);
-                    icon = mClusterIconGenerator.makeIcon();
-                    break;
-                case 13:
-                    lat[i] = 37.547485;
-                    lng[i] = 127.074146;
-                    title[i] = "확진자13";
-                    snippet[i] = "13";
-                    clusterIcon = getResources().getDrawable(R.drawable.orange);
-                    mClusterIconGenerator.setBackground(clusterIcon);
-                    icon = mClusterIconGenerator.makeIcon();
-                    break;
-                case 14:
-                    lat[i] = 37.546190;
-                    lng[i] = 127.074263;
-                    title[i] = "확진자14";
-                    snippet[i] = "14";
-                    clusterIcon = getResources().getDrawable(R.drawable.red);
-                    mClusterIconGenerator.setBackground(clusterIcon);
-                    icon = mClusterIconGenerator.makeIcon();
-                    break;
-                case 15:
-                    lat[i] = 37.552464;
-                    lng[i] = 127.076574;
-                    title[i] = "확진자15";
-                    snippet[i] = "15";
-                    break;
-            }
-            MyItem offsetItem = new MyItem(lat[i], lng[i], title[i], snippet[i], icon);
-
+            Log.d("tag","server lat : " + server_lat);
             mClusterManager.addItem(offsetItem);
         }
+
     }
 
     public class MyClusterRenderer extends DefaultClusterRenderer<MyItem> {
