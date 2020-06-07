@@ -36,7 +36,7 @@ public class Noti_newFragment extends Fragment implements Noti_RecyclerAdapter.O
     private RecyclerView new_recyclerView;
 
     //private SharedViewModel sharedViewModel; //fragment간 text전달을 위해 만듬
-z
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
