@@ -131,8 +131,8 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         setContentView(R.layout.activity_main);
 
 
-        double lat = DataManager.getInstance().lstPatientRoute.get(0).m_latitude;
-        Log.e(TAG, lat + "");
+//        double lat = DataManager.getInstance().lstPatientRoute.get(0).m_latitude;
+//        Log.e(TAG, lat + "");
 
         getLocationPermission();
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -210,7 +210,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                 getDeviceLocation();
             }
         });
-        hideSoftKeyboard();
+//        hideSoftKeyboard();
     }
 
 
@@ -298,18 +298,21 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         final IconGenerator mClusterIconGenerator = new IconGenerator(getApplicationContext());
 
 
-    //  서버 추가
+    //  서버 정보 추가
         double server_lat;
         double server_long;
         String server_address;
         String server_LocationName;
         int Server_color;
+
+
         for(int i = 0; i < size; i++){
             server_lat = DataManager.getInstance().lstPatientRoute.get(i).m_latitude;
             server_long = DataManager.getInstance().lstPatientRoute.get(i).m_longitude;
             server_address = DataManager.getInstance().lstPatientRoute.get(i).m_address;
             server_LocationName = DataManager.getInstance().lstPatientRoute.get(i).m_visitDatetime;
             Server_color = DataManager.getInstance().lstPatientRoute.get(i).m_color;
+
 
 //            //시간별 확진자 색깔 따로 찍기
 //            String visitDatetime = DataManager.getInstance().lstPatientRoute.get(1).m_visitDatetime;
@@ -461,7 +464,8 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         if (!title.equals("My Location")) {
             MarkerOptions options = new MarkerOptions()
                     .position(latLng)
-                    .title(title);
+                    .title(title)
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE));
             mMap.addMarker(options);
         }
         hideSoftKeyboard();
