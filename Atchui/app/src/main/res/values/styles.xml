@@ -12,3 +12,9 @@
         <item name="android:windowBackground">@drawable/loading_back</item>
     </style>
 </resources>
+
+    <!--        <item name = "android:textColor">#000000</item>-->
+    <!--        <item name="android:textColorPrimary">#000000</item>-->
+    <!--        <item name="colorPrimary">#ff0000</item>-->
+    <!--        <item name="colorPrimaryDark">#ff0000</item>-->
+    <!--        <item name="colorAccent">#ff0000</item>-->

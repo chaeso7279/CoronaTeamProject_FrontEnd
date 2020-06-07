@@ -37,7 +37,7 @@
     <PreferenceCategory android:title="GPS">
         <SwitchPreference
             android:key="gps"
-            android:defaultValue="false"
+            android:defaultValue="true"
             android:summaryOff="비동의"
             android:summaryOn="동의"
             android:title="GPS 수집"/>

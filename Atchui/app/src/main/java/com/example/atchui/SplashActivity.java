@@ -62,7 +62,7 @@ public class SplashActivity extends Activity {
                 });
 
         //저장된 토큰을 가지고 오는 메소드
-        String savedToken = FirebaseInstanceId.getInstance().getId();
+        String savedToken = FirebaseInstanceId.getInstance().getToken();
         Log.d(TAG, "등록되어 있는 토큰ID:"+  savedToken);
 
         m_DeviceID = savedToken;
