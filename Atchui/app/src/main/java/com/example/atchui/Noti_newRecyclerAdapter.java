@@ -1,4 +1,4 @@
-package com.example.atchui;
+package com.example.atchuiz;
 
 import android.util.Log;
 import android.view.LayoutInflater;
