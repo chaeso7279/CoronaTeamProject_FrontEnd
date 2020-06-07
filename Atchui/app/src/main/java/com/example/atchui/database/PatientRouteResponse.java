@@ -43,6 +43,7 @@ public class PatientRouteResponse {
             data.m_address = jObj.getString("address");
             data.m_latitude = jObj.getDouble("latitude");
             data.m_longitude = jObj.getDouble("longitude");
+            data.m_color = jObj.getInt("color");
 
             lstData.add(data);
         }

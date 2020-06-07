@@ -24,6 +24,9 @@ public class PatientRouteData {
     @SerializedName("longitude")
     public double m_longitude;
 
+    @SerializedName("color")
+    public int m_color;
+
     public PatientRouteData() {}
     public PatientRouteData(int cnfRouteID, String cnfID, String visitDateTime, String locationName, String address, double latitude, double longitude)
     {

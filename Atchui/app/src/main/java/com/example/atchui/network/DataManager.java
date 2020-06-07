@@ -3,7 +3,6 @@ package com.example.atchui.network;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.example.atchui.SettingActivity;
 import com.example.atchui.database.AnalData;
 import com.example.atchui.database.AnalResponse;
 import com.example.atchui.database.PatientRouteData;
@@ -187,6 +186,28 @@ public class DataManager {
             @Override
             public void onFailure(Call<AnalResponse> call, Throwable t) {
                 Log.e("실패", "AnalList 가져오기");
+            }
+        });
+    }
+
+    // 현재 사용자 위치 분석하기
+    public void AnalPresentRoute(int userRouteID) {
+        if(!bInit)
+            return;
+
+        AnalData data = new AnalData();
+        data.m_userID = user_id;
+        data.m_userRouteID =  userRouteID;
+
+        service.AnalPresentRoute(data).enqueue(new Callback<AnalResponse>() {
+            @Override
+            public void onResponse(Call<AnalResponse> call, Response<AnalResponse> response) {
+                Log.e("성공", "Anal Route Present");
+            }
+
+            @Override
+            public void onFailure(Call<AnalResponse> call, Throwable t) {
+                Log.e("실패", "Anal Route Present");
             }
         });
     }

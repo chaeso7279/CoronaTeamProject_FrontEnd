@@ -26,6 +26,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.example.atchui.database.PatientRouteData;
 import com.example.atchui.database.SettingData;
 import com.example.atchui.network.DataEventListener;
 import com.example.atchui.network.RetrofitClient;
@@ -125,7 +126,11 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        
+
+
+        double lat = DataManager.getInstance().lstPatientRoute.get(0).m_latitude;
+        Log.e(TAG, lat + "");
+
         getLocationPermission();
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -146,14 +151,14 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         btn_notification.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, NotificationListActivity.class);
+                Intent intent = new Intent(MainActivity.this, com.example.atchui.NotificationListActivity.class);
                 startActivity(intent);
             }
         });
         btn_setting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, SettingActivity.class);
+                Intent intent = new Intent(MainActivity.this, com.example.atchui.SettingActivity.class);
                 startActivity(intent);
             }
         });

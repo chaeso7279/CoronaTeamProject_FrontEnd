@@ -36,6 +36,9 @@ public interface ServiceAPI {
     @POST("/analysis")
     Call<AnalResponse> GetAnalList(@Body AnalData data);
 
+    @POST("/AnalRoute/Present")
+    Call <AnalResponse> AnalPresentRoute(@Body AnalData data);
+
     @POST("/analysis/UpdateIsRead")
     Call<SettingResponse> UpdateAnalIsRead(@Body AnalData data);
 }
