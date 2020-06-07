@@ -14,6 +14,8 @@ import androidx.core.app.NotificationCompat;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.Map;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
@@ -28,14 +30,21 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         super.onMessageReceived(remoteMessage);
 
         showNotification(remoteMessage.getData().get("title"), remoteMessage.getData().get("message"));
-
+        Log.d("UTF-8","여기야");
     }
     private void showNotification(String title, String message){
         Intent intent = new Intent(this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
-
+        Log.d("UTF-8","들어옴");
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        try{
+            title =  URLDecoder.decode(title, "utf-8");
+            message =  URLDecoder.decode(message, "utf-8");
+            Log.d("UTF-8","변환 실패");
+        }catch(Exception e){
+            Log.d("UTF-8","변환 실패");
+        }
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.drawable.ic_logo)
                 .setContentTitle(title)
