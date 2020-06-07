@@ -121,6 +121,44 @@
                 android:textSize="18sp"
                 android:textColor="@android:color/black"
                 android:textStyle="bold"/>
+            <LinearLayout
+                android:id="@+id/userLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginLeft="8dp"
+                android:layout_marginBottom="8dp"
+                >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
+
+                    android:text="내 방문 장소"
+                    android:textSize="15sp"
+                    android:textColor="@android:color/black"
+                    android:textStyle="bold"/>
+                <TextView
+                    android:id="@+id/userLocation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="2dp"
+
+                    android:text="CU 강남구청점"
+                    android:textSize="15sp"
+                    android:textColor="@android:color/black"
+                    />
+                <TextView
+                    android:id="@+id/userDatetime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="2dp"
+
+                    android:text="2020년 4월 22일 오후 2:00"
+                    android:textSize="15sp"
+                    android:textColor="@android:color/black"
+                    />
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="wrap_content"

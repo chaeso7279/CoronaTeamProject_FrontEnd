@@ -22,16 +22,16 @@
         <SeekBarPreference
             android:key="range"
             android:title="반경 설정"
-            android:summary="반경 5km 내 확진자 동선을 분석합니다."
-            android:max="25"
-            android:defaultValue="5" />
+            android:summary="반경 1km 내 확진자 동선을 분석합니다."
+            android:max="5"
+            android:defaultValue="1" />
 
         <SeekBarPreference
             android:key="period"
             android:title="기간 설정"
-            android:summary="최근 15일 내 확진자 동선을 분석합니다."
-            android:max="15"
-            android:defaultValue="15" />
+            android:summary="최근 14일 내 확진자 동선을 분석합니다."
+            android:max="14"
+            android:defaultValue="14" />
 
     </PreferenceCategory>
     <PreferenceCategory android:title="GPS">
