@@ -131,8 +131,8 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         setContentView(R.layout.activity_main);
 
 
-        double lat = DataManager.getInstance().lstPatientRoute.get(0).m_latitude;
-        Log.e(TAG, lat + "");
+//        double lat = DataManager.getInstance().lstPatientRoute.get(0).m_latitude;
+//        Log.e(TAG, lat + "");
 
         getLocationPermission();
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -184,9 +184,6 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         Toast.makeText(getApplicationContext(), "Service 시작", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(MainActivity.this, BackgroundService.class);
         startService(intent);
-
-        /////////////////////////////////////
-
     }
 
     private void init() {
@@ -213,7 +210,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                 getDeviceLocation();
             }
         });
-        hideSoftKeyboard();
+//        hideSoftKeyboard();
     }
 
 
@@ -241,16 +238,20 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMyLocationChange(Location location) {
         current_lat = location.getLatitude();
         current_long = location.getLongitude();
-        Toast.makeText(this, current_lat + ", " + current_long, Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, current_lat + ", " + current_long, Toast.LENGTH_SHORT).show();
         LatLng center = new LatLng(current_lat, current_long);
         if (preCircle != null) {
             preCircle.remove();
         }
+
+        int m_radius = DataManager.getInstance().Option.m_iRadius * 1000;
+        Log.d("tag","m_radius : " + m_radius);
         preCircle = mMap.addCircle(new CircleOptions()
                 .center(center)
-                .radius(500)
-                .strokeColor(Color.RED)
-                .fillColor(Color.TRANSPARENT)
+                .radius(m_radius)
+                .strokeColor(Color.BLUE)
+                .fillColor(0x220000FF)
+                .strokeWidth(5)
         );
     }
 
@@ -271,7 +272,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
             mMap.setMyLocationEnabled(true);
             mMap.setOnMyLocationChangeListener(this);
             //자기 위치 찾는거 지운다
-            mMap.getUiSettings().setMyLocationButtonEnabled(true);
+            mMap.getUiSettings().setMyLocationButtonEnabled(false);
 
             init();
         }
@@ -280,19 +281,16 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.setOnCameraIdleListener(mClusterManager);
         mMap.setOnMarkerClickListener(mClusterManager);
 
-//        mMap.setInfoWindowAdapter(mClusterManager.getMarkerManager());
+    //        mMap.setInfoWindowAdapter(mClusterManager.getMarkerManager());
         mMap.setOnInfoWindowClickListener(mClusterManager); //added
-
 
         mClusterManager.setRenderer(new MyClusterRenderer(this, mMap, mClusterManager));
 
         addItems();
-
     }
 
     // 확진자 추가 함수
     private void addItems() {
-
         int size = DataManager.getInstance().lstPatientRoute.size();
         // Add ten cluster items in close proximity, for purposes of this example.
 
@@ -300,17 +298,20 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         final IconGenerator mClusterIconGenerator = new IconGenerator(getApplicationContext());
 
 
-//  서버 추가
+    //  서버 정보 추가
         double server_lat;
         double server_long;
         String server_address;
         String server_LocationName;
+        int Server_color;
+
 
         for(int i = 0; i < size; i++){
             server_lat = DataManager.getInstance().lstPatientRoute.get(i).m_latitude;
             server_long = DataManager.getInstance().lstPatientRoute.get(i).m_longitude;
             server_address = DataManager.getInstance().lstPatientRoute.get(i).m_address;
             server_LocationName = DataManager.getInstance().lstPatientRoute.get(i).m_visitDatetime;
+            Server_color = DataManager.getInstance().lstPatientRoute.get(i).m_color;
 
 
 //            //시간별 확진자 색깔 따로 찍기
@@ -341,20 +342,26 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 //            long diff = (current_cal.getTimeInMillis() - server_cal.getTimeInMillis())/1000/(60*60*24);
 //
 //            Log.d("tag","long diff : " + diff);
-
-//            DataManager.getInstance().lstPatientRoute.get(i).
-
-
-            Drawable clusterIcon = getResources().getDrawable(R.drawable.blue);
-            mClusterIconGenerator.setBackground(clusterIcon);
-            icon = mClusterIconGenerator.makeIcon();
-
+            if(Server_color == 0) {
+                Drawable clusterIcon = getResources().getDrawable(R.drawable.red);
+                mClusterIconGenerator.setBackground(clusterIcon);
+                icon = mClusterIconGenerator.makeIcon();
+            }
+            else if(Server_color == 1){
+                Drawable clusterIcon = getResources().getDrawable(R.drawable.yellow);
+                mClusterIconGenerator.setBackground(clusterIcon);
+                icon = mClusterIconGenerator.makeIcon();
+            }
+            else {
+                Drawable clusterIcon = getResources().getDrawable(R.drawable.green);
+                mClusterIconGenerator.setBackground(clusterIcon);
+                icon = mClusterIconGenerator.makeIcon();
+            }
             MyItem offsetItem = new MyItem(server_lat, server_long, server_address, server_LocationName, icon);
 
             Log.d("tag","server lat : " + server_lat);
             mClusterManager.addItem(offsetItem);
         }
-
     }
 
     public class MyClusterRenderer extends DefaultClusterRenderer<MyItem> {
@@ -457,7 +464,8 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         if (!title.equals("My Location")) {
             MarkerOptions options = new MarkerOptions()
                     .position(latLng)
-                    .title(title);
+                    .title(title)
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE));
             mMap.addMarker(options);
         }
         hideSoftKeyboard();
