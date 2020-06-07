@@ -45,12 +45,18 @@ public class AnalResponse {
             data.m_cnfID = jObj.getString("cnf_id");
             data.m_userRouteID = jObj.getInt("user_route_id");
             data.m_cnfRouteID = jObj.getInt("cnf_route_id");
-            data.m_latitude = jObj.getDouble("user_latitude");
-            data.m_longitude = jObj.getDouble("user_longitude");
-            data.m_locationName = jObj.getString("location_name");
+
             data.m_analTime = jObj.getString("anal_time");
             data.m_IsPast = jObj.getInt("isPast");
             data.m_IsRead = jObj.getInt("isRead");
+
+            data.m_userLatitude = jObj.getDouble("user_latitude");
+            data.m_userLongitude = jObj.getDouble("user_longitude");
+
+            data.m_cnfLatitude = jObj.getDouble("cnf_latitude");
+            data.m_cnfLongitude = jObj.getDouble("cnf_longitude");
+            data.m_locationName = jObj.getString("location_name");
+            data.m_color = jObj.getInt("color");
 
             lstData.add(data);
         }

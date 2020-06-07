@@ -19,13 +19,22 @@ public class AnalData {
     public int m_cnfRouteID;
 
     @SerializedName("user_latitude")
-    public double m_latitude;
+    public double m_userLatitude;
 
     @SerializedName("user_longitude")
-    public double m_longitude;
+    public double m_userLongitude;
+
+    @SerializedName("cnf_latitude")
+    public double m_cnfLatitude;
+
+    @SerializedName("cnf_longitude")
+    public double m_cnfLongitude;
 
     @SerializedName("location_name")
     public String m_locationName;
+
+    @SerializedName("color")
+    public int m_color;
 
     @SerializedName("anal_time")
     public String m_analTime;

@@ -96,6 +96,6 @@ public class SplashActivity extends Activity {
     /* 안드로이드 고유 아이디 (UUID) 초기화 및 사용자옵션 데이터베이스에서 가져옴 */
     private void SendDeviceIDToServer(){
         // DB 에 정보 저장, 이미 같은 ID 존재하면(최초 접속 아니면) 알아서 걸러질거라고 생각함
-        DataManager.getInstance().SendUserOption(m_DeviceID, 5, 15);
+        DataManager.getInstance().SendUserOption(m_DeviceID, 1, 14);
     }
 }

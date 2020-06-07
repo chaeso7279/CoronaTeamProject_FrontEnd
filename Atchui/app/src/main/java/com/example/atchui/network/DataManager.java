@@ -32,7 +32,7 @@ public class DataManager {
     public String user_id = "";
     private boolean bInit = false;
 
-   public SettingData Option;
+    public SettingData Option;
 
     // 이벤트 리스너
     private DataEventListener eventListener;
@@ -224,6 +224,7 @@ public class DataManager {
         service.UpdateAnalIsRead(data).enqueue(new Callback<SettingResponse>() {
             @Override
             public void onResponse(Call<SettingResponse> call, Response<SettingResponse> response) {
+                GetAnalysisList();
                 Log.e("성공", "Anal Update IsRead");
             }
 
