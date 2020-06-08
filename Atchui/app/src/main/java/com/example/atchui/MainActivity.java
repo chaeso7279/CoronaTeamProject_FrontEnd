@@ -171,8 +171,9 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                 //Intent intent = new Intent(MainActivity.this, HelpActivity.class);
                 //startActivity(intent);
 
-                // 임시로 알림목록 가져오는 중
-                DataManager.getInstance().GetAnalysisList();
+                //DataManager.getInstance().GetAnalysisList();
+                // 임시
+                DataManager.getInstance().AnalPastRoute();
             }
         });
 
@@ -282,12 +283,14 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.setOnMarkerClickListener(mClusterManager);
 
     //        mMap.setInfoWindowAdapter(mClusterManager.getMarkerManager());
-        mMap.setOnInfoWindowClickListener(mClusterManager); //added
+//        mMap.setOnInfoWindowClickListener(mClusterManager); //added
 
         mClusterManager.setRenderer(new MyClusterRenderer(this, mMap, mClusterManager));
 
+
         addItems();
     }
+
 
     // 확진자 추가 함수
     private void addItems() {
@@ -301,16 +304,18 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     //  서버 정보 추가
         double server_lat;
         double server_long;
-        String server_address;
+        String server_ID;
         String server_LocationName;
+        String S1;
         int Server_color;
 
 
         for(int i = 0; i < size; i++){
             server_lat = DataManager.getInstance().lstPatientRoute.get(i).m_latitude;
             server_long = DataManager.getInstance().lstPatientRoute.get(i).m_longitude;
-            server_address = DataManager.getInstance().lstPatientRoute.get(i).m_address;
+            server_ID = String.valueOf(DataManager.getInstance().lstPatientRoute.get(i).m_cnfRouteID) + "번째 확진자";
             server_LocationName = DataManager.getInstance().lstPatientRoute.get(i).m_visitDatetime;
+            S1 = "날짜: " + server_LocationName.substring(0,10)+ "    " + "장소: " +DataManager.getInstance().lstPatientRoute.get(i).m_locationName;
             Server_color = DataManager.getInstance().lstPatientRoute.get(i).m_color;
 
 
@@ -357,7 +362,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                 mClusterIconGenerator.setBackground(clusterIcon);
                 icon = mClusterIconGenerator.makeIcon();
             }
-            MyItem offsetItem = new MyItem(server_lat, server_long, server_address, server_LocationName, icon);
+            MyItem offsetItem = new MyItem(server_lat, server_long, server_ID, S1, icon);
 
             Log.d("tag","server lat : " + server_lat);
             mClusterManager.addItem(offsetItem);

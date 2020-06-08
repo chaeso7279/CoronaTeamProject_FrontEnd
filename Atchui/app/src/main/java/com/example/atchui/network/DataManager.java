@@ -212,6 +212,27 @@ public class DataManager {
         });
     }
 
+    // 과거 사용자 동선 분석하기
+    public void AnalPastRoute(){
+        if(!bInit)
+            return;
+
+        AnalData data = new AnalData();
+        data.m_userID = user_id;
+
+        service.AnalPastRoute(data).enqueue(new Callback<SettingResponse>() {
+            @Override
+            public void onResponse(Call<SettingResponse> call, Response<SettingResponse> response) {
+                Log.e("성공", "Anal Route Past" + response.message());
+            }
+
+            @Override
+            public void onFailure(Call<SettingResponse> call, Throwable t) {
+                Log.e("실패", "Anal Route Past");
+            }
+        });
+    }
+
     // 분석결과 읽음 안읽음 업데이트
     public void UpdateAnalIsRead(int analID, boolean bIsRead) {
         if(!bInit)

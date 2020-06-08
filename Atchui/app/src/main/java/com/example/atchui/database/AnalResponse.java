@@ -52,6 +52,7 @@ public class AnalResponse {
 
             data.m_userLatitude = jObj.getDouble("user_latitude");
             data.m_userLongitude = jObj.getDouble("user_longitude");
+            data.m_userVisitTime = jObj.getString("user_visitDatetime");
 
             data.m_cnfLatitude = jObj.getDouble("cnf_latitude");
             data.m_cnfLongitude = jObj.getDouble("cnf_longitude");
