@@ -172,8 +172,9 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                 //Intent intent = new Intent(MainActivity.this, HelpActivity.class);
                 //startActivity(intent);
 
-                // 임시로 알림목록 가져오는 중
-                DataManager.getInstance().GetAnalysisList();
+                //DataManager.getInstance().GetAnalysisList();
+                // 임시
+                DataManager.getInstance().AnalPastRoute();
             }
         });
 

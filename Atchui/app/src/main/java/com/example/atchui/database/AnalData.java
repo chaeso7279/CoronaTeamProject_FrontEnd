@@ -24,6 +24,9 @@ public class AnalData {
     @SerializedName("user_longitude")
     public double m_userLongitude;
 
+    @SerializedName("user_visitDatetime")
+    public String m_userVisitTime;
+
     @SerializedName("cnf_latitude")
     public double m_cnfLatitude;
 
