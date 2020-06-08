@@ -73,7 +73,8 @@ public class SplashActivity extends Activity {
         DataManager.getInstance().Initialize(service);
 
         //고유 ID(FireBase토큰) DB 입력 및 서버에 userID 설정
-        DataManager.getInstance().SetUserID(m_DeviceID);
+//        DataManager.getInstance().SetUserID(m_DeviceID);
+        DataManager.getInstance().SetUserID("cuTKxqcHm5s:APA91bHsAnLoevnS4j0dMeixleE5pg1nMAwRqDC_mm799NDKfm6uNqpShdJZoSP8glZKtkN0WQMK2MVg3Whi_ftDsX-RmkRhy5Ewoo_WPpGnw9XuHVcssX2VbLdsfdB18Fm_r4lo10I3");
         SendDeviceIDToServer();
 
 

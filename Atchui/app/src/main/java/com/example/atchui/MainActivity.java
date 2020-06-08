@@ -130,7 +130,6 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
 //        double lat = DataManager.getInstance().lstPatientRoute.get(0).m_latitude;
 //        Log.e(TAG, lat + "");
 
