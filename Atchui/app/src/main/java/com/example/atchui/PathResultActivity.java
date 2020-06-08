@@ -16,10 +16,12 @@ import android.widget.Toast;
 
 import com.example.atchui.network.DataManager;
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -40,6 +42,8 @@ public class PathResultActivity extends FragmentActivity implements OnMapReadyCa
     TextView info_province;
     TextView info_isofacility;
 
+
+    int i;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,6 +75,7 @@ public class PathResultActivity extends FragmentActivity implements OnMapReadyCa
                 DataManager.getInstance().lstAnal.get(index).m_locationName
         );
 
+        i= index;
     }
 
     @Override
@@ -78,6 +83,21 @@ public class PathResultActivity extends FragmentActivity implements OnMapReadyCa
         Toast.makeText(this,"map is Ready",Toast.LENGTH_SHORT).show();
         Log.d(TAG,"onMapReady : map is ready");
         mMap = googleMap;
-    }
 
+        MarkerOptions user_marker = new MarkerOptions();
+        user_marker.position(new LatLng(DataManager.getInstance().lstAnal.get(i).m_userLatitude
+                ,DataManager.getInstance().lstAnal.get(i).m_userLongitude))
+                .title(DataManager.getInstance().lstAnal.get(i).m_analTime);
+
+        mMap.addMarker(user_marker);
+
+        MarkerOptions cnf_marker = new MarkerOptions();
+        cnf_marker.position(new LatLng(DataManager.getInstance().lstAnal.get(i).m_cnfLatitude
+                , DataManager.getInstance().lstAnal.get(i).m_cnfLongitude))
+                .title(DataManager.getInstance().lstAnal.get(i).m_locationName);
+        mMap.addMarker(cnf_marker);
+        
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(DataManager.getInstance().lstAnal.get(i).m_userLatitude
+                , DataManager.getInstance().lstAnal.get(i).m_userLongitude)));
+    }
 }
