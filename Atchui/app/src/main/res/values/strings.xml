@@ -7,7 +7,7 @@
     <string name="gps_message_y">gps 수집 허용</string>
     <string name="gps_message_n">gps 수집 해제</string>
 
-    <string name="range_summary">반경 %dkm 내 확진자 동선을 분석합니다.</string>
+    <string name="range_summary">반경 %.1f km 내 확진자 동선을 분석합니다.</string>
     <string name="period_summary">최근 %d일 내 확진자 동선을 분석합니다.</string>
 
     <string name = "noti_past">%s 근방에서 %s에 동선 겹침이 확인되었습니다.</string>

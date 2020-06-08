@@ -4,7 +4,7 @@
     <PreferenceCategory android:title="알림">
         <SwitchPreference
             android:key="alert"
-            android:defaultValue="false"
+            android:defaultValue="true"
             android:summaryOff="비동의"
             android:summaryOn="동의"
             android:title="푸시 알림"/>
@@ -15,16 +15,19 @@
             android:defaultValue="true"
             android:title="소리 설정"
             android:summaryOn="소리"
-            android:summaryOff="진동"/>
+            android:summaryOff="진동"
+            />
     </PreferenceCategory>
+
 
     <PreferenceCategory android:title="분석 설정">
         <SeekBarPreference
             android:key="range"
             android:title="반경 설정"
-            android:summary="반경 1km 내 확진자 동선을 분석합니다."
-            android:max="5"
-            android:defaultValue="1" />
+            android:summary="반경 0.5km 내 확진자 동선을 분석합니다."
+            android:max="10"
+            android:defaultValue="5"
+            />
 
         <SeekBarPreference
             android:key="period"
@@ -43,4 +46,6 @@
             android:title="GPS 수집"/>
     </PreferenceCategory>
 
+
 </PreferenceScreen>
+
