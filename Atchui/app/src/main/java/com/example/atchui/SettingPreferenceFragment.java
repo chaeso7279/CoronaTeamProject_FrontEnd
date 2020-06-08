@@ -97,7 +97,7 @@ public class SettingPreferenceFragment extends PreferenceFragment {
                     Resources res = getResources();
 
                     double rangeKm = now_value*0.1;  //1~10 -> 0.1~1.0
-                    
+
                     String new_summary = String.format(res.getString(R.string.range_summary),rangeKm); //format의 %f에 현재 값 넣기
 
                     Preference connectionPref = findPreference(key);

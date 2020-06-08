@@ -4,7 +4,7 @@
     <PreferenceCategory android:title="알림">
         <SwitchPreference
             android:key="alert"
-            android:defaultValue="false"
+            android:defaultValue="true"
             android:summaryOff="비동의"
             android:summaryOn="동의"
             android:title="푸시 알림"/>
