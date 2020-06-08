@@ -7,6 +7,7 @@ import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
+import android.widget.SeekBar;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -29,7 +30,9 @@ public class SettingPreferenceFragment extends PreferenceFragment {
         int range = prefs.getInt("range",0);
         int period = prefs.getInt("period", 0);
 
-        String range_summary = String.format(getResources().getString(R.string.range_summary),range); //format의 %d에 현재 값 넣기
+        double rangeKm = range*0.1; //1~10 -> 0.1~1.0
+
+        String range_summary = String.format(getResources().getString(R.string.range_summary),rangeKm); //format의 %f에 현재 값 넣기
         Preference rangePref = findPreference("range");
         //summary에 사용자 설정 값 Set
         rangePref.setSummary(range_summary);
@@ -39,7 +42,11 @@ public class SettingPreferenceFragment extends PreferenceFragment {
         //summary에 사용자 설정 값 Set
         periodPref.setSummary(period_summary);
 
+
+
+
     }
+
 
     //내장 DB가 변하는 것을 catch하는 리스너
     SharedPreferences.OnSharedPreferenceChangeListener prefListener  = new SharedPreferences.OnSharedPreferenceChangeListener(){
@@ -88,7 +95,10 @@ public class SettingPreferenceFragment extends PreferenceFragment {
                 if(getActivity() != null){
                     int now_value = sharedPreferences.getInt(key,0); //현재 값 받아옴
                     Resources res = getResources();
-                    String new_summary = String.format(res.getString(R.string.range_summary),now_value); //format의 %d에 현재 값 넣기
+
+                    double rangeKm = now_value*0.1;  //1~10 -> 0.1~1.0
+                    
+                    String new_summary = String.format(res.getString(R.string.range_summary),rangeKm); //format의 %f에 현재 값 넣기
 
                     Preference connectionPref = findPreference(key);
                     //summary에 사용자 설정 값 Set
