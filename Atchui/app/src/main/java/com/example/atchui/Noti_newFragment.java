@@ -154,6 +154,7 @@ public class Noti_newFragment extends Fragment implements Noti_RecyclerAdapter.O
         if(viewHolder.itemType == CURRENT_NOTIFICATION){
             Intent intent = new Intent(getActivity(), CurrentResultActivity.class);
 
+            intent.putExtra("lstIndex",viewHolder.lstIndex);
             DataManager.getInstance().UpdateAnalIsRead(viewHolder.lstIndex, true);
             startActivity(intent);
             getActivity().finish();
@@ -161,6 +162,7 @@ public class Noti_newFragment extends Fragment implements Noti_RecyclerAdapter.O
         else if(viewHolder.itemType == PATH_NOTIFICATION){
             Intent intent = new Intent(getActivity(), PathResultActivity.class);
 
+            intent.putExtra("lstIndex",viewHolder.lstIndex);
             DataManager.getInstance().UpdateAnalIsRead(viewHolder.lstIndex, true);
             startActivity(intent);
             getActivity().finish();
