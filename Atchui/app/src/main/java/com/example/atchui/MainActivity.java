@@ -116,8 +116,9 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
     //widgets
     private EditText mSearchText;
+    private EditText tSearchText;
     private ImageView mGps;
-
+    String value ;
     //vars
     private Boolean mLocationPermissionsGranted = false;
 
@@ -258,7 +259,12 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         );
 //        Log.d(TAG ,"m_iPeriod" + DataManager.getInstance().Option.m_iPeriod);
 
+        tSearchText = (EditText) findViewById(R.id.input_search2);
+        value = tSearchText.getText().toString();
 
+        if(value.length()>=9) {
+            T_addItems(value);
+        }
     }
 
     @Override
@@ -295,8 +301,90 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
 
+    private void T_addItems(String value){
+        mClusterManager.clearItems();
+        int size = DataManager.getInstance().lstPatientRoute.size();
+        Log.d("tag", "value: " + value);
+        // Add ten cluster items in close proximity, for purposes of this example.
+
+        final IconGenerator mClusterIconGenerator = new IconGenerator(getApplicationContext());
+
+
+        //  서버 정보 추가
+        double server_lat;
+        double server_long;
+        String server_ID;
+        String server_LocationName;
+        String S1;
+        int Server_color;
+
+        /////////////////
+
+            //시간별 확진자 색깔 따로 찍기
+        for (int i = 0; i < size; i++) {
+            String visitDatetime = DataManager.getInstance().lstPatientRoute.get(i).m_visitDatetime;
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+            Date mDate = null;
+            try {
+                mDate = format.parse(visitDatetime);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            //입력 시간 가져오기
+            SimpleDateFormat mSimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            Date s_Date = null;
+            try {
+                s_Date = mSimpleDateFormat.parse(value);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            Calendar server_cal = Calendar.getInstance();
+            server_cal.setTime(mDate);
+            Log.d("tag", "mDate: " + mDate);
+            Calendar s_cal = Calendar.getInstance();
+            s_cal.setTime(s_Date);
+            Log.d("tag", "s_Date: " + s_Date);
+
+
+            long diff = s_cal.getTimeInMillis() - server_cal.getTimeInMillis();
+
+            Log.d("tag", "diff: " + diff);
+            if (diff > 0) {
+                Bitmap icon = null;
+                server_lat = DataManager.getInstance().lstPatientRoute.get(i).m_latitude;
+                server_long = DataManager.getInstance().lstPatientRoute.get(i).m_longitude;
+                server_ID = DataManager.getInstance().lstPatientRoute.get(i).m_cnfID + "번 확진자";
+                server_LocationName = DataManager.getInstance().lstPatientRoute.get(i).m_visitDatetime;
+                S1 = "날짜: " + server_LocationName.substring(0, 10) + "    " + "장소: " + DataManager.getInstance().lstPatientRoute.get(i).m_locationName;
+                Server_color = DataManager.getInstance().lstPatientRoute.get(i).m_color;
+
+                if(Server_color == 0) {
+                    Drawable clusterIcon = getResources().getDrawable(R.drawable.color_red);
+                    mClusterIconGenerator.setBackground(clusterIcon);
+                    icon = mClusterIconGenerator.makeIcon();
+                }
+                else if(Server_color == 1){
+                    Drawable clusterIcon = getResources().getDrawable(R.drawable.color_yellow);
+                    mClusterIconGenerator.setBackground(clusterIcon);
+                    icon = mClusterIconGenerator.makeIcon();
+                }
+                else {
+                    Drawable clusterIcon = getResources().getDrawable(R.drawable.color_green);
+                    mClusterIconGenerator.setBackground(clusterIcon);
+                    icon = mClusterIconGenerator.makeIcon();
+                }
+                if(icon != null) {
+                    MyItem offsetItem = new MyItem(server_lat, server_long, server_ID, S1, icon);
+                    mClusterManager.addItem(offsetItem);
+                }
+            }
+        }
+    }
+
     // 확진자 추가 함수
     private void addItems() {
+        mClusterManager.clearItems();
         Log.d(TAG ,"m_iPeriod" + DataManager.getInstance().Option.m_iPeriod);
         int size = DataManager.getInstance().lstPatientRoute.size();
         // Add ten cluster items in close proximity, for purposes of this example.
@@ -320,34 +408,6 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
             S1 = "날짜: " + server_LocationName.substring(0, 10) + "    " + "장소: " + DataManager.getInstance().lstPatientRoute.get(i).m_locationName;
             Server_color = DataManager.getInstance().lstPatientRoute.get(i).m_color;
 
-//            //시간별 확진자 색깔 따로 찍기
-//            String visitDatetime = DataManager.getInstance().lstPatientRoute.get(1).m_visitDatetime;
-//            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-//            Date mDate = null;
-//            try {
-//                mDate = format.parse(visitDatetime);
-//            } catch (ParseException e) {
-//                e.printStackTrace();
-//            }
-//
-//            //현재시간 가져오기
-//            SimpleDateFormat mSimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-//            Date currentTime = new Date();
-//            String oTime = mSimpleDateFormat.format(currentTime);
-//            Date currentDate = null;
-//            try {
-//                currentDate = mSimpleDateFormat.parse(oTime);
-//            } catch (ParseException e) {
-//                e.printStackTrace();
-//            }
-//            Calendar server_cal = Calendar.getInstance();
-//            server_cal.setTime(mDate);
-//            Calendar current_cal = Calendar.getInstance();
-//            current_cal.setTime(currentDate);
-//
-//            long diff = (current_cal.getTimeInMillis() - server_cal.getTimeInMillis())/1000/(60*60*24);
-//
-//            Log.d("tag","long diff : " + diff);
             if(Server_color == 0) {
                 Drawable clusterIcon = getResources().getDrawable(R.drawable.color_red);
                 mClusterIconGenerator.setBackground(clusterIcon);
