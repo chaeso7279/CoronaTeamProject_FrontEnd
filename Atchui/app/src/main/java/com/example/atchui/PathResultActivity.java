@@ -119,11 +119,14 @@ public class PathResultActivity extends FragmentActivity implements OnMapReadyCa
         //Noti정보
         anal_time = DataManager.getInstance().lstAnal.get(i).m_analTime;   //분석시간
 
-        String user_timeStr = String.format(getResources().getString(R.string.noti_time),user_time.substring(0,10),user_time.substring(11,19));
+        String user_timeStr = String.format(getResources().getString(R.string.noti_time)
+                ,user_time.substring(0,10),user_time.substring(11,19));
 
-        String cnf_timeStr = String.format(getResources().getString(R.string.noti_time),cnf_time.substring(0,10),cnf_time.substring(11,19));
+        String cnf_timeStr = String.format(getResources().getString(R.string.noti_time)
+                ,cnf_time.substring(0,10),cnf_time.substring(11,19));
 
         String cnfDateStr = cnfDate.substring(0,10);
+
         /*텍스트뷰에 집어넣기*/
         user_datetime.setText(user_timeStr);
 

@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.atchui.network.DataEventListener;
 import com.example.atchui.network.DataManager;
 
 import java.text.SimpleDateFormat;
@@ -46,6 +47,14 @@ public class Noti_Fragment extends Fragment implements Noti_RecyclerAdapter.OnLi
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // 이벤트 리스너 등록
+        DataManager.getInstance().SetOnReceivedEvent(new DataEventListener() {
+            @Override
+            public void onReceivedEvent() {
+                // 이벤트 수신
+                Log.e("NotifyFragment", "Anal List Update!");
+            }
+        });
     }
 
     @Override
@@ -77,7 +86,7 @@ public class Noti_Fragment extends Fragment implements Noti_RecyclerAdapter.OnLi
                 int labelColor =  DataManager.getInstance().lstAnal.get(i).m_color;    //라벨컬러
 
                 //사용자정보
-                String user_time = DataManager.getInstance().lstAnal.get(i).m_analTime;           //TODO: table에 column 추가 후 제대로 받아오기(현재는 임시)
+                String user_time = DataManager.getInstance().lstAnal.get(i).m_userVisitTime;
 
                 //Noti정보
                 int index = i;  //서버 list 내 인덱스
@@ -85,10 +94,10 @@ public class Noti_Fragment extends Fragment implements Noti_RecyclerAdapter.OnLi
                 int itemType = DataManager.getInstance().lstAnal.get(i).m_IsPast; //과거기반?현재기반?
 
                 String user_timeStr = String.format(getResources().getString(R.string.noti_time),user_time.substring(0,10),user_time.substring(11,19));
-                Log.d("사용자 시간", user_timeStr);  //TODO: 맞는지 확인
+                Log.d("사용자 시간", user_timeStr);
 
                 String anal_timeStr = String.format(getResources().getString(R.string.noti_time),anal_time.substring(0,10),anal_time.substring(11,19));
-                Log.d("분석 시간", anal_timeStr); //TODO: 맞는지 확인
+                Log.d("분석 시간", anal_timeStr);
 
                 String diffStr = analTimeDiff(anal_timeStr);
 
