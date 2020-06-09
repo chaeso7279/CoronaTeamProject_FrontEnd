@@ -202,6 +202,16 @@
                     android:textColor="@android:color/black"
                     android:textStyle="bold"/>
                 <TextView
+                    android:id="@+id/info_cnfNum"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="2dp"
+
+                    android:text="#nnnnn번째 감염자"
+                    android:textSize="15sp"
+                    android:textColor="@android:color/black"
+                    />
+                <TextView
                     android:id="@+id/info_infectCase"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

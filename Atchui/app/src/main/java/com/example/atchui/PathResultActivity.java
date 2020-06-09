@@ -81,7 +81,7 @@ public class PathResultActivity extends FragmentActivity implements OnMapReadyCa
         Intent intent = getIntent();
 
         lstIndex = intent.getExtras().getInt("lstIndex");
-
+        Log.d("패쓰", lstIndex +"");
         getSelectedNotiData(lstIndex);  //선택된 Noti의 데이터 가져오기
 
         /*google map*/
@@ -94,6 +94,7 @@ public class PathResultActivity extends FragmentActivity implements OnMapReadyCa
     private void getSelectedNotiData(int i){
         /*서버의 데이터 가져오기*/
         cnf_id = DataManager.getInstance().lstAnal.get(i).m_cnfID; //확진자id
+        Log.d("확진자ID",""+cnf_id);
         cnf_latitude = DataManager.getInstance().lstAnal.get(i).m_cnfLatitude;    //확진자위도
         cnf_longitude = DataManager.getInstance().lstAnal.get(i).m_cnfLongitude;   //확진자경도
         user_latitude = DataManager.getInstance().lstAnal.get(i).m_userLatitude;   //사용자위도
@@ -106,7 +107,7 @@ public class PathResultActivity extends FragmentActivity implements OnMapReadyCa
         //Noti정보
         anal_time = DataManager.getInstance().lstAnal.get(i).m_analTime;   //분석시간
 
-        String user_timeStr = String.format(getResources().getString(R.string.noti_time),user_time.substring(0,9),user_time.substring(11,18));
+        String user_timeStr = String.format(getResources().getString(R.string.noti_time),user_time.substring(0,10),user_time.substring(11,19));
         Log.d("사용자 시간", user_timeStr);  //TODO: 맞는지 확인
 
 
@@ -118,7 +119,7 @@ public class PathResultActivity extends FragmentActivity implements OnMapReadyCa
 //        info_cnfdate.setText();
 //        info_province.setText();
 //        info_isofacility.setText();   //TODO: db 추가...
-        info_cnfNum.setText(cnf_id);
+        info_cnfNum.setText(String.format(getResources().getString(R.string.path_cnfid),cnf_id));
     }
 
     @Override

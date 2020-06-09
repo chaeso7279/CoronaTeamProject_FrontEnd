@@ -14,4 +14,5 @@
     <string name = "noti_current">내 위치 반경 %dkm 내에서 확진자 동선이 확인되었습니다.</string>
 
     <string name = "noti_time">%s %s</string>
+    <string name = "path_cnfid">- %s 번째 확진자</string>
 </resources>

@@ -63,8 +63,7 @@ public class Noti_newRecyclerAdapter extends RecyclerView.Adapter<Noti_newRecycl
             super(itemView) ;
 
             itemView.setBackgroundColor(itemView.getResources().getColor(R.color.background_newItem));
-            lstIndex = 0;
-            itemType = 0;
+
             labelColor = (ImageView)itemView.findViewById(R.id.imageView_label);
             textContent = (TextView)itemView.findViewById(R.id.textView_Content) ;
             textTime = (TextView)itemView.findViewById(R.id.textview_Time) ;
@@ -82,7 +81,7 @@ public class Noti_newRecyclerAdapter extends RecyclerView.Adapter<Noti_newRecycl
         }
 
         void onBind(Noti_RecyclerItem item) {
-//            lstIndex = item.getLstIndex();
+            lstIndex = item.getLstIndex();
             itemType = item.getItemType();
             labelColor.setBackgroundColor(item.getLabelColor());
             textContent.setText(item.getTextStr());

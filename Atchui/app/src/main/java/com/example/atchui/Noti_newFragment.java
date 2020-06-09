@@ -112,6 +112,8 @@ public class Noti_newFragment extends Fragment implements Noti_RecyclerAdapter.O
                 if(itemType == PATH_NOTIFICATION){
                     String context = String.format(getResources().getString(R.string.noti_past),location_name, user_time);
                     Noti_RecyclerItem item = new Noti_RecyclerItem(index, itemType, labelColor, context, anal_timeStr);
+                    Log.d("setData: 아이템타입",itemType+"");
+                    Log.d("setData: 인덱스",index+"");
                     new_adapter.addItem(item);
                 }
                 //current일 경우
@@ -125,23 +127,6 @@ public class Noti_newFragment extends Fragment implements Noti_RecyclerAdapter.O
                 new_adapter.notifyDataSetChanged();
             }
         }
-
-//        Noti_RecyclerItem item = new Noti_RecyclerItem();
-//
-//        item.setItemType(CURRENT_NOTIFICATION);
-//        item.setLabelColor(this.getResources().getColor(R.color.label_green));
-//        item.setTextStr("반경 1km 내에 확진자 동선이 확인되었습니다.");
-//        item.setTimeStr("1분 전");
-//
-//        new_adapter.addItem(item);
-//
-//        item = new Noti_RecyclerItem();
-//        item.setItemType(PATH_NOTIFICATION);
-//        item.setLabelColor(this.getResources().getColor(R.color.label_red));
-//        item.setTextStr("강남구청 근방에서 2020-05-28에 동선겹침이 확인되었습니다.");
-//        item.setTimeStr("1분 전");
-////
-//        new_adapter.addItem(item);
     }
     @Override
     public void onItemSelected(View v, int position) {
@@ -149,6 +134,8 @@ public class Noti_newFragment extends Fragment implements Noti_RecyclerAdapter.O
         Noti_newRecyclerAdapter.Noti_newItemViewHolder viewHolder =
                 (Noti_newRecyclerAdapter.Noti_newItemViewHolder)new_recyclerView.findViewHolderForAdapterPosition(position);
 
+        Log.d("onItemSelected: 아이템타입", viewHolder.itemType +"");
+        Log.d("onItemSelected: 인덱스", viewHolder.lstIndex +"");
 
         //itemType에 맞게 activity 이동
         if(viewHolder.itemType == CURRENT_NOTIFICATION){
@@ -157,7 +144,9 @@ public class Noti_newFragment extends Fragment implements Noti_RecyclerAdapter.O
             intent.putExtra("lstIndex",viewHolder.lstIndex);
             DataManager.getInstance().UpdateAnalIsRead(viewHolder.lstIndex, true);
             startActivity(intent);
-            getActivity().finish();
+            if(getActivity() != null) {
+                getActivity().finish();
+            }
         }
         else if(viewHolder.itemType == PATH_NOTIFICATION){
             Intent intent = new Intent(getActivity(), PathResultActivity.class);
@@ -165,7 +154,9 @@ public class Noti_newFragment extends Fragment implements Noti_RecyclerAdapter.O
             intent.putExtra("lstIndex",viewHolder.lstIndex);
             DataManager.getInstance().UpdateAnalIsRead(viewHolder.lstIndex, true);
             startActivity(intent);
-            getActivity().finish();
+            if(getActivity() != null) {
+                getActivity().finish();
+            }
 
         }
     }
