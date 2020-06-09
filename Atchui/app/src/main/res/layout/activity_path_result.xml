@@ -207,7 +207,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="2dp"
 
-                    android:text="#nnnnn번째 감염자(default)"
+                    android:text="- #nnnnn번째 감염자(default)"
                     android:textSize="15sp"
                     android:textColor="@android:color/black"
                     />

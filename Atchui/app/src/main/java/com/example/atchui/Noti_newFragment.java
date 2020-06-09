@@ -37,7 +37,6 @@ public class Noti_newFragment extends Fragment implements Noti_RecyclerAdapter.O
     private Noti_newRecyclerAdapter new_adapter;
     private RecyclerView new_recyclerView;
 
-    //private SharedViewModel sharedViewModel; //fragment간 text전달을 위해 만듬
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -85,18 +84,17 @@ public class Noti_newFragment extends Fragment implements Noti_RecyclerAdapter.O
                 int labelColor =  DataManager.getInstance().lstAnal.get(i).m_color;    //라벨컬러
 
                 //사용자정보
-                String user_time = DataManager.getInstance().lstAnal.get(i).m_analTime;           //TODO: table에 column 추가 후 제대로 받아오기(현재는 임시)
-
+                String user_time = DataManager.getInstance().lstAnal.get(i).m_userVisitTime;
                 //Noti정보
                 int index = i;  //서버 list 내 인덱스
                 String anal_time = DataManager.getInstance().lstAnal.get(i).m_analTime;   //분석시간
                 int itemType = DataManager.getInstance().lstAnal.get(i).m_IsPast; //과거기반?현재기반?
 
                 String user_timeStr = String.format(getResources().getString(R.string.noti_time),user_time.substring(0,10),user_time.substring(11,19));
-                Log.d("사용자 시간", user_timeStr);  //TODO: 맞는지 확인
+                Log.d("사용자 시간", user_timeStr);
 
                 String anal_timeStr = String.format(getResources().getString(R.string.noti_time),anal_time.substring(0,10),anal_time.substring(11,19));
-                Log.d("분석 시간", anal_timeStr); //TODO: 맞는지 확인
+                Log.d("분석 시간", anal_timeStr);
 
                 String diffStr = analTimeDiff(anal_timeStr);
 

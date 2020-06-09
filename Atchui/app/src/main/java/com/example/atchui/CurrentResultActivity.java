@@ -128,7 +128,7 @@ public class CurrentResultActivity extends FragmentActivity implements OnMapRead
 //        info_cnfdate.setText();
 //        info_province.setText();
 //        info_isofacility.setText();   //TODO: db 추가...
-        info_cnfNum.setText(String.format(getResources().getString(R.string.path_cnfid),cnf_id));
+        info_cnfNum.setText(String.format(getResources().getString(R.string.result_cnfid),cnf_id));
     }
 
     //google map
