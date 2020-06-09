@@ -89,11 +89,6 @@ public class SplashActivity extends Activity {
         // 과거 경로 기반 분석
         DataManager.getInstance().AnalPastRoute();
 
-        // Notification_list 관련 정보 가져오기
-        DataManager.getInstance().GetAnalysisList();
-
-        //DataManager.getInstance().AnalPresentRoute(1);
-
         ////////////////////////////////////////
         Toast.makeText(SplashActivity.this, "서버 데이터 불러오기 완료", Toast.LENGTH_SHORT).show();
     }
