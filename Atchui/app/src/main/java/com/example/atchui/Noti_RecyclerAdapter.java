@@ -71,8 +71,8 @@ public class Noti_RecyclerAdapter extends RecyclerView.Adapter<Noti_RecyclerAdap
         Noti_ItemViewHolder(View itemView) {
             super(itemView) ;
 
-            itemView.setBackgroundColor(itemView.getResources().getColor(R.color.background_newItem));
-
+//            itemView.setBackgroundColor(itemView.getResources().getColor(R.color.background_newItem));
+//
             labelColor = (ImageView)itemView.findViewById(R.id.imageView_label);
             textContent = (TextView)itemView.findViewById(R.id.textView_Content) ;
             textTime = (TextView)itemView.findViewById(R.id.textview_Time) ;
