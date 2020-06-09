@@ -112,8 +112,6 @@ public class Noti_newFragment extends Fragment implements Noti_RecyclerAdapter.O
                 if(itemType == PATH_NOTIFICATION){
                     String context = String.format(getResources().getString(R.string.noti_past),location_name, user_time);
                     Noti_RecyclerItem item = new Noti_RecyclerItem(index, itemType, labelColor, context, anal_timeStr);
-                    Log.d("setData: 아이템타입",itemType+"");
-                    Log.d("setData: 인덱스",index+"");
                     new_adapter.addItem(item);
                 }
                 //current일 경우
@@ -134,8 +132,6 @@ public class Noti_newFragment extends Fragment implements Noti_RecyclerAdapter.O
         Noti_newRecyclerAdapter.Noti_newItemViewHolder viewHolder =
                 (Noti_newRecyclerAdapter.Noti_newItemViewHolder)new_recyclerView.findViewHolderForAdapterPosition(position);
 
-        Log.d("onItemSelected: 아이템타입", viewHolder.itemType +"");
-        Log.d("onItemSelected: 인덱스", viewHolder.lstIndex +"");
 
         //itemType에 맞게 activity 이동
         if(viewHolder.itemType == CURRENT_NOTIFICATION){
