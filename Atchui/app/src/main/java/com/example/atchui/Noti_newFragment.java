@@ -34,7 +34,7 @@ public class Noti_newFragment extends Fragment implements Noti_RecyclerAdapter.O
     private static final int CURRENT_NOTIFICATION = 0;
     private static final int PATH_NOTIFICATION = 1;
 
-    private Noti_newRecyclerAdapter new_adapter;
+    private Noti_RecyclerAdapter new_adapter;
     private RecyclerView new_recyclerView;
 
     //private SharedViewModel sharedViewModel; //fragment간 text전달을 위해 만듬
@@ -70,7 +70,7 @@ public class Noti_newFragment extends Fragment implements Noti_RecyclerAdapter.O
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         new_recyclerView.setLayoutManager(linearLayoutManager);
 
-        new_adapter = new Noti_newRecyclerAdapter(this);
+        new_adapter = new Noti_RecyclerAdapter(this);
         new_recyclerView.setAdapter(new_adapter);
 
     }
