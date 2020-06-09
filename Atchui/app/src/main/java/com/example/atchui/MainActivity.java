@@ -244,8 +244,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
             preCircle.remove();
         }
 
-        int m_radius = DataManager.getInstance().Option.m_iRadius * 100;
-        //1~10 -> 100m ~ 1000m 니까 100곱해줬음
+        int m_radius = DataManager.getInstance().Option.m_iRadius;
         Log.d("tag","m_radius : " + m_radius);
         preCircle = mMap.addCircle(new CircleOptions()
                 .center(center)
