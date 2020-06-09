@@ -110,8 +110,9 @@ public class Noti_newFragment extends Fragment implements Noti_RecyclerAdapter.O
 
                 //past일 경우
                 if(itemType == PATH_NOTIFICATION){
-                    String context = String.format(getResources().getString(R.string.noti_past),location_name, user_time);
+                    String context = String.format(getResources().getString(R.string.noti_past),location_name, user_time.substring(0,10));
                     Noti_RecyclerItem item = new Noti_RecyclerItem(index, itemType, labelColor, context, anal_timeStr);
+                    Log.d("라벨컬러",""+labelColor);
                     new_adapter.addItem(item);
                 }
                 //current일 경우

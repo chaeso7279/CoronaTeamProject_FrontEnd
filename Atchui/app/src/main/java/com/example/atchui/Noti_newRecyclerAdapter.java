@@ -59,6 +59,10 @@ public class Noti_newRecyclerAdapter extends RecyclerView.Adapter<Noti_newRecycl
 
         LinearLayout itemLayout;
 
+        int red_color;
+        int yellow_color;
+        int green_color;
+
         Noti_newItemViewHolder(View itemView) {
             super(itemView) ;
 
@@ -69,6 +73,12 @@ public class Noti_newRecyclerAdapter extends RecyclerView.Adapter<Noti_newRecycl
             textTime = (TextView)itemView.findViewById(R.id.textview_Time) ;
 
             itemLayout = (LinearLayout)itemView.findViewById(R.id.item_layout);
+
+            /*색 리소스 저장*/
+            red_color = itemView.getResources().getColor(R.color.label_red);
+            yellow_color = itemView.getResources().getColor(R.color.label_yellow);
+            green_color = itemView.getResources().getColor(R.color.label_green);
+            Log.d("빨간색", red_color+"");
 
             //Item Click Event Listener
             itemView.setOnClickListener(new View.OnClickListener() {
@@ -83,7 +93,19 @@ public class Noti_newRecyclerAdapter extends RecyclerView.Adapter<Noti_newRecycl
         void onBind(Noti_RecyclerItem item) {
             lstIndex = item.getLstIndex();
             itemType = item.getItemType();
-            labelColor.setBackgroundColor(item.getLabelColor());
+            int color = item.getLabelColor();
+            if(color == 0){
+                //빨강
+                labelColor.setBackgroundColor(red_color);
+            }
+            else if( color == 1) {
+                //노랑
+                labelColor.setBackgroundColor(yellow_color);
+            }
+            else if(color == 2){
+                //초록
+                labelColor.setBackgroundColor(green_color);
+            }
             textContent.setText(item.getTextStr());
             textTime.setText(item.getTimeStr());
         }
