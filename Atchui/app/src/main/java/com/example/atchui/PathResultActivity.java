@@ -87,11 +87,18 @@ public class PathResultActivity extends FragmentActivity implements OnMapReadyCa
         mMap = googleMap;
 
 
+
+        String server_ID = String.valueOf(DataManager.getInstance().lstAnal.get(i).m_cnfRouteID);
+        String server_LocationName = DataManager.getInstance().lstAnal.get(i).m_userVisitTime;
+        String S1 = "날짜: "  + server_LocationName.substring(0,10) + "    " + "장소: "+DataManager.getInstance().lstAnal.get(i).m_locationName;
+
+
         if(DataManager.getInstance().lstAnal.get(i).m_color==0){
             MarkerOptions user_marker = new MarkerOptions();
             user_marker.position(new LatLng(DataManager.getInstance().lstAnal.get(i).m_userLatitude
                     ,DataManager.getInstance().lstAnal.get(i).m_userLongitude))
-                    .title(DataManager.getInstance().lstAnal.get(i).m_analTime)
+                    .title(server_ID + "번째 확진자")
+                    .snippet(S1)
                     .icon(BitmapDescriptorFactory.fromResource(R.drawable.red));
             mMap.addMarker(user_marker);
         }
@@ -99,7 +106,8 @@ public class PathResultActivity extends FragmentActivity implements OnMapReadyCa
             MarkerOptions user_marker = new MarkerOptions();
             user_marker.position(new LatLng(DataManager.getInstance().lstAnal.get(i).m_userLatitude
                     ,DataManager.getInstance().lstAnal.get(i).m_userLongitude))
-                    .title(DataManager.getInstance().lstAnal.get(i).m_analTime)
+                    .title(server_ID + "번째 확진자")
+                    .snippet(S1)
                     .icon(BitmapDescriptorFactory.fromResource(R.drawable.yellow));
             mMap.addMarker(user_marker);
         }
@@ -107,7 +115,8 @@ public class PathResultActivity extends FragmentActivity implements OnMapReadyCa
             MarkerOptions user_marker = new MarkerOptions();
             user_marker.position(new LatLng(DataManager.getInstance().lstAnal.get(i).m_userLatitude
                     ,DataManager.getInstance().lstAnal.get(i).m_userLongitude))
-                    .title(DataManager.getInstance().lstAnal.get(i).m_analTime)
+                    .title(server_ID + "번째 확진자")
+                    .snippet(S1)
                     .icon(BitmapDescriptorFactory.fromResource(R.drawable.green));
             mMap.addMarker(user_marker);
         }
@@ -117,6 +126,7 @@ public class PathResultActivity extends FragmentActivity implements OnMapReadyCa
         cnf_marker.position(new LatLng(DataManager.getInstance().lstAnal.get(i).m_cnfLatitude
                 , DataManager.getInstance().lstAnal.get(i).m_cnfLongitude))
                 .title(DataManager.getInstance().lstAnal.get(i).m_locationName)
+                .snippet(S1)
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.blue));
 
         mMap.addMarker(cnf_marker);
