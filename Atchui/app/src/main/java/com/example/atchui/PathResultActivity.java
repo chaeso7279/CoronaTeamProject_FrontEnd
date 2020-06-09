@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.example.atchui.network.DataManager;
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -128,52 +129,48 @@ public class PathResultActivity extends FragmentActivity implements OnMapReadyCa
 
         mMap = googleMap;
 
-        MarkerOptions user_marker = new MarkerOptions();
-        user_marker.position(new LatLng(user_latitude,user_longitude))
-                .title(anal_time);
+        MarkerOptions cnf_marker = new MarkerOptions();
+//        cnf_marker.position(new LatLng(cnf_latitude,cnf_longitude))
+//                .title(anal_time);
 
         String server_ID = cnf_id;
         String server_LocationName = user_time;
         String S1 = "날짜: "  + server_LocationName.substring(0,10) + "    " + "장소: "+location_name;
 
         if(labelColor==0){
-            user_marker.position(new LatLng(user_latitude,user_longitude))
+            cnf_marker.position(new LatLng(cnf_latitude,cnf_longitude))
                     .title(server_ID + "번째 확진자")
                     .snippet(S1)
                     .icon(BitmapDescriptorFactory.fromResource(R.drawable.red));
-            mMap.addMarker(user_marker);
+            mMap.addMarker(cnf_marker);
         }
-        else if(labelColor==0){
-            user_marker.position(new LatLng(user_latitude,user_longitude))
+        else if(labelColor==1){
+            cnf_marker.position(new LatLng(cnf_latitude, cnf_longitude))
                     .title(server_ID + "번째 확진자")
                     .snippet(S1)
                     .icon(BitmapDescriptorFactory.fromResource(R.drawable.yellow));
-            mMap.addMarker(user_marker);
+            mMap.addMarker(cnf_marker);
         }
         else{
-            user_marker.position(new LatLng(user_latitude,user_longitude))
+            cnf_marker.position(new LatLng(cnf_latitude,cnf_longitude))
                     .title(server_ID + "번째 확진자")
                     .snippet(S1)
                     .icon(BitmapDescriptorFactory.fromResource(R.drawable.green));
-            mMap.addMarker(user_marker);
+            mMap.addMarker(cnf_marker);
         }
 
 
-        MarkerOptions cnf_marker = new MarkerOptions();
-
-        cnf_marker.position(new LatLng(cnf_latitude,cnf_longitude))
-                .title(location_name);
-        mMap.addMarker(cnf_marker);
-
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(user_latitude,user_longitude)));
-
-        cnf_marker.position(new LatLng(cnf_latitude, cnf_longitude))
+        MarkerOptions user_marker = new MarkerOptions();
+        user_marker.position(new LatLng(user_latitude, user_longitude))
                 .title(location_name)
                 .snippet(S1)
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.blue));
 
-        mMap.addMarker(cnf_marker);
+        mMap.addMarker(user_marker);
 
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(user_latitude, user_longitude)));
+        moveCamera(new LatLng(user_latitude,user_longitude),15f);
+    }
+    private void moveCamera(LatLng latLng, float zoom){
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
     }
 }
