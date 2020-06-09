@@ -67,6 +67,7 @@ public class SplashActivity extends Activity {
         Log.d(TAG, "등록되어 있는 토큰ID:"+  savedToken);
 
         m_DeviceID = savedToken;
+        //m_DeviceID = SUHWA_ID;
 
         //////////////////////
         // Server 연동

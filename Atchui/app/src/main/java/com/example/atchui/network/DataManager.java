@@ -137,6 +137,7 @@ public class DataManager {
                     public void onResponse(Call<SettingData> call, Response<SettingData> response) {
                         Option = response.body();
                         Log.e("성공","Rad Update ");
+                        AnalPastRoute();
                     }
 
                     @Override
@@ -152,6 +153,7 @@ public class DataManager {
                     public void onResponse(Call<SettingData> call, Response<SettingData> response) {
                         Option = response.body();
                         Log.e("성공","Period Update ");
+                        AnalPastRoute();
                     }
 
                     @Override
@@ -191,26 +193,26 @@ public class DataManager {
     }
 
     // 현재 사용자 위치 분석하기
-    public void AnalPresentRoute(int userRouteID) {
-        if(!bInit)
-            return;
-
-        AnalData data = new AnalData();
-        data.m_userID = user_id;
-        data.m_userRouteID =  userRouteID;
-
-        service.AnalPresentRoute(data).enqueue(new Callback<AnalResponse>() {
-            @Override
-            public void onResponse(Call<AnalResponse> call, Response<AnalResponse> response) {
-                Log.e("성공", "Anal Route Present");
-            }
-
-            @Override
-            public void onFailure(Call<AnalResponse> call, Throwable t) {
-                Log.e("실패", "Anal Route Present");
-            }
-        });
-    }
+    //public void AnalPresentRoute(int userRouteID) {
+    //    if(!bInit)
+    //        return;
+//
+    //    AnalData data = new AnalData();
+    //    data.m_userID = user_id;
+    //    data.m_userRouteID =  userRouteID;
+//
+    //    service.AnalPresentRoute(data).enqueue(new Callback<AnalResponse>() {
+    //        @Override
+    //        public void onResponse(Call<AnalResponse> call, Response<AnalResponse> response) {
+    //            Log.e("성공", "Anal Route Present");
+    //        }
+//
+    //        @Override
+    //        public void onFailure(Call<AnalResponse> call, Throwable t) {
+    //            Log.e("실패", "Anal Route Present");
+    //        }
+    //    });
+    //}
 
     // 과거 사용자 동선 분석하기
     public void AnalPastRoute(){

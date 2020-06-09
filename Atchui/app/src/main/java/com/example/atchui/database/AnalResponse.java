@@ -57,7 +57,13 @@ public class AnalResponse {
             data.m_cnfLatitude = jObj.getDouble("cnf_latitude");
             data.m_cnfLongitude = jObj.getDouble("cnf_longitude");
             data.m_locationName = jObj.getString("location_name");
+            data.m_cnfVisitTime = jObj.getString("cnf_visittime");
             data.m_color = jObj.getInt("color");
+
+            data.m_cnfInfectCase = jObj.getString("infect_case");
+            data.m_cnfDate = jObj.getString("cnf_date");
+            data.m_cnfProvince = jObj.getString("province");
+            data.m_cnfIsoFacility = jObj.getString("isolation_facility");
 
             lstData.add(data);
         }
