@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.atchui.database.SettingData;
+import com.example.atchui.network.DataEventListener;
 import com.example.atchui.network.DataManager;
 
 import org.w3c.dom.Text;
@@ -54,6 +55,14 @@ public class Noti_newFragment extends Fragment implements Noti_RecyclerAdapter.O
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // 이벤트 리스너 등록
+        DataManager.getInstance().SetOnReceivedEvent(new DataEventListener() {
+            @Override
+            public void onReceivedEvent() {
+                // 이벤트 수신
+                Log.e("NotifyFragment", "Anal List Update!");
+            }
+        });
     }
 
     @Override
