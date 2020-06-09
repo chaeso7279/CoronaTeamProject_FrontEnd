@@ -137,6 +137,7 @@ public class DataManager {
                     public void onResponse(Call<SettingData> call, Response<SettingData> response) {
                         Option = response.body();
                         Log.e("성공","Rad Update ");
+                        AnalPastRoute();
                     }
 
                     @Override
@@ -152,6 +153,7 @@ public class DataManager {
                     public void onResponse(Call<SettingData> call, Response<SettingData> response) {
                         Option = response.body();
                         Log.e("성공","Period Update ");
+                        AnalPastRoute();
                     }
 
                     @Override
