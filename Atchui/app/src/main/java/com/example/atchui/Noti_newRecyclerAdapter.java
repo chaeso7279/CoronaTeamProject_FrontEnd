@@ -53,6 +53,8 @@ public class Noti_newRecyclerAdapter extends RecyclerView.Adapter<Noti_newRecycl
 
         int lstIndex;
         int itemType;
+        int analID;
+
         ImageView labelColor;
         TextView textContent ;
         TextView textTime ;
@@ -93,6 +95,7 @@ public class Noti_newRecyclerAdapter extends RecyclerView.Adapter<Noti_newRecycl
         void onBind(Noti_RecyclerItem item) {
             lstIndex = item.getLstIndex();
             itemType = item.getItemType();
+            analID = item.getAnalID();
             int color = item.getLabelColor();
             if(color == 0){
                 //빨강
