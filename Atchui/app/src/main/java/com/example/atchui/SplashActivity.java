@@ -66,8 +66,7 @@ public class SplashActivity extends Activity {
         String savedToken = FirebaseInstanceId.getInstance().getToken();
         Log.d(TAG, "등록되어 있는 토큰ID:"+  savedToken);
 
-        //m_DeviceID = savedToken;
-        m_DeviceID = SUHWA_ID;
+        m_DeviceID = savedToken;
 
         //////////////////////
         // Server 연동

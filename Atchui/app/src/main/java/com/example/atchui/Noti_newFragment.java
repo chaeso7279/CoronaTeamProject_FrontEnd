@@ -22,7 +22,9 @@ import com.example.atchui.network.DataManager;
 
 import org.w3c.dom.Text;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -102,24 +104,25 @@ public class Noti_newFragment extends Fragment implements Noti_RecyclerAdapter.O
                 int itemType = DataManager.getInstance().lstAnal.get(i).m_IsPast; //과거기반?현재기반?
                 int isRead = DataManager.getInstance().lstAnal.get(i).m_IsRead; //읽었는지
 
-                String user_timeStr = String.format(getResources().getString(R.string.noti_time),user_time.substring(0,9),user_time.substring(11,18));
+                String user_timeStr = String.format(getResources().getString(R.string.noti_time),user_time.substring(0,10),user_time.substring(11,19));
                 Log.d("사용자 시간", user_timeStr);  //TODO: 맞는지 확인
 
-                String anal_timeStr = String.format(getResources().getString(R.string.noti_time),anal_time.substring(0,9),anal_time.substring(11,18));
+                String anal_timeStr = String.format(getResources().getString(R.string.noti_time),anal_time.substring(0,10),anal_time.substring(11,19));
                 Log.d("분석 시간", anal_timeStr); //TODO: 맞는지 확인
+
+                String diffStr = analTimeDiff(anal_timeStr);
 
                 //past일 경우
                 if(itemType == PATH_NOTIFICATION){
                     String context = String.format(getResources().getString(R.string.noti_past),location_name, user_time.substring(0,10));
-                    Noti_RecyclerItem item = new Noti_RecyclerItem(index, itemType, labelColor, context, anal_timeStr);
-                    Log.d("라벨컬러",""+labelColor);
+                    Noti_RecyclerItem item = new Noti_RecyclerItem(index, itemType, labelColor, context, diffStr);
                     new_adapter.addItem(item);
                 }
                 //current일 경우
                 else if(itemType == CURRENT_NOTIFICATION){
                     int range = DataManager.getInstance().Option.m_iRadius;
                     String context = String.format(getResources().getString(R.string.noti_current),range);
-                    Noti_RecyclerItem item = new Noti_RecyclerItem(index, itemType, labelColor, context, anal_timeStr);
+                    Noti_RecyclerItem item = new Noti_RecyclerItem(index, itemType, labelColor, context, diffStr);
                     new_adapter.addItem(item);
                 }
 
@@ -156,5 +159,55 @@ public class Noti_newFragment extends Fragment implements Noti_RecyclerAdapter.O
             }
 
         }
+    }
+    private String analTimeDiff(String anal_timeStr){
+        String diffStr = "오류";
+
+        //현재시간
+        long time = System.currentTimeMillis();
+        SimpleDateFormat dayTime = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        String current_timeStr = dayTime.format(new Date(time));
+
+        Log.d("차이/현재시간",current_timeStr);
+        Log.d("차이/분석시간",anal_timeStr);
+
+        //정수로 저장
+        int anal_year = Integer.parseInt(anal_timeStr.substring(0,4));
+        int anal_month = Integer.parseInt(anal_timeStr.substring(5,7));
+        int anal_day = Integer.parseInt(anal_timeStr.substring(8,10));
+        int anal_h = Integer.parseInt(anal_timeStr.substring(11,13));
+        int anal_m = Integer.parseInt(anal_timeStr.substring(14,16));
+        int anal_s = Integer.parseInt(anal_timeStr.substring(17,19));
+
+        int now_year = Integer.parseInt(current_timeStr.substring(0,4));
+        int now_month = Integer.parseInt(current_timeStr.substring(5,7));
+        int now_day = Integer.parseInt(current_timeStr.substring(8,10));
+
+        int now_h = Integer.parseInt(current_timeStr.substring(11,13));
+        int now_m = Integer.parseInt(current_timeStr.substring(14,16));
+        int now_s = Integer.parseInt(current_timeStr.substring(17,19));
+
+//        Log.d("현재시간", current_timeStr);
+//        Log.d("현재시간", now_year + " " + now_month+ " " +now_day+ " " +"/"+
+//                now_h+ " " +now_m+ " " +now_s);
+        if(now_year-anal_year!=0){
+            return now_year-anal_year+"년 전";
+        }
+        if(now_month-anal_month!=0){
+            return now_month-anal_month+"달 전";
+        }
+        if(now_day-anal_day!=0){
+            return now_day-anal_day+"일 전";
+        }
+        if(now_h - anal_h != 0){
+            return now_h-anal_h+ "시간 전";
+        }
+        if(now_m-anal_m!=0){
+            return now_m-anal_m+"분 전";
+        }
+        if(now_s-anal_s!=0){
+            return now_s-anal_s+"초 전";
+        }
+        return diffStr;
     }
 }
