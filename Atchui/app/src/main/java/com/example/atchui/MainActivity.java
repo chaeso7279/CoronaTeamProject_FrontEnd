@@ -131,7 +131,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         setContentView(R.layout.activity_main);
 
         DataManager.getInstance().GetAnalysisList();
-        
+
 //        double lat = DataManager.getInstance().lstPatientRoute.get(0).m_latitude;
 //        Log.e(TAG, lat + "");
 
@@ -175,7 +175,8 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
                 //DataManager.getInstance().GetAnalysisList();
                 // 임시
-                DataManager.getInstance().AnalPastRoute();
+                int size = DataManager.getInstance().lstAnal.size();
+                Log.e(TAG,"anal Lst Size: " + size);
             }
         });
 
@@ -349,17 +350,17 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 //
 //            Log.d("tag","long diff : " + diff);
             if(Server_color == 0) {
-                Drawable clusterIcon = getResources().getDrawable(R.drawable.red);
+                Drawable clusterIcon = getResources().getDrawable(R.drawable.color_red);
                 mClusterIconGenerator.setBackground(clusterIcon);
                 icon = mClusterIconGenerator.makeIcon();
             }
             else if(Server_color == 1){
-                Drawable clusterIcon = getResources().getDrawable(R.drawable.yellow);
+                Drawable clusterIcon = getResources().getDrawable(R.drawable.color_yellow);
                 mClusterIconGenerator.setBackground(clusterIcon);
                 icon = mClusterIconGenerator.makeIcon();
             }
             else {
-                Drawable clusterIcon = getResources().getDrawable(R.drawable.green);
+                Drawable clusterIcon = getResources().getDrawable(R.drawable.color_green);
                 mClusterIconGenerator.setBackground(clusterIcon);
                 icon = mClusterIconGenerator.makeIcon();
             }
