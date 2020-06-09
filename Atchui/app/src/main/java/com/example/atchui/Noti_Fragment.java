@@ -75,6 +75,8 @@ public class Noti_Fragment extends Fragment implements Noti_RecyclerAdapter.OnLi
 
         int size = DataManager.getInstance().lstAnal.size(); //리스트의 크기
 
+        Log.d("lstAnal", DataManager.getInstance().lstAnal.size()+"");
+
         for(int i = 0 ; i < size ; i++){
             //읽은 알림(이전 알림)일 경우
             if(DataManager.getInstance().lstAnal.get(i).m_IsRead == 1){

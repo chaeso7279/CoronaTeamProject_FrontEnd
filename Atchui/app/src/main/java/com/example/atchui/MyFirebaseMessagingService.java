@@ -33,85 +33,50 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     }
 
     //새로운 메시지를 받았을 때 호출되는 메소드
-    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
-        Log.d("푸시","onMessageReceived");
-        if (remoteMessage.getNotification() != null) { //포그라운드
-            Log.d("푸시","포그라운드");
-            showNotification(remoteMessage.getNotification().getBody(),remoteMessage.getNotification().getTitle());
+        Log.d(TAG, "From: " + remoteMessage.getFrom());
 
-        }
-        else if (remoteMessage.getData().size() > 0) { //백그라운드
-            Log.d("푸시","백그라운드");
-            showNotification(remoteMessage.getData().get("body"),remoteMessage.getData().get("title"));
+        if (remoteMessage.getData().size() > 0) {
+            Log.d(TAG, "Message data payload: " + remoteMessage.getData());
 
+            String title = remoteMessage.getData().get("title");
+            String body = remoteMessage.getData().get("content");
+            String click_action = remoteMessage.getData().get("clickAction");
+            sendNotification(title, body, click_action);
         }
-//
-//        showNotification(remoteMessage.getData().get("title"), remoteMessage.getData().get("message"));
-//        Log.d("UTF-8","여기야");
+        if (remoteMessage.getNotification() != null) {
+            Log.d(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody());
+        }
     }
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    private void showNotification(String messageTitle, String messageBody){
-        Intent intent = new Intent(this, SplashActivity.class);
+
+    private void sendNotification(String title, String messageBody, String click_action){
+        if (title == null){
+            //제목이 없는 payload이면
+            title = "FCM Noti"; //기본제목을 적어 주자.
+        }
+        //전달된 액티비티에 따라 분기하여 해당 액티비티를 오픈하도록 한다.
+        Intent intent;
+        intent = new Intent(this, NotificationListActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
                 PendingIntent.FLAG_ONE_SHOT);
 
-        NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        NotificationChannel mChannel = new NotificationChannel(id, name, importance);
+        Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
+                .setSmallIcon(R.drawable.ic_logo)
+                .setContentTitle(title)
+                .setContentText(messageBody)
+                .setAutoCancel(true)
+                .setSound(defaultSoundUri)
+                .setContentIntent(pendingIntent);
 
-        mChannel.setDescription(description);
-        mChannel.enableLights(true);
-        mNotificationManager.createNotificationChannel(mChannel);
-        mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        NotificationManager notificationManager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-        int notifyID = 2;
+        notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
 
-        String CHANNEL_ID = "my_channel_02";
-
-        try{
-            Notification notification = new Notification.Builder(MyFirebaseMessagingService.this)
-                    .setContentTitle(URLDecoder.decode(messageTitle, "UTF-8"))
-                    .setContentText(URLDecoder.decode(messageBody, "UTF-8"))
-                    .setSmallIcon(R.drawable.ic_logo)
-                    .setChannelId(CHANNEL_ID)
-                    .setContentIntent(pendingIntent)
-                    .build();
-
-
-            mNotificationManager.notify(notifyID, notification);
-        }
-        catch(Exception e){
-            e.printStackTrace();
-        }
-//        Intent intent = new Intent(this, SplashActivity.class);
-//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
-//        Log.d("UTF-8","들어옴");
-//
-//        Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION); //알림 소리설정
-//
-//
-//        try{
-//            NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
-//                    .setSmallIcon(R.drawable.ic_logo)
-//                    .setContentTitle(URLDecoder.decode(messageTitle, "UTF-8"))
-//                    .setContentText(URLDecoder.decode(messageBody, "UTF-8"))
-//                    .setAutoCancel(true)
-//                    .setSound(defaultSoundUri)
-//                    .setContentIntent(pendingIntent);
-//            Log.d("UTF-8","변환 성공");
-//
-//            NotificationManager notificationManager =
-//                    (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-//
-//            notificationManager.notify(0, notificationBuilder.build());
-//        }
-//        catch(Exception e){
-//            e.printStackTrace();
-//            Log.d("UTF-8","변환 실패");
-//        }
     }
     //메시지에 사용될 토근을 새로 발급받았을 때, 호출되는 메소드(이 토큰은 각각의 기기를 식별)
     @Override

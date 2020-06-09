@@ -157,6 +157,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, com.example.atchui.NotificationListActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
         btn_setting.setOnClickListener(new View.OnClickListener() {

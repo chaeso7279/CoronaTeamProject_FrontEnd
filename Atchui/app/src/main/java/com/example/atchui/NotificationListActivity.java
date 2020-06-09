@@ -13,6 +13,7 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -27,5 +28,11 @@ public class NotificationListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_notification_list);
     }
 
-
+    @Override
+    public void onBackPressed() {
+        Log.d("뒤로가기", "눌렸습니다");
+        Intent intent = new Intent(NotificationListActivity.this, MainActivity.class);
+        startActivity(intent);
+        finish();
+    }
 }

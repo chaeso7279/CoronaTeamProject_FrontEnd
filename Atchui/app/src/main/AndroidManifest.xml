@@ -19,7 +19,6 @@
         <activity android:name=".Noti_newFragment" />
         <activity android:name=".CurrentResultActivity" />
         <activity android:name=".PathResultActivity" />
-        <activity android:name=".NotificationListActivity" />
         <activity android:name=".HelpActivity" />
 
 
@@ -57,6 +56,11 @@
                 <action android:name = "com.google.firebases.MESSAGING_EVENT"/>
             </intent-filter>
         </service>
+        <activity android:name=".NotificationListActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
 
         <!-- Set custom default icon. This is used when no icon is set for incoming notification messages.
      See README(https://goo.gl/l4GJaQ) for more. -->
