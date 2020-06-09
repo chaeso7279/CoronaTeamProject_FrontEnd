@@ -28,11 +28,11 @@ public class NotificationListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_notification_list);
     }
 
-    @Override
-    public void onBackPressed() {
-        Log.d("뒤로가기", "눌렸습니다");
-        Intent intent = new Intent(NotificationListActivity.this, MainActivity.class);
-        startActivity(intent);
-        finish();
-    }
+//    @Override
+//    public void onBackPressed() {
+//        Log.d("뒤로가기", "눌렸습니다");
+//        Intent intent = new Intent(NotificationListActivity.this, MainActivity.class);
+//        startActivity(intent);
+//        finish();
+//    }
 }
