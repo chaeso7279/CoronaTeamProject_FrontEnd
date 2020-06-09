@@ -117,7 +117,7 @@ public class SettingPreferenceFragment extends PreferenceFragment {
                     Preference connectionPref = findPreference(key);
                     //summary에 사용자 설정 값 Set
                     connectionPref.setSummary(new_summary);
-                    DataManager.getInstance().UpdateUserOption(1, now_value * 100);
+                    DataManager.getInstance().UpdateUserOption(1, now_value);
 
                 }
             }

@@ -16,6 +16,7 @@ import com.google.firebase.iid.InstanceIdResult;
 
 public class SplashActivity extends Activity {
     private static final String TAG = "SplashActivity";
+    private static final String SUHWA_ID = "f6BuMPhLS0e0x_7qo3xiSV:APA91bEHmNdudrlML8LI3RTC6CMMVA6HrYUh_kuY3fMb6gErnehDZ7eE5Prcbr4Sb-fP1DT0yl0WXr9GGF_T3E2r2GNbbsOfEMfXIc9Ofd4XnNX93sgndpttv0ZWYyZbC9u_pFN4EW89";
 
     // Sever
     public ServiceAPI service;
@@ -65,7 +66,8 @@ public class SplashActivity extends Activity {
         String savedToken = FirebaseInstanceId.getInstance().getToken();
         Log.d(TAG, "등록되어 있는 토큰ID:"+  savedToken);
 
-        m_DeviceID = savedToken;
+        //m_DeviceID = savedToken;
+        m_DeviceID = SUHWA_ID;
 
         //////////////////////
         // Server 연동
@@ -74,7 +76,7 @@ public class SplashActivity extends Activity {
 
         //고유 ID(FireBase토큰) DB 입력 및 서버에 userID 설정
 //        DataManager.getInstance().SetUserID(m_DeviceID);
-        DataManager.getInstance().SetUserID("cuTKxqcHm5s:APA91bHsAnLoevnS4j0dMeixleE5pg1nMAwRqDC_mm799NDKfm6uNqpShdJZoSP8glZKtkN0WQMK2MVg3Whi_ftDsX-RmkRhy5Ewoo_WPpGnw9XuHVcssX2VbLdsfdB18Fm_r4lo10I3");
+        DataManager.getInstance().SetUserID(m_DeviceID);
         SendDeviceIDToServer();
 
 
