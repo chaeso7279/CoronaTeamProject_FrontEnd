@@ -262,9 +262,18 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         tSearchText = (EditText) findViewById(R.id.input_search2);
         value = tSearchText.getText().toString();
 
-        if(value.length()>=9) {
-            T_addItems(value);
-        }
+        tSearchText.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View view, int keyCode, KeyEvent keyEvent) {
+                if((keyEvent.getAction())==KeyEvent.ACTION_DOWN && (keyCode == KeyEvent.KEYCODE_ENTER)){
+                    T_addItems(value);
+                }
+                return false;
+            }
+        });
+//        if(value.length()>=9) {
+//            T_addItems(value);
+//        }
     }
 
     @Override
