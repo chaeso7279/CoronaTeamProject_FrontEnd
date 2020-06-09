@@ -28,7 +28,7 @@ public class SplashActivity extends Activity {
 
         try{
             LoadServerData();
-            Thread.sleep(4000);
+            Thread.sleep(10000);
         }catch (InterruptedException e){
             e.printStackTrace();
         }
@@ -83,10 +83,13 @@ public class SplashActivity extends Activity {
         // 확진자 경로 가져오기
         DataManager.getInstance().GetPatientRoutes();
 
+        // 과거 경로 기반 분석
+        DataManager.getInstance().AnalPastRoute();
+
         // Notification_list 관련 정보 가져오기
         DataManager.getInstance().GetAnalysisList();
 
-        DataManager.getInstance().AnalPresentRoute(1);
+        //DataManager.getInstance().AnalPresentRoute(1);
 
         ////////////////////////////////////////
         Toast.makeText(SplashActivity.this, "서버 데이터 불러오기 완료", Toast.LENGTH_SHORT).show();
