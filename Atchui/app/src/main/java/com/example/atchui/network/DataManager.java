@@ -137,7 +137,7 @@ public class DataManager {
                     public void onResponse(Call<SettingData> call, Response<SettingData> response) {
                         Option = response.body();
                         Log.e("성공","Rad Update ");
-                        AnalPastRoute();
+                        //AnalPastRoute();
                     }
 
                     @Override
@@ -153,7 +153,7 @@ public class DataManager {
                     public void onResponse(Call<SettingData> call, Response<SettingData> response) {
                         Option = response.body();
                         Log.e("성공","Period Update ");
-                        AnalPastRoute();
+                        //AnalPastRoute();
                     }
 
                     @Override
@@ -171,13 +171,15 @@ public class DataManager {
             return;
 
         AnalData data = new AnalData();
+        data.m_userID = user_id;
+
         service.GetAnalList(data).enqueue(new Callback<AnalResponse>() {
             @Override
             public void onResponse(Call<AnalResponse> call, Response<AnalResponse> response) {
                 if(!lstAnal.isEmpty())
                     lstAnal.clear();
 
-                Log.e("성공", response.body().strArray);
+                Log.e("성공", "AnalList 가져오기");
                 try {
                     response.body().ConvertToData(lstAnal);
                 } catch (JSONException e) {
