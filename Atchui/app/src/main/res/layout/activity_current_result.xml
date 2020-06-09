@@ -144,7 +144,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="2dp"
 
-                    android:text="2020년 4월 22일 오후 2:00"
+                    android:text="2020년 4월 22일 오후 2:00(default)"
                     android:textSize="15sp"
                     android:textColor="@android:color/black"
                     />
@@ -171,7 +171,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="2dp"
 
-                    android:text="강남구청"
+                    android:text="강남구청(default)"
                     android:textSize="15sp"
                     android:textColor="@android:color/black"
                     />
@@ -181,7 +181,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="2dp"
 
-                    android:text="2020년 5월 28일 오전 11:00"
+                    android:text="2020년 5월 28일 오전 11:00(default)"
                     android:textSize="15sp"
                     android:textColor="@android:color/black"
                     />
@@ -207,7 +207,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="2dp"
 
-                    android:text="- 확진자번호: #12345"
+                    android:text="- #nnnnn번째 감염자(default)"
                     android:textSize="15sp"
                     android:textColor="@android:color/black"
                     />
@@ -217,7 +217,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="2dp"
 
-                    android:text="- 감염경로: 부천시 쿠팡 관련"
+                    android:text="- 감염경로: 부천시 쿠팡 관련(default)"
                     android:textSize="15sp"
                     android:textColor="@android:color/black"
                     />
@@ -227,7 +227,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="2dp"
 
-                    android:text="- 확진일: 2020년 5월 27일"
+                    android:text="- 확진일: 2020년 5월 27일(default)"
                     android:textSize="15sp"
                     android:textColor="@android:color/black"
                     />
@@ -237,7 +237,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="2dp"
 
-                    android:text="- 거주지: 송파구"
+                    android:text="- 거주지: 송파구(default)"
                     android:textSize="15sp"
                     android:textColor="@android:color/black"
                     />
@@ -247,7 +247,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="2dp"
 
-                    android:text="- 격리시설: 서남병원"
+                    android:text="- 격리시설: 서남병원(default)"
                     android:textSize="15sp"
                     android:textColor="@android:color/black"
                     />

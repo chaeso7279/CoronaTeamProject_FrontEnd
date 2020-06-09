@@ -30,6 +30,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -64,9 +65,14 @@ public class CurrentResultActivity extends FragmentActivity implements OnMapRead
     //확진자정보
     String location_name;   //방문장소명
     int labelColor;         //라벨컬러
+    String province;        //확진자 거주지
+    String isofacility;     //확진자 격리시설
+    String infectcase;      //확진자 감염경로
+    String cnfDate;         //확진 날짜
+    String cnf_time;        //확진자 방문시간
 
     //사용자정보
-    String user_time;       //TODO: 받아오기
+    String user_time;       //사용자 방문시간
 
     //Noti정보
     int lstIndex;              //서버 list 내 인덱스
@@ -102,32 +108,47 @@ public class CurrentResultActivity extends FragmentActivity implements OnMapRead
 
     private void getSelectedNotiData(int i){
         /*서버의 데이터 가져오기*/
-        cnf_id = DataManager.getInstance().lstAnal.get(i).m_cnfID; //확진자id
+        //위치
         cnf_latitude = DataManager.getInstance().lstAnal.get(i).m_cnfLatitude;    //확진자위도
         cnf_longitude = DataManager.getInstance().lstAnal.get(i).m_cnfLongitude;   //확진자경도
         user_latitude = DataManager.getInstance().lstAnal.get(i).m_userLatitude;   //사용자위도
         user_longitude = DataManager.getInstance().lstAnal.get(i).m_userLongitude;  //사용자경도
+
         //확진자정보
+        cnf_id = DataManager.getInstance().lstAnal.get(i).m_cnfID; //확진자id
         location_name = DataManager.getInstance().lstAnal.get(i).m_locationName;   //방문장소명
         labelColor =  DataManager.getInstance().lstAnal.get(i).m_color;    //라벨컬러
+        province = DataManager.getInstance().lstAnal.get(i).m_cnfProvince;  //확진자거주지
+        isofacility = DataManager.getInstance().lstAnal.get(i).m_cnfIsoFacility;  //확진자 격리시설
+        infectcase = DataManager.getInstance().lstAnal.get(i).m_cnfInfectCase;  //확진자 감염 경로
+        cnfDate = DataManager.getInstance().lstAnal.get(i).m_cnfDate;  //확진 날짜
+        cnf_time = DataManager.getInstance().lstAnal.get(i).m_cnfVisitTime;  //확진자 방문시간
+
         //사용자정보
-        user_time = DataManager.getInstance().lstAnal.get(i).m_analTime;           //TODO: table에 column 추가 후 제대로 받아오기(현재는 임시)
+        user_time = DataManager.getInstance().lstAnal.get(i).m_userVisitTime;        //사용자방문시간
         //Noti정보
         anal_time = DataManager.getInstance().lstAnal.get(i).m_analTime;   //분석시간
 
-        String user_timeStr = String.format(getResources().getString(R.string.noti_time),user_time.substring(0,9),user_time.substring(11,18));
-        Log.d("사용자 시간", user_timeStr);  //TODO: 맞는지 확인
+        String user_timeStr = String.format(getResources().getString(R.string.noti_time)
+                ,user_time.substring(0,10),user_time.substring(11,19));
+
+        String cnf_timeStr = String.format(getResources().getString(R.string.noti_time)
+                ,cnf_time.substring(0,10),cnf_time.substring(11,19));
+
+        String cnfDateStr = cnfDate.substring(0,10);
 
 
         /*텍스트뷰에 집어넣기*/
-        user_datetime.setText(user_timeStr);  //TODO: 유저 방문시간 추가된거 받아오기 - fragment도 바꿔야됨
+        user_datetime.setText(user_timeStr);
+
         cnf_location.setText(location_name);
-//        cnf_datetime.setText();   //TODO: 확진자방문장소 시간 .... db 추가....
-//        info_infectcase.setText();
-//        info_cnfdate.setText();
-//        info_province.setText();
-//        info_isofacility.setText();   //TODO: db 추가...
-        info_cnfNum.setText(cnf_id);
+        cnf_datetime.setText(cnf_timeStr);
+
+        info_cnfNum.setText(String.format(getResources().getString(R.string.result_cnfid),cnf_id));
+        info_infectcase.setText(String.format(getResources().getString(R.string.result_infectcase),infectcase));
+        info_cnfdate.setText(String.format(getResources().getString(R.string.result_cnfDate),cnfDateStr));
+        info_province.setText(String.format(getResources().getString(R.string.result_province),province));
+        info_isofacility.setText(String.format(getResources().getString(R.string.result_iso),isofacility));
     }
 
     //google map
@@ -136,19 +157,51 @@ public class CurrentResultActivity extends FragmentActivity implements OnMapRead
     public void onMapReady(final GoogleMap googleMap) {
         Toast.makeText(this,"map is Ready",Toast.LENGTH_SHORT).show();
         Log.d(TAG,"onMapReady : map is ready");
+
         mMap = googleMap;
 
+        MarkerOptions cnf_marker = new MarkerOptions();
+//        cnf_marker.position(new LatLng(cnf_latitude,cnf_longitude))
+//                .title(anal_time);
+
+        String server_ID = cnf_id;
+        String server_LocationName = user_time;
+        String S1 = "날짜: "  + server_LocationName.substring(0,10) + "    " + "장소: "+location_name;
+
+        if(labelColor==0){
+            cnf_marker.position(new LatLng(cnf_latitude,cnf_longitude))
+                    .title(server_ID + "번째 확진자")
+                    .snippet(S1)
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.red));
+            mMap.addMarker(cnf_marker);
+        }
+        else if(labelColor==1){
+            cnf_marker.position(new LatLng(cnf_latitude, cnf_longitude))
+                    .title(server_ID + "번째 확진자")
+                    .snippet(S1)
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.yellow));
+            mMap.addMarker(cnf_marker);
+        }
+        else{
+            cnf_marker.position(new LatLng(cnf_latitude,cnf_longitude))
+                    .title(server_ID + "번째 확진자")
+                    .snippet(S1)
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.green));
+            mMap.addMarker(cnf_marker);
+        }
+
+
         MarkerOptions user_marker = new MarkerOptions();
-        user_marker.position(new LatLng(user_latitude,user_longitude))
-                .title(anal_time);
+        user_marker.position(new LatLng(user_latitude, user_longitude))
+                .title(location_name)
+                .snippet(S1)
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.blue));
 
         mMap.addMarker(user_marker);
 
-        MarkerOptions cnf_marker = new MarkerOptions();
-        cnf_marker.position(new LatLng(cnf_latitude,cnf_longitude))
-                .title(location_name);
-        mMap.addMarker(cnf_marker);
-
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(user_latitude,user_longitude)));
+        moveCamera(new LatLng(user_latitude,user_longitude),15f);
+    }
+    private void moveCamera(LatLng latLng, float zoom){
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
     }
 }

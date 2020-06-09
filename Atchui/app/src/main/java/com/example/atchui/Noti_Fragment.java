@@ -16,7 +16,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.atchui.network.DataEventListener;
 import com.example.atchui.network.DataManager;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class Noti_Fragment extends Fragment implements Noti_RecyclerAdapter.OnListItemSelectedInterface {
     private static final int CURRENT_NOTIFICATION = 0;
@@ -36,28 +40,26 @@ public class Noti_Fragment extends Fragment implements Noti_RecyclerAdapter.OnLi
 
         Initialize(view);
         setData();
+
         return view;
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // 이벤트 리스너 등록
+        DataManager.getInstance().SetOnReceivedEvent(new DataEventListener() {
+            @Override
+            public void onReceivedEvent() {
+                // 이벤트 수신
+                Log.e("NotifyFragment", "Anal List Update!");
+            }
+        });
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-//        sharedViewModel = ViewModelProviders.of(getActivity()).get(SharedViewModel.class);
-//
-//        sharedViewModel.getItem().observe(this, new Observer<Noti_RecyclerItem>() {
-//            @Override
-//            public void onChanged(@Nullable Noti_RecyclerItem item) {
-//                setItem(item);
-//                Log.d("newItem", item.getTextStr() +"");
-//
-//            }
-//        });
     }
 
     private void Initialize(View view) {
@@ -75,88 +77,123 @@ public class Noti_Fragment extends Fragment implements Noti_RecyclerAdapter.OnLi
 
         int size = DataManager.getInstance().lstAnal.size(); //리스트의 크기
 
-        Log.d("lstAnal", DataManager.getInstance().lstAnal.size()+"");
-
         for(int i = 0 ; i < size ; i++){
             //읽은 알림(이전 알림)일 경우
             if(DataManager.getInstance().lstAnal.get(i).m_IsRead == 1){
-                //
+
                 //확진자정보
                 String location_name = DataManager.getInstance().lstAnal.get(i).m_locationName;   //방문장소명
                 int labelColor =  DataManager.getInstance().lstAnal.get(i).m_color;    //라벨컬러
 
                 //사용자정보
-                String user_time = DataManager.getInstance().lstAnal.get(i).m_analTime;           //TODO: table에 column 추가 후 제대로 받아오기(현재는 임시)
+                String user_time = DataManager.getInstance().lstAnal.get(i).m_userVisitTime;
 
                 //Noti정보
                 int index = i;  //서버 list 내 인덱스
                 String anal_time = DataManager.getInstance().lstAnal.get(i).m_analTime;   //분석시간
                 int itemType = DataManager.getInstance().lstAnal.get(i).m_IsPast; //과거기반?현재기반?
-                int isRead = DataManager.getInstance().lstAnal.get(i).m_IsRead; //읽었는지
 
-                String user_timeStr = String.format(getResources().getString(R.string.noti_time),user_time.substring(0,9),user_time.substring(11,18));
-                Log.d("사용자 시간", user_timeStr);  //TODO: 맞는지 확인
+                String user_timeStr = String.format(getResources().getString(R.string.noti_time),user_time.substring(0,10),user_time.substring(11,19));
+                Log.d("사용자 시간", user_timeStr);
 
-                String anal_timeStr = String.format(getResources().getString(R.string.noti_time),anal_time.substring(0,9),anal_time.substring(11,18));
-                Log.d("분석 시간", anal_timeStr); //TODO: 맞는지 확인, '현재시간 - 분석시간' 몇 분 전, 몇 시간 전 등으로 표시
+                String anal_timeStr = String.format(getResources().getString(R.string.noti_time),anal_time.substring(0,10),anal_time.substring(11,19));
+                Log.d("분석 시간", anal_timeStr);
+
+                String diffStr = analTimeDiff(anal_timeStr);
 
                 //past일 경우
                 if(itemType == PATH_NOTIFICATION){
-                    String context = String.format(getResources().getString(R.string.noti_past),location_name, user_time);
-                    Noti_RecyclerItem item = new Noti_RecyclerItem(index, itemType, labelColor, context, anal_timeStr);
+                    String context = String.format(getResources().getString(R.string.noti_past),location_name, user_time.substring(0,10));
+                    Noti_RecyclerItem item = new Noti_RecyclerItem(index, itemType, labelColor, context, diffStr);
                     adapter.addItem(item);
                 }
                 //current일 경우
                 else if(itemType == CURRENT_NOTIFICATION){
                     int range = DataManager.getInstance().Option.m_iRadius;
                     String context = String.format(getResources().getString(R.string.noti_current),range);
-                    Noti_RecyclerItem item = new Noti_RecyclerItem(index, itemType, labelColor, context, anal_timeStr);
+                    Noti_RecyclerItem item = new Noti_RecyclerItem(index, itemType, labelColor, context, diffStr);
                     adapter.addItem(item);
                 }
 
                 adapter.notifyDataSetChanged();
             }
         }
-
-//        Noti_RecyclerItem item = new Noti_RecyclerItem();
-//        item.setItemType(PATH_NOTIFICATION);
-//        item.setLabelColor(this.getResources().getColor(R.color.label_red));
-//        item.setTextStr("강남구청 근방에서 2020-05-28에 동선겹침이 확인되었습니다.");
-//        item.setTimeStr("6분 전");
-//
-//        adapter.addItem(item);
-//
-//        item = new Noti_RecyclerItem();
-//        item.setItemType(CURRENT_NOTIFICATION);
-//        item.setLabelColor(this.getResources().getColor(R.color.label_yellow));
-//        item.setTextStr("반경 1km 내에 확진자 동선이 확인되었습니다.");
-//        item.setTimeStr("5분 전");
-//
-//        adapter.addItem(item);
     }
-
-    private void setItem(Noti_RecyclerItem item) {
-        adapter.addItem(item);
-
-        adapter.notifyDataSetChanged();
-    }
-
     @Override
     public void onItemSelected(View v, int position) {
         Noti_RecyclerAdapter.Noti_ItemViewHolder viewHolder =
                 (Noti_RecyclerAdapter.Noti_ItemViewHolder)recyclerView.findViewHolderForAdapterPosition(position);
 
+        //itemType에 맞게 activity 이동
         if(viewHolder.itemType == CURRENT_NOTIFICATION){
             Intent intent = new Intent(getActivity(), CurrentResultActivity.class);
 
+            intent.putExtra("lstIndex",viewHolder.lstIndex);
+            DataManager.getInstance().UpdateAnalIsRead(viewHolder.lstIndex, true);
             startActivity(intent);
-            getActivity().finish();
+            if(getActivity() != null) {
+                getActivity().finish();
+            }
         }
         else if(viewHolder.itemType == PATH_NOTIFICATION){
             Intent intent = new Intent(getActivity(), PathResultActivity.class);
 
+            intent.putExtra("lstIndex",viewHolder.lstIndex);
+
             startActivity(intent);
-            getActivity().finish();
+            if(getActivity() != null) {
+                getActivity().finish();
+            }
         }
+    }
+    private String analTimeDiff(String anal_timeStr){
+        String diffStr = "오류";
+
+        //현재시간
+        long time = System.currentTimeMillis();
+        SimpleDateFormat dayTime = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        String current_timeStr = dayTime.format(new Date(time));
+
+        Log.d("차이/현재시간",current_timeStr);
+        Log.d("차이/분석시간",anal_timeStr);
+
+        //정수로 저장
+        int anal_year = Integer.parseInt(anal_timeStr.substring(0,4));
+        int anal_month = Integer.parseInt(anal_timeStr.substring(5,7));
+        int anal_day = Integer.parseInt(anal_timeStr.substring(8,10));
+        int anal_h = Integer.parseInt(anal_timeStr.substring(11,13));
+        int anal_m = Integer.parseInt(anal_timeStr.substring(14,16));
+        int anal_s = Integer.parseInt(anal_timeStr.substring(17,19));
+
+        int now_year = Integer.parseInt(current_timeStr.substring(0,4));
+        int now_month = Integer.parseInt(current_timeStr.substring(5,7));
+        int now_day = Integer.parseInt(current_timeStr.substring(8,10));
+
+        int now_h = Integer.parseInt(current_timeStr.substring(11,13));
+        int now_m = Integer.parseInt(current_timeStr.substring(14,16));
+        int now_s = Integer.parseInt(current_timeStr.substring(17,19));
+
+//        Log.d("현재시간", current_timeStr);
+//        Log.d("현재시간", now_year + " " + now_month+ " " +now_day+ " " +"/"+
+//                now_h+ " " +now_m+ " " +now_s);
+        if(now_year-anal_year!=0){
+            return now_year-anal_year+"년 전";
+        }
+        if(now_month-anal_month!=0){
+            return now_month-anal_month+"달 전";
+        }
+        if(now_day-anal_day!=0){
+            return now_day-anal_day+"일 전";
+        }
+        if(now_h - anal_h != 0){
+            return now_h-anal_h+ "시간 전";
+        }
+        if(now_m-anal_m!=0){
+            return now_m-anal_m+"분 전";
+        }
+        if(now_s-anal_s!=0){
+            return now_s-anal_s+"초 전";
+        }
+        return diffStr;
     }
 }

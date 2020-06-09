@@ -137,7 +137,7 @@ public class DataManager {
                     public void onResponse(Call<SettingData> call, Response<SettingData> response) {
                         Option = response.body();
                         Log.e("성공","Rad Update ");
-                        //AnalPastRoute();
+                        AnalPastRoute();
                     }
 
                     @Override
@@ -153,7 +153,7 @@ public class DataManager {
                     public void onResponse(Call<SettingData> call, Response<SettingData> response) {
                         Option = response.body();
                         Log.e("성공","Period Update ");
-                        //AnalPastRoute();
+                        AnalPastRoute();
                     }
 
                     @Override
@@ -179,9 +179,12 @@ public class DataManager {
                 if(!lstAnal.isEmpty())
                     lstAnal.clear();
 
-                Log.e("성공", "AnalList 가져오기");
+
                 try {
                     response.body().ConvertToData(lstAnal);
+                    if(eventListener != null)
+                        eventListener.onReceivedEvent();
+                    Log.e("성공", "AnalList 가져오기 , size: " + DataManager.getInstance().lstAnal.size());
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -228,6 +231,7 @@ public class DataManager {
             @Override
             public void onResponse(Call<SettingResponse> call, Response<SettingResponse> response) {
                 Log.e("성공", "Anal Route Past" + response.message());
+                GetAnalysisList();
             }
 
             @Override
