@@ -79,24 +79,36 @@ public class Noti_Fragment extends Fragment implements Noti_RecyclerAdapter.OnLi
             //읽은 알림(이전 알림)일 경우
             if(DataManager.getInstance().lstAnal.get(i).m_IsRead == 1){
                 //
+                //확진자정보
+                String location_name = DataManager.getInstance().lstAnal.get(i).m_locationName;   //방문장소명
+                int labelColor =  DataManager.getInstance().lstAnal.get(i).m_color;    //라벨컬러
+
+                //사용자정보
+                String user_time = DataManager.getInstance().lstAnal.get(i).m_analTime;           //TODO: table에 column 추가 후 제대로 받아오기(현재는 임시)
+
+                //Noti정보
                 int index = i;  //서버 list 내 인덱스
-                int itemType = DataManager.getInstance().lstAnal.get(i).m_IsPast;
-                int labelColor = this.getResources().getColor(R.color.label_green);     //TODO:table에 column 추가 후 제대로 받아오기(현재는 임시)
-                String location = DataManager.getInstance().lstAnal.get(i).m_locationName;
-                String user_time = "0000-00-00";                                        //TODO: table에 column 추가 후 제대로 받아오기(현재는 임시)
-                String timeStr = DataManager.getInstance().lstAnal.get(i).m_analTime; //TODO: 몇 분 전 or 몇 시간 전 등으로 표기
+                String anal_time = DataManager.getInstance().lstAnal.get(i).m_analTime;   //분석시간
+                int itemType = DataManager.getInstance().lstAnal.get(i).m_IsPast; //과거기반?현재기반?
+                int isRead = DataManager.getInstance().lstAnal.get(i).m_IsRead; //읽었는지
+
+                String user_timeStr = String.format(getResources().getString(R.string.noti_time),user_time.substring(0,9),user_time.substring(11,18));
+                Log.d("사용자 시간", user_timeStr);  //TODO: 맞는지 확인
+
+                String anal_timeStr = String.format(getResources().getString(R.string.noti_time),anal_time.substring(0,9),anal_time.substring(11,18));
+                Log.d("분석 시간", anal_timeStr); //TODO: 맞는지 확인, '현재시간 - 분석시간' 몇 분 전, 몇 시간 전 등으로 표시
 
                 //past일 경우
                 if(itemType == PATH_NOTIFICATION){
-                    String context = String.format(getResources().getString(R.string.noti_past),location, user_time);
-                    Noti_RecyclerItem item = new Noti_RecyclerItem(index, itemType, labelColor, context, timeStr);
+                    String context = String.format(getResources().getString(R.string.noti_past),location_name, user_time);
+                    Noti_RecyclerItem item = new Noti_RecyclerItem(index, itemType, labelColor, context, anal_timeStr);
                     adapter.addItem(item);
                 }
                 //current일 경우
                 else if(itemType == CURRENT_NOTIFICATION){
                     int range = DataManager.getInstance().Option.m_iRadius;
                     String context = String.format(getResources().getString(R.string.noti_current),range);
-                    Noti_RecyclerItem item = new Noti_RecyclerItem(index, itemType, labelColor, context, timeStr);
+                    Noti_RecyclerItem item = new Noti_RecyclerItem(index, itemType, labelColor, context, anal_timeStr);
                     adapter.addItem(item);
                 }
 
@@ -135,17 +147,11 @@ public class Noti_Fragment extends Fragment implements Noti_RecyclerAdapter.OnLi
         if(viewHolder.itemType == CURRENT_NOTIFICATION){
             Intent intent = new Intent(getActivity(), CurrentResultActivity.class);
 
-            //데이터 송신 - 실제 포지션에 맞는 정보 출력할 때 사용
-            intent.putExtra("lstIndex", viewHolder.lstIndex);
-
             startActivity(intent);
             getActivity().finish();
         }
         else if(viewHolder.itemType == PATH_NOTIFICATION){
             Intent intent = new Intent(getActivity(), PathResultActivity.class);
-
-            //데이터 송신 - 실제 포지션에 맞는 정보 출력할 때 사용
-            intent.putExtra("lstIndex", viewHolder.lstIndex);
 
             startActivity(intent);
             getActivity().finish();

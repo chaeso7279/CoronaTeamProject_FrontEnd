@@ -26,7 +26,6 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
-import com.example.atchui.database.AnalData;
 import com.example.atchui.database.PatientRouteData;
 import com.example.atchui.database.SettingData;
 import com.example.atchui.network.DataEventListener;
@@ -130,8 +129,6 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        AnalData data = DataManager.getInstance().lstAnal.get(0);
 
 //        double lat = DataManager.getInstance().lstPatientRoute.get(0).m_latitude;
 //        Log.e(TAG, lat + "");

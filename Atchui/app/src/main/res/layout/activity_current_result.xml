@@ -134,20 +134,10 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="4dp"
 
-                    android:text="내 방문 장소"
+                    android:text="내 방문 시간"
                     android:textSize="15sp"
                     android:textColor="@android:color/black"
                     android:textStyle="bold"/>
-                <TextView
-                    android:id="@+id/userLocation"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="2dp"
-
-                    android:text="CU 강남구청점"
-                    android:textSize="15sp"
-                    android:textColor="@android:color/black"
-                    />
                 <TextView
                     android:id="@+id/userDatetime"
                     android:layout_width="wrap_content"
@@ -211,6 +201,16 @@
                     android:textSize="15sp"
                     android:textColor="@android:color/black"
                     android:textStyle="bold"/>
+                <TextView
+                    android:id="@+id/info_cnfNum"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="2dp"
+
+                    android:text="- 확진자번호: #12345"
+                    android:textSize="15sp"
+                    android:textColor="@android:color/black"
+                    />
                 <TextView
                     android:id="@+id/info_infectCase"
                     android:layout_width="wrap_content"

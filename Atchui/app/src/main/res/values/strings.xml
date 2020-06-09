@@ -12,4 +12,6 @@
 
     <string name = "noti_past">%s 근방에서 %s에 동선 겹침이 확인되었습니다.</string>
     <string name = "noti_current">내 위치 반경 %dkm 내에서 확진자 동선이 확인되었습니다.</string>
+
+    <string name = "noti_time">%s %s</string>
 </resources>
