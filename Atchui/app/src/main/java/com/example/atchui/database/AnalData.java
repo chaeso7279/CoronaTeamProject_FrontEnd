@@ -42,6 +42,8 @@ public class AnalData {
     @SerializedName("anal_time")
     public String m_analTime;
 
+    
+
     @SerializedName("isPast")
     public int m_IsPast;
 

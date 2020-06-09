@@ -131,7 +131,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         setContentView(R.layout.activity_main);
 
         DataManager.getInstance().GetAnalysisList();
-        
+
 //        double lat = DataManager.getInstance().lstPatientRoute.get(0).m_latitude;
 //        Log.e(TAG, lat + "");
 
@@ -176,7 +176,8 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
                 //DataManager.getInstance().GetAnalysisList();
                 // 임시
-                DataManager.getInstance().AnalPastRoute();
+                int size = DataManager.getInstance().lstAnal.size();
+                Log.e(TAG,"anal Lst Size: " + size);
             }
         });
 
@@ -256,6 +257,9 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                 .fillColor(0x220000FF)
                 .strokeWidth(5)
         );
+//        Log.d(TAG ,"m_iPeriod" + DataManager.getInstance().Option.m_iPeriod);
+
+
     }
 
     @Override
@@ -288,38 +292,34 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 //        mMap.setOnInfoWindowClickListener(mClusterManager); //added
 
         mClusterManager.setRenderer(new MyClusterRenderer(this, mMap, mClusterManager));
-
-
         addItems();
     }
 
 
     // 확진자 추가 함수
     private void addItems() {
+        Log.d(TAG ,"m_iPeriod" + DataManager.getInstance().Option.m_iPeriod);
         int size = DataManager.getInstance().lstPatientRoute.size();
         // Add ten cluster items in close proximity, for purposes of this example.
 
-        Bitmap icon = null;
         final IconGenerator mClusterIconGenerator = new IconGenerator(getApplicationContext());
 
 
-    //  서버 정보 추가
+        //  서버 정보 추가
         double server_lat;
         double server_long;
         String server_ID;
         String server_LocationName;
         String S1;
         int Server_color;
-
-
-        for(int i = 0; i < size; i++){
+        for (int i = 0; i < size; i++) {
+            Bitmap icon = null;
             server_lat = DataManager.getInstance().lstPatientRoute.get(i).m_latitude;
             server_long = DataManager.getInstance().lstPatientRoute.get(i).m_longitude;
-            server_ID = String.valueOf(DataManager.getInstance().lstPatientRoute.get(i).m_cnfRouteID) + "번째 확진자";
+            server_ID = DataManager.getInstance().lstPatientRoute.get(i).m_cnfID + "번 확진자";
             server_LocationName = DataManager.getInstance().lstPatientRoute.get(i).m_visitDatetime;
-            S1 = "날짜: " + server_LocationName.substring(0,10)+ "    " + "장소: " +DataManager.getInstance().lstPatientRoute.get(i).m_locationName;
+            S1 = "날짜: " + server_LocationName.substring(0, 10) + "    " + "장소: " + DataManager.getInstance().lstPatientRoute.get(i).m_locationName;
             Server_color = DataManager.getInstance().lstPatientRoute.get(i).m_color;
-
 
 //            //시간별 확진자 색깔 따로 찍기
 //            String visitDatetime = DataManager.getInstance().lstPatientRoute.get(1).m_visitDatetime;
@@ -350,25 +350,103 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 //
 //            Log.d("tag","long diff : " + diff);
             if(Server_color == 0) {
-                Drawable clusterIcon = getResources().getDrawable(R.drawable.red);
+                Drawable clusterIcon = getResources().getDrawable(R.drawable.color_red);
                 mClusterIconGenerator.setBackground(clusterIcon);
                 icon = mClusterIconGenerator.makeIcon();
             }
             else if(Server_color == 1){
-                Drawable clusterIcon = getResources().getDrawable(R.drawable.yellow);
+                Drawable clusterIcon = getResources().getDrawable(R.drawable.color_yellow);
                 mClusterIconGenerator.setBackground(clusterIcon);
                 icon = mClusterIconGenerator.makeIcon();
             }
             else {
-                Drawable clusterIcon = getResources().getDrawable(R.drawable.green);
+                Drawable clusterIcon = getResources().getDrawable(R.drawable.color_green);
                 mClusterIconGenerator.setBackground(clusterIcon);
                 icon = mClusterIconGenerator.makeIcon();
             }
-            MyItem offsetItem = new MyItem(server_lat, server_long, server_ID, S1, icon);
-
-            Log.d("tag","server lat : " + server_lat);
-            mClusterManager.addItem(offsetItem);
+            if(icon != null) {
+                MyItem offsetItem = new MyItem(server_lat, server_long, server_ID, S1, icon);
+                Log.d("tag", "server lat : " + server_lat);
+                mClusterManager.addItem(offsetItem);
+            }
         }
+//        mClusterManager.clearItems();
+//        if(DataManager.getInstance().Option.m_iPeriod < 200) {
+//            for (int i = 0; i < size; i++) {
+//                Bitmap icon = null;
+//                server_lat = DataManager.getInstance().lstPatientRoute.get(i).m_latitude;
+//                server_long = DataManager.getInstance().lstPatientRoute.get(i).m_longitude;
+//                server_ID = DataManager.getInstance().lstPatientRoute.get(i).m_cnfID + "번 확진자";
+//                server_LocationName = DataManager.getInstance().lstPatientRoute.get(i).m_visitDatetime;
+//                S1 = "날짜: " + server_LocationName.substring(0, 10) + "    " + "장소: " + DataManager.getInstance().lstPatientRoute.get(i).m_locationName;
+//                Server_color = DataManager.getInstance().lstPatientRoute.get(i).m_color;
+//                if (Server_color == 0) {
+//                    Drawable clusterIcon = getResources().getDrawable(R.drawable.red);
+//                    mClusterIconGenerator.setBackground(clusterIcon);
+//                    icon = mClusterIconGenerator.makeIcon();
+//                }
+//                if(icon != null) {
+//                    MyItem offsetItem = new MyItem(server_lat, server_long, server_ID, S1, icon);
+//
+//                    Log.d("tag", "server lat : " + server_lat);
+//                    mClusterManager.addItem(offsetItem);
+//                }
+//            }
+//        }else if(DataManager.getInstance().Option.m_iPeriod >= 200 && DataManager.getInstance().Option.m_iPeriod < 700) {
+//            for (int i = 0; i < size; i++) {
+//                Bitmap icon = null;
+//                server_lat = DataManager.getInstance().lstPatientRoute.get(i).m_latitude;
+//                server_long = DataManager.getInstance().lstPatientRoute.get(i).m_longitude;
+//                server_ID = DataManager.getInstance().lstPatientRoute.get(i).m_cnfID+ "번 확진자";
+//                server_LocationName = DataManager.getInstance().lstPatientRoute.get(i).m_visitDatetime;
+//                S1 = "날짜: " + server_LocationName.substring(0, 10) + "    " + "장소: " + DataManager.getInstance().lstPatientRoute.get(i).m_locationName;
+//                Server_color = DataManager.getInstance().lstPatientRoute.get(i).m_color;
+//                if (Server_color == 0) {
+//                    Drawable clusterIcon = getResources().getDrawable(R.drawable.red);
+//                    mClusterIconGenerator.setBackground(clusterIcon);
+//                    icon = mClusterIconGenerator.makeIcon();
+//                } else if (Server_color == 1) {
+//                    Drawable clusterIcon = getResources().getDrawable(R.drawable.yellow);
+//                    mClusterIconGenerator.setBackground(clusterIcon);
+//                    icon = mClusterIconGenerator.makeIcon();
+//                }
+//                if(icon != null) {
+//                    MyItem offsetItem = new MyItem(server_lat, server_long, server_ID, S1, icon);
+//
+//                    Log.d("tag", "server lat : " + server_lat);
+//                    mClusterManager.addItem(offsetItem);
+//                }
+//            }
+//        }else{
+//            for (int i = 0; i < size; i++) {
+//                Bitmap icon = null;
+//                server_lat = DataManager.getInstance().lstPatientRoute.get(i).m_latitude;
+//                server_long = DataManager.getInstance().lstPatientRoute.get(i).m_longitude;
+//                server_ID = DataManager.getInstance().lstPatientRoute.get(i).m_cnfID + "번 확진자";
+//                server_LocationName = DataManager.getInstance().lstPatientRoute.get(i).m_visitDatetime;
+//                S1 = "날짜: " + server_LocationName.substring(0, 10) + "    " + "장소: " + DataManager.getInstance().lstPatientRoute.get(i).m_locationName;
+//                Server_color = DataManager.getInstance().lstPatientRoute.get(i).m_color;
+//                if (Server_color == 0) {
+//                    Drawable clusterIcon = getResources().getDrawable(R.drawable.red);
+//                    mClusterIconGenerator.setBackground(clusterIcon);
+//                    icon = mClusterIconGenerator.makeIcon();
+//                } else if (Server_color == 1) {
+//                    Drawable clusterIcon = getResources().getDrawable(R.drawable.yellow);
+//                    mClusterIconGenerator.setBackground(clusterIcon);
+//                    icon = mClusterIconGenerator.makeIcon();
+//                } else {
+//                    Drawable clusterIcon = getResources().getDrawable(R.drawable.green);
+//                    mClusterIconGenerator.setBackground(clusterIcon);
+//                    icon = mClusterIconGenerator.makeIcon();
+//                }
+//                if(icon != null) {
+//                    MyItem offsetItem = new MyItem(server_lat, server_long, server_ID, S1, icon);
+//                    Log.d("tag", "server lat : " + server_lat);
+//                    mClusterManager.addItem(offsetItem);
+//                }
+//            }
+//        }
+
     }
 
     public class MyClusterRenderer extends DefaultClusterRenderer<MyItem> {
