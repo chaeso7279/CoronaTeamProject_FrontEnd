@@ -30,6 +30,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -115,7 +116,7 @@ public class CurrentResultActivity extends FragmentActivity implements OnMapRead
         //Noti정보
         anal_time = DataManager.getInstance().lstAnal.get(i).m_analTime;   //분석시간
 
-        String user_timeStr = String.format(getResources().getString(R.string.noti_time),user_time.substring(0,9),user_time.substring(11,18));
+        String user_timeStr = String.format(getResources().getString(R.string.noti_time),user_time.substring(0,10),user_time.substring(11,19));
         Log.d("사용자 시간", user_timeStr);  //TODO: 맞는지 확인
 
 
@@ -127,7 +128,7 @@ public class CurrentResultActivity extends FragmentActivity implements OnMapRead
 //        info_cnfdate.setText();
 //        info_province.setText();
 //        info_isofacility.setText();   //TODO: db 추가...
-        info_cnfNum.setText(cnf_id);
+        info_cnfNum.setText(String.format(getResources().getString(R.string.path_cnfid),cnf_id));
     }
 
     //google map
@@ -136,19 +137,55 @@ public class CurrentResultActivity extends FragmentActivity implements OnMapRead
     public void onMapReady(final GoogleMap googleMap) {
         Toast.makeText(this,"map is Ready",Toast.LENGTH_SHORT).show();
         Log.d(TAG,"onMapReady : map is ready");
+
         mMap = googleMap;
 
         MarkerOptions user_marker = new MarkerOptions();
         user_marker.position(new LatLng(user_latitude,user_longitude))
                 .title(anal_time);
 
-        mMap.addMarker(user_marker);
+        String server_ID = cnf_id;
+        String server_LocationName = user_time;
+        String S1 = "날짜: "  + server_LocationName.substring(0,10) + "    " + "장소: "+location_name;
+
+        if(labelColor==0){
+            user_marker.position(new LatLng(user_latitude,user_longitude))
+                    .title(server_ID + "번째 확진자")
+                    .snippet(S1)
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.red));
+            mMap.addMarker(user_marker);
+        }
+        else if(labelColor==0){
+            user_marker.position(new LatLng(user_latitude,user_longitude))
+                    .title(server_ID + "번째 확진자")
+                    .snippet(S1)
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.yellow));
+            mMap.addMarker(user_marker);
+        }
+        else{
+            user_marker.position(new LatLng(user_latitude,user_longitude))
+                    .title(server_ID + "번째 확진자")
+                    .snippet(S1)
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.green));
+            mMap.addMarker(user_marker);
+        }
+
 
         MarkerOptions cnf_marker = new MarkerOptions();
+
         cnf_marker.position(new LatLng(cnf_latitude,cnf_longitude))
                 .title(location_name);
         mMap.addMarker(cnf_marker);
 
         mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(user_latitude,user_longitude)));
+
+        cnf_marker.position(new LatLng(cnf_latitude, cnf_longitude))
+                .title(location_name)
+                .snippet(S1)
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.blue));
+
+        mMap.addMarker(cnf_marker);
+
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(user_latitude, user_longitude)));
     }
 }
