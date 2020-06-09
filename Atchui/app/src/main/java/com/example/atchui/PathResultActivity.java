@@ -81,13 +81,12 @@ public class PathResultActivity extends FragmentActivity implements OnMapReadyCa
         Intent intent = getIntent();
 
         lstIndex = intent.getExtras().getInt("lstIndex");
-        Log.d("패쓰", lstIndex +"");
         getSelectedNotiData(lstIndex);  //선택된 Noti의 데이터 가져오기
 
         /*google map*/
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map_pathResult);
-        //        mapFragment.getMapAsync(PathResultActivity.this);
+                mapFragment.getMapAsync(PathResultActivity.this);
 
     }
 
