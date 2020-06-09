@@ -20,6 +20,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -82,21 +83,44 @@ public class PathResultActivity extends FragmentActivity implements OnMapReadyCa
     public void onMapReady(final GoogleMap googleMap) {
         Toast.makeText(this,"map is Ready",Toast.LENGTH_SHORT).show();
         Log.d(TAG,"onMapReady : map is ready");
+
         mMap = googleMap;
 
-        MarkerOptions user_marker = new MarkerOptions();
-        user_marker.position(new LatLng(DataManager.getInstance().lstAnal.get(i).m_userLatitude
-                ,DataManager.getInstance().lstAnal.get(i).m_userLongitude))
-                .title(DataManager.getInstance().lstAnal.get(i).m_analTime);
 
-        mMap.addMarker(user_marker);
+        if(DataManager.getInstance().lstAnal.get(i).m_color==0){
+            MarkerOptions user_marker = new MarkerOptions();
+            user_marker.position(new LatLng(DataManager.getInstance().lstAnal.get(i).m_userLatitude
+                    ,DataManager.getInstance().lstAnal.get(i).m_userLongitude))
+                    .title(DataManager.getInstance().lstAnal.get(i).m_analTime)
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.red));
+            mMap.addMarker(user_marker);
+        }
+        else if(DataManager.getInstance().lstAnal.get(i).m_color==0){
+            MarkerOptions user_marker = new MarkerOptions();
+            user_marker.position(new LatLng(DataManager.getInstance().lstAnal.get(i).m_userLatitude
+                    ,DataManager.getInstance().lstAnal.get(i).m_userLongitude))
+                    .title(DataManager.getInstance().lstAnal.get(i).m_analTime)
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.yellow));
+            mMap.addMarker(user_marker);
+        }
+        else{
+            MarkerOptions user_marker = new MarkerOptions();
+            user_marker.position(new LatLng(DataManager.getInstance().lstAnal.get(i).m_userLatitude
+                    ,DataManager.getInstance().lstAnal.get(i).m_userLongitude))
+                    .title(DataManager.getInstance().lstAnal.get(i).m_analTime)
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.green));
+            mMap.addMarker(user_marker);
+        }
+
 
         MarkerOptions cnf_marker = new MarkerOptions();
         cnf_marker.position(new LatLng(DataManager.getInstance().lstAnal.get(i).m_cnfLatitude
                 , DataManager.getInstance().lstAnal.get(i).m_cnfLongitude))
-                .title(DataManager.getInstance().lstAnal.get(i).m_locationName);
+                .title(DataManager.getInstance().lstAnal.get(i).m_locationName)
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.blue));
+
         mMap.addMarker(cnf_marker);
-        
+
         mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(DataManager.getInstance().lstAnal.get(i).m_userLatitude
                 , DataManager.getInstance().lstAnal.get(i).m_userLongitude)));
     }
