@@ -7,10 +7,15 @@ import androidx.fragment.app.FragmentActivity;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
+import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
+import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,6 +27,8 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.Circle;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -31,7 +38,7 @@ import java.util.List;
 
 import retrofit2.http.HEAD;
 
-public class PathResultActivity extends FragmentActivity implements OnMapReadyCallback {
+public class PathResultActivity extends FragmentActivity implements OnMapReadyCallback{
 
     private GoogleMap mMap;
     private FusedLocationProviderClient mFusedLocationProviderClient;
@@ -68,7 +75,12 @@ public class PathResultActivity extends FragmentActivity implements OnMapReadyCa
     //Noti정보
     int lstIndex;              //서버 list 내 인덱스
     String anal_time;              //분석시간
+    // pre-circle
+    private Circle preCircle = null;
 
+
+    static double current_lat;
+    static double current_long;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -183,8 +195,19 @@ public class PathResultActivity extends FragmentActivity implements OnMapReadyCa
         user_marker.position(new LatLng(user_latitude, user_longitude))
                 .title(location_name)
                 .snippet(S1)
-                .icon(BitmapDescriptorFactory.fromResource(R.drawable.blue));
+                .icon(BitmapDescriptorFactory
+                .defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
 
+        LatLng center = new LatLng(user_latitude, user_longitude);
+        int m_radius = DataManager.getInstance().Option.m_iRadius;
+        Log.d("tag","m_radius : " + m_radius);
+        preCircle = mMap.addCircle(new CircleOptions()
+                .center(center)
+                .radius(m_radius)
+                .strokeColor(Color.BLUE)
+                .fillColor(0x220000FF)
+                .strokeWidth(5)
+        );
         mMap.addMarker(user_marker);
 
         moveCamera(new LatLng(user_latitude,user_longitude),15f);
@@ -192,4 +215,5 @@ public class PathResultActivity extends FragmentActivity implements OnMapReadyCa
     private void moveCamera(LatLng latLng, float zoom){
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
     }
+
 }
