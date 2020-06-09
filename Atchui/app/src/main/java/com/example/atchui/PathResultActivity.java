@@ -86,7 +86,7 @@ public class PathResultActivity extends FragmentActivity implements OnMapReadyCa
         /*google map*/
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map_pathResult);
-        //        mapFragment.getMapAsync(PathResultActivity.this);
+                mapFragment.getMapAsync(PathResultActivity.this);
 
     }
 
