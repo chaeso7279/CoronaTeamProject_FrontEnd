@@ -13,6 +13,7 @@ public class Noti_RecyclerItem{
 
     private int itemType;
     private int labelColor;
+    private int analID;
     private String contentStr;
     private String timeStr;
 
@@ -36,6 +37,7 @@ public class Noti_RecyclerItem{
     }
     public int getItemType() { return itemType;}
     public int getLabelColor() { return labelColor;}
+    public int getAnalID() { return analID; }
     public String getTextStr(){
         return contentStr;
     }
@@ -47,10 +49,11 @@ public class Noti_RecyclerItem{
 
     }
 
-    Noti_RecyclerItem(int index, int type, int label, String content, String time){
+    Noti_RecyclerItem(int index, int type, int label, int AnalID, String content, String time){
         lstIndex = index;
         itemType = type;
         labelColor = label;
+        analID = AnalID;
         contentStr = content;
         timeStr = time;
     }

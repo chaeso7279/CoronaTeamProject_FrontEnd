@@ -98,6 +98,7 @@ public class Noti_newFragment extends Fragment implements Noti_RecyclerAdapter.O
                 int index = i;  //서버 list 내 인덱스
                 String anal_time = DataManager.getInstance().lstAnal.get(i).m_analTime;   //분석시간
                 int itemType = DataManager.getInstance().lstAnal.get(i).m_IsPast; //과거기반?현재기반?
+                int analID = DataManager.getInstance().lstAnal.get(i).m_analID; // 분석 고유번호
 
                 String user_timeStr = String.format(getResources().getString(R.string.noti_time),user_time.substring(0,10),user_time.substring(11,19));
                 Log.d("사용자 시간", user_timeStr);
@@ -110,14 +111,14 @@ public class Noti_newFragment extends Fragment implements Noti_RecyclerAdapter.O
                 //past일 경우
                 if(itemType == PATH_NOTIFICATION){
                     String context = String.format(getResources().getString(R.string.noti_past),location_name, user_time.substring(0,10));
-                    Noti_RecyclerItem item = new Noti_RecyclerItem(index, itemType, labelColor, context, diffStr);
+                    Noti_RecyclerItem item = new Noti_RecyclerItem(index, itemType, labelColor, analID, context, diffStr);
                     new_adapter.addItem(item);
                 }
                 //current일 경우
                 else if(itemType == CURRENT_NOTIFICATION){
                     int range = DataManager.getInstance().Option.m_iRadius;
                     String context = String.format(getResources().getString(R.string.noti_current),range);
-                    Noti_RecyclerItem item = new Noti_RecyclerItem(index, itemType, labelColor, context, diffStr);
+                    Noti_RecyclerItem item = new Noti_RecyclerItem(index, itemType, labelColor, analID, context, diffStr);
                     new_adapter.addItem(item);
                 }
 
@@ -137,7 +138,7 @@ public class Noti_newFragment extends Fragment implements Noti_RecyclerAdapter.O
             Intent intent = new Intent(getActivity(), CurrentResultActivity.class);
 
             intent.putExtra("lstIndex",viewHolder.lstIndex);
-            DataManager.getInstance().UpdateAnalIsRead(viewHolder.lstIndex, true);
+            DataManager.getInstance().UpdateAnalIsRead(viewHolder.analID, true);
             startActivity(intent);
             if(getActivity() != null) {
                 getActivity().finish();
@@ -147,7 +148,7 @@ public class Noti_newFragment extends Fragment implements Noti_RecyclerAdapter.O
             Intent intent = new Intent(getActivity(), PathResultActivity.class);
 
             intent.putExtra("lstIndex",viewHolder.lstIndex);
-            DataManager.getInstance().UpdateAnalIsRead(viewHolder.lstIndex, true);
+            DataManager.getInstance().UpdateAnalIsRead(viewHolder.analID, true);
             startActivity(intent);
             if(getActivity() != null) {
                 getActivity().finish();

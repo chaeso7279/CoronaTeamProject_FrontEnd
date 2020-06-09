@@ -92,6 +92,7 @@ public class Noti_Fragment extends Fragment implements Noti_RecyclerAdapter.OnLi
                 int index = i;  //서버 list 내 인덱스
                 String anal_time = DataManager.getInstance().lstAnal.get(i).m_analTime;   //분석시간
                 int itemType = DataManager.getInstance().lstAnal.get(i).m_IsPast; //과거기반?현재기반?
+                int analID = DataManager.getInstance().lstAnal.get(i).m_analID; // 분석 고유번호
 
                 String user_timeStr = String.format(getResources().getString(R.string.noti_time),user_time.substring(0,10),user_time.substring(11,19));
                 Log.d("사용자 시간", user_timeStr);
@@ -104,14 +105,14 @@ public class Noti_Fragment extends Fragment implements Noti_RecyclerAdapter.OnLi
                 //past일 경우
                 if(itemType == PATH_NOTIFICATION){
                     String context = String.format(getResources().getString(R.string.noti_past),location_name, user_time.substring(0,10));
-                    Noti_RecyclerItem item = new Noti_RecyclerItem(index, itemType, labelColor, context, diffStr);
+                    Noti_RecyclerItem item = new Noti_RecyclerItem(index, itemType, labelColor,analID, context, diffStr);
                     adapter.addItem(item);
                 }
                 //current일 경우
                 else if(itemType == CURRENT_NOTIFICATION){
                     int range = DataManager.getInstance().Option.m_iRadius;
                     String context = String.format(getResources().getString(R.string.noti_current),range);
-                    Noti_RecyclerItem item = new Noti_RecyclerItem(index, itemType, labelColor, context, diffStr);
+                    Noti_RecyclerItem item = new Noti_RecyclerItem(index, itemType, labelColor, analID, context, diffStr);
                     adapter.addItem(item);
                 }
 
