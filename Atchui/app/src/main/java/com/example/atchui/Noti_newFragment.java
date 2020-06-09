@@ -44,7 +44,6 @@ public class Noti_newFragment extends Fragment implements Noti_RecyclerAdapter.O
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_noti_new_fragment, container, false);
 
-
         Initialize(view);
         setData();
 
@@ -59,8 +58,6 @@ public class Noti_newFragment extends Fragment implements Noti_RecyclerAdapter.O
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-        //sharedViewModel = ViewModelProviders.of(getActivity()).get(SharedViewModel.class); //fragment간 text전달을 위해 만듬
     }
 
     private void Initialize(View view) {
@@ -82,14 +79,6 @@ public class Noti_newFragment extends Fragment implements Noti_RecyclerAdapter.O
         for(int i = 0 ; i < size ; i++){
             //읽지 않은 알림(새로운 알림)일 경우
             if(DataManager.getInstance().lstAnal.get(i).m_IsRead == 0){
-                //
-
-//                String cnf_id = DataManager.getInstance().lstAnal.get(i).m_cnfID; //확진자id
-//                double cnf_latitude = DataManager.getInstance().lstAnal.get(i).m_cnfLatitude;    //확진자위도
-//                double cnf_longitude = DataManager.getInstance().lstAnal.get(i).m_cnfLongitude;   //확진자경도
-//                double user_latitude = DataManager.getInstance().lstAnal.get(i).m_userLatitude;   //사용자위도
-//                double user_longitude = DataManager.getInstance().lstAnal.get(i).m_userLongitude;  //사용자경도
-
 
                 //확진자정보
                 String location_name = DataManager.getInstance().lstAnal.get(i).m_locationName;   //방문장소명
@@ -102,7 +91,6 @@ public class Noti_newFragment extends Fragment implements Noti_RecyclerAdapter.O
                 int index = i;  //서버 list 내 인덱스
                 String anal_time = DataManager.getInstance().lstAnal.get(i).m_analTime;   //분석시간
                 int itemType = DataManager.getInstance().lstAnal.get(i).m_IsPast; //과거기반?현재기반?
-                int isRead = DataManager.getInstance().lstAnal.get(i).m_IsRead; //읽었는지
 
                 String user_timeStr = String.format(getResources().getString(R.string.noti_time),user_time.substring(0,10),user_time.substring(11,19));
                 Log.d("사용자 시간", user_timeStr);  //TODO: 맞는지 확인
