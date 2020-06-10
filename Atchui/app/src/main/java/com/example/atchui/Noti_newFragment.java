@@ -99,6 +99,7 @@ public class Noti_newFragment extends Fragment implements Noti_RecyclerAdapter.O
                 String anal_time = DataManager.getInstance().lstAnal.get(i).m_analTime;   //분석시간
                 int itemType = DataManager.getInstance().lstAnal.get(i).m_IsPast; //과거기반?현재기반?
                 int analID = DataManager.getInstance().lstAnal.get(i).m_analID; // 분석 고유번호
+                Log.d("분석번호",""+analID);
 
                 String user_timeStr = String.format(getResources().getString(R.string.noti_time),user_time.substring(0,10),user_time.substring(11,19));
                 Log.d("사용자 시간", user_timeStr);
@@ -108,19 +109,21 @@ public class Noti_newFragment extends Fragment implements Noti_RecyclerAdapter.O
 
                 String diffStr = analTimeDiff(anal_timeStr);
 
+                //current일 경우
+                if(analID == 3 || itemType == CURRENT_NOTIFICATION){
+                    Log.d("현위치기반", "들어왔음!");
+                    int range = DataManager.getInstance().Option.m_iRadius;
+                    String context = String.format(getResources().getString(R.string.noti_current),range*0.001);
+                    Noti_RecyclerItem item = new Noti_RecyclerItem(index, itemType, labelColor, analID, context, diffStr);
+                    new_adapter.addItem(item);
+                }
                 //past일 경우
-                if(itemType == PATH_NOTIFICATION){
+                else if(itemType == PATH_NOTIFICATION){
                     String context = String.format(getResources().getString(R.string.noti_past),location_name, user_time.substring(0,10));
                     Noti_RecyclerItem item = new Noti_RecyclerItem(index, itemType, labelColor, analID, context, diffStr);
                     new_adapter.addItem(item);
                 }
-                //current일 경우
-                else if(itemType == CURRENT_NOTIFICATION){
-                    int range = DataManager.getInstance().Option.m_iRadius;
-                    String context = String.format(getResources().getString(R.string.noti_current),range);
-                    Noti_RecyclerItem item = new Noti_RecyclerItem(index, itemType, labelColor, analID, context, diffStr);
-                    new_adapter.addItem(item);
-                }
+
 
                 new_adapter.notifyDataSetChanged();
             }
@@ -161,7 +164,8 @@ public class Noti_newFragment extends Fragment implements Noti_RecyclerAdapter.O
 
         //현재시간
         long time = System.currentTimeMillis();
-        SimpleDateFormat dayTime = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+
+        SimpleDateFormat dayTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String current_timeStr = dayTime.format(new Date(time));
 
         Log.d("차이/현재시간",current_timeStr);
@@ -202,7 +206,7 @@ public class Noti_newFragment extends Fragment implements Noti_RecyclerAdapter.O
             return now_m-anal_m+"분 전";
         }
         if(now_s-anal_s!=0){
-            return now_s-anal_s+"초 전";
+            return now_s-anal_s+"방금 전";
         }
         return diffStr;
     }
