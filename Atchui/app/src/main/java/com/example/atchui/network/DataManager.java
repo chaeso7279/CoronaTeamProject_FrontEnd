@@ -23,7 +23,6 @@ public class DataManager {
     public static final int VAL_PERIOD = 1;
 
     public ServiceAPI service;
-    public PatientRouteResponse patientRouteResponse;
 
     public ArrayList<AnalData> lstAnal;
     public ArrayList<PatientRouteData> lstPatientRoute;
@@ -39,8 +38,6 @@ public class DataManager {
     public void Initialize(ServiceAPI service) {
         this.service = service;
         bInit = true;
-
-        patientRouteResponse = new PatientRouteResponse();
 
         lstAnal = new ArrayList<AnalData>();
         lstPatientRoute = new ArrayList<PatientRouteData>();

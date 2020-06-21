@@ -133,7 +133,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //DataManager.getInstance().GetAnalysisList();
+        DataManager.getInstance().GetAnalysisList();
 
 //        double lat = DataManager.getInstance().lstPatientRoute.get(0).m_latitude;
 //        Log.e(TAG, lat + "");
@@ -179,6 +179,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                 // 임시로 사용자 위치(위도, 경도 서버에 보내는걸로 변경)
                 // 사용자 위도 경도 얻어와서 넣어야함
                 DataManager.getInstance().AnalPresentRoute(current_lat, current_long);
+                //DataManager.getInstance().GetAnalysisList();
             }
         });
 

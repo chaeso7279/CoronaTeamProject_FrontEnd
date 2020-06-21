@@ -18,6 +18,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.example.atchui.network.DataManager;
+
 import java.util.ArrayList;
 
 public class NotificationListActivity extends AppCompatActivity {
@@ -25,6 +27,7 @@ public class NotificationListActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        DataManager.getInstance().GetAnalysisList();
         setContentView(R.layout.activity_notification_list);
     }
 
