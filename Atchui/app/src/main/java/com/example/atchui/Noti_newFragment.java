@@ -31,6 +31,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static java.lang.StrictMath.abs;
+
 public class Noti_newFragment extends Fragment implements Noti_RecyclerAdapter.OnListItemSelectedInterface {
     private static final int CURRENT_NOTIFICATION = 0;
     private static final int PATH_NOTIFICATION = 1;
@@ -110,7 +112,7 @@ public class Noti_newFragment extends Fragment implements Noti_RecyclerAdapter.O
                 String diffStr = analTimeDiff(anal_timeStr);
 
                 //current일 경우
-                if(analID == 3 || itemType == CURRENT_NOTIFICATION){
+                if(itemType == CURRENT_NOTIFICATION){
                     Log.d("현위치기반", "들어왔음!");
                     int range = DataManager.getInstance().Option.m_iRadius;
                     String context = String.format(getResources().getString(R.string.noti_current),range*0.001);
@@ -191,22 +193,22 @@ public class Noti_newFragment extends Fragment implements Noti_RecyclerAdapter.O
 //        Log.d("현재시간", now_year + " " + now_month+ " " +now_day+ " " +"/"+
 //                now_h+ " " +now_m+ " " +now_s);
         if(now_year-anal_year!=0){
-            return now_year-anal_year+"년 전";
+            return abs(now_year-anal_year)+"년 전";
         }
         if(now_month-anal_month!=0){
-            return now_month-anal_month+"달 전";
+            return abs(now_month-anal_month)+"달 전";
         }
         if(now_day-anal_day!=0){
-            return now_day-anal_day+"일 전";
+            return abs(now_day-anal_day)+"일 전";
         }
         if(now_h - anal_h != 0){
-            return now_h-anal_h+ "시간 전";
+            return abs(now_h-anal_h)+ "시간 전";
         }
         if(now_m-anal_m!=0){
-            return now_m-anal_m+"분 전";
+            return abs(now_m-anal_m)+"분 전";
         }
         if(now_s-anal_s!=0){
-            return now_s-anal_s+"방금 전";
+            return "방금 전";
         }
         return diffStr;
     }

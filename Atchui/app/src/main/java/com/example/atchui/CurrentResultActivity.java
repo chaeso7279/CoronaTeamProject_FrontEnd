@@ -9,6 +9,7 @@ import androidx.fragment.app.FragmentActivity;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -31,6 +32,8 @@ import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.Circle;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -78,6 +81,11 @@ public class CurrentResultActivity extends FragmentActivity implements OnMapRead
     int lstIndex;              //서버 list 내 인덱스
     String anal_time;              //분석시간
 
+    private Circle preCircle = null;
+
+
+    static double current_lat;
+    static double current_long;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,13 +105,12 @@ public class CurrentResultActivity extends FragmentActivity implements OnMapRead
         Intent intent = getIntent();
 
         lstIndex = intent.getExtras().getInt("lstIndex");
-
         getSelectedNotiData(lstIndex);  //선택된 Noti의 데이터 가져오기
 
         /*google map*/
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map_pathResult);
-    //        mapFragment.getMapAsync(PathResultActivity.this);
+                .findFragmentById(R.id.map_currentResult);
+                mapFragment.getMapAsync(CurrentResultActivity.this);
     }
 
     private void getSelectedNotiData(int i){
@@ -195,8 +202,19 @@ public class CurrentResultActivity extends FragmentActivity implements OnMapRead
         user_marker.position(new LatLng(user_latitude, user_longitude))
                 .title(location_name)
                 .snippet(S1)
-                .icon(BitmapDescriptorFactory.fromResource(R.drawable.blue));
+                .icon(BitmapDescriptorFactory
+                        .defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
 
+        LatLng center = new LatLng(user_latitude, user_longitude);
+        int m_radius = DataManager.getInstance().Option.m_iRadius;
+        Log.d("tag","m_radius : " + m_radius);
+        preCircle = mMap.addCircle(new CircleOptions()
+                .center(center)
+                .radius(m_radius)
+                .strokeColor(Color.BLUE)
+                .fillColor(0x220000FF)
+                .strokeWidth(5)
+        );
         mMap.addMarker(user_marker);
 
         moveCamera(new LatLng(user_latitude,user_longitude),15f);
@@ -204,4 +222,5 @@ public class CurrentResultActivity extends FragmentActivity implements OnMapRead
     private void moveCamera(LatLng latLng, float zoom){
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
     }
+
 }

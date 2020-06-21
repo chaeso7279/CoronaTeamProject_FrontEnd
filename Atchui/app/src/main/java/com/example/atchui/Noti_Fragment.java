@@ -103,7 +103,7 @@ public class Noti_Fragment extends Fragment implements Noti_RecyclerAdapter.OnLi
                 String diffStr = analTimeDiff(anal_timeStr);
 
                 //current일 경우
-                if(itemType == CURRENT_NOTIFICATION || analID == 3){
+                if(itemType == CURRENT_NOTIFICATION){
                     int range = DataManager.getInstance().Option.m_iRadius;
                     String context = String.format(getResources().getString(R.string.noti_current),range*0.001);
                     Noti_RecyclerItem item = new Noti_RecyclerItem(index, CURRENT_NOTIFICATION, labelColor, analID, context, diffStr);
