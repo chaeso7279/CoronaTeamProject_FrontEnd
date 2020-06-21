@@ -91,6 +91,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.TimerTask;
 import java.util.UUID;
 
 import retrofit2.Call;
@@ -137,6 +138,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
 //        double lat = DataManager.getInstance().lstPatientRoute.get(0).m_latitude;
 //        Log.e(TAG, lat + "");
+
 
         getLocationPermission();
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -190,6 +192,24 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         Toast.makeText(getApplicationContext(), "Service 시작", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(MainActivity.this, BackgroundService.class);
         startService(intent);
+
+        //10분에 한 번 사용자 위도, 경도 보내기
+        if (!BackTimer.isRunning()) {
+            /*
+             * delay랑 period 둘다 long으로 ms 단위
+             * delay: 처음(한번) 시작되기까지의 지연시간
+             * period: 인터벌(간격). 우리의 경우 10분이니 1000 * 60 * 10
+             */
+            BackTimer.createTimer(new TimerTask() {
+                @Override
+                public void run() {
+                    // 주기적으로 실행할 부분
+                    Log.d(TAG, "current_lat: " + current_lat);
+                    Log.d(TAG, "current_lon: " + current_long);
+                    DataManager.getInstance().AnalPresentRoute(current_lat, current_long);
+                }
+            },0, 600000);
+        }
     }
 
     private void init() {
