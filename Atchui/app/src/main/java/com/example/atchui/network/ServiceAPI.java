@@ -15,8 +15,12 @@ import retrofit2.http.POST;
 
 public interface ServiceAPI {
 
+    //js코드의 POST에서 사용 - 아래 함수를 실행하면 이 url로 데이터 전송
     @POST("/user/option")
     Call<GeneralResponse>  userOption(@Body SettingData data);
+    //GeneralResponse : 클라이언트가 정보를 받을 데이터 형식 정해준 것
+    //@Body:  json으로 바꿔 줌
+    //SettingData data: 서버에 보낼 데이터 형태 정함
 
     @POST("/user/option/updateRad")
     Call<SettingData>  userOptionUpdateRad(@Body SettingData data);

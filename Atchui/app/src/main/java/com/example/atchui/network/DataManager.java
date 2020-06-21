@@ -64,10 +64,10 @@ public class DataManager {
             @Override
             public void onResponse(Call<PatientRouteResponse> call, Response<PatientRouteResponse> response) {
                 if(!lstPatientRoute.isEmpty())
-                    lstPatientRoute.clear();
+                    lstPatientRoute.clear();    //다시 받아오기 위해 비워줌
 
                 try {
-                    response.body().ConvertToData(lstPatientRoute);
+                    response.body().ConvertToData(lstPatientRoute); //string을 다시 배열형태로 바꿔줌
                     Log.e("성공", "확진자 정보 가져오기");
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -86,7 +86,9 @@ public class DataManager {
         if(!bInit)
             return;
 
-        SettingData data = new SettingData(user_id, radius, period);
+        SettingData data = new SettingData(user_id, radius, period);    //서버에 보낼 데이터
+        //service가 userOption 실행
+        //service: sercieAPI임  Splash에서 데이터매니저 초기화할 때 넣어주는 애
         service.userOption(data).enqueue(new Callback<GeneralResponse>() {
             @Override
             public void onResponse(Call<GeneralResponse> call, Response<GeneralResponse> response) {
@@ -99,7 +101,7 @@ public class DataManager {
             public void onFailure(Call<GeneralResponse> call, Throwable t) {
                 Log.e("실패", t.getMessage());
             }
-        });
+        }); //서버로 전송
     }
 
     public void GetUserOption(){
@@ -121,6 +123,8 @@ public class DataManager {
         });
     }
 
+    //기간, 반경 둘 다 업데이트
+    //VALUE_ID: 기간 or 반경
     public void UpdateUserOption(int VALUE_ID, int value) {
         if(!bInit)
             return;
@@ -135,6 +139,7 @@ public class DataManager {
                     @Override
                     public void onResponse(Call<SettingData> call, Response<SettingData> response) {
                         Option = response.body();
+                        //서버로부터 받은 정보 Option 변수(SettingData)에 저장
                         Log.e("성공","Rad Update ");
                         AnalPastRoute();
                     }
@@ -170,14 +175,13 @@ public class DataManager {
             return;
 
         AnalData data = new AnalData();
-        data.m_userID = user_id;
+        data.m_userID = user_id;    //클라이언트 ID 넣어줌(서버에 보냄)
 
         service.GetAnalList(data).enqueue(new Callback<AnalResponse>() {
             @Override
             public void onResponse(Call<AnalResponse> call, Response<AnalResponse> response) {
                 if(!lstAnal.isEmpty())
                     lstAnal.clear();
-
 
                 try {
                     response.body().ConvertToData(lstAnal);
