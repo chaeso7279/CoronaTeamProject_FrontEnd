@@ -102,19 +102,20 @@ public class Noti_Fragment extends Fragment implements Noti_RecyclerAdapter.OnLi
 
                 String diffStr = analTimeDiff(anal_timeStr);
 
+                //current일 경우
+                if(itemType == CURRENT_NOTIFICATION || analID == 3){
+                    int range = DataManager.getInstance().Option.m_iRadius;
+                    String context = String.format(getResources().getString(R.string.noti_current),range*0.001);
+                    Noti_RecyclerItem item = new Noti_RecyclerItem(index, CURRENT_NOTIFICATION, labelColor, analID, context, diffStr);
+                    adapter.addItem(item);
+                }
                 //past일 경우
-                if(itemType == PATH_NOTIFICATION){
+                else if(itemType == PATH_NOTIFICATION){
                     String context = String.format(getResources().getString(R.string.noti_past),location_name, user_time.substring(0,10));
                     Noti_RecyclerItem item = new Noti_RecyclerItem(index, itemType, labelColor,analID, context, diffStr);
                     adapter.addItem(item);
                 }
-                //current일 경우
-                else if(itemType == CURRENT_NOTIFICATION){
-                    int range = DataManager.getInstance().Option.m_iRadius;
-                    String context = String.format(getResources().getString(R.string.noti_current),range);
-                    Noti_RecyclerItem item = new Noti_RecyclerItem(index, itemType, labelColor, analID, context, diffStr);
-                    adapter.addItem(item);
-                }
+
 
                 adapter.notifyDataSetChanged();
             }
@@ -152,7 +153,8 @@ public class Noti_Fragment extends Fragment implements Noti_RecyclerAdapter.OnLi
 
         //현재시간
         long time = System.currentTimeMillis();
-        SimpleDateFormat dayTime = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+
+        SimpleDateFormat dayTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String current_timeStr = dayTime.format(new Date(time));
 
         Log.d("차이/현재시간",current_timeStr);
@@ -193,8 +195,9 @@ public class Noti_Fragment extends Fragment implements Noti_RecyclerAdapter.OnLi
             return now_m-anal_m+"분 전";
         }
         if(now_s-anal_s!=0){
-            return now_s-anal_s+"초 전";
+            return "방금 전";
         }
         return diffStr;
     }
 }
+

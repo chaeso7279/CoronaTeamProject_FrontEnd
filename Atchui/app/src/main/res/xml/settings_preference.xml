@@ -43,7 +43,7 @@
             android:defaultValue="true"
             android:summaryOff="비동의"
             android:summaryOn="동의"
-            android:title="GPS 수집"/>
+            android:title="사용자 동선 수집"/>
     </PreferenceCategory>
 
 

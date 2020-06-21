@@ -269,6 +269,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                 public boolean onKey(View view, int keyCode, KeyEvent keyEvent) {
                     if ((keyEvent.getAction()) == KeyEvent.ACTION_DOWN && (keyCode == KeyEvent.KEYCODE_ENTER)) {
                         T_addItems(value);
+
                     }
                     return false;
                 }
