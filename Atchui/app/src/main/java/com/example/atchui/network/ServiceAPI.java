@@ -2,21 +2,21 @@ package com.example.atchui.network;
 
 import com.example.atchui.database.AnalData;
 import com.example.atchui.database.AnalResponse;
+import com.example.atchui.database.GeneralResponse;
 import com.example.atchui.database.PatientRouteData;
 import com.example.atchui.database.PatientRouteResponse;
 import com.example.atchui.database.SettingData;
-import com.example.atchui.database.SettingResponse;
+import com.example.atchui.database.UserPresentData;
 import com.example.atchui.database.UserRouteData;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
-import retrofit2.http.GET;
 import retrofit2.http.POST;
 
 public interface ServiceAPI {
 
     @POST("/user/option")
-    Call<SettingResponse>  userOption(@Body SettingData data);
+    Call<GeneralResponse>  userOption(@Body SettingData data);
 
     @POST("/user/option/updateRad")
     Call<SettingData>  userOptionUpdateRad(@Body SettingData data);
@@ -33,18 +33,15 @@ public interface ServiceAPI {
     @POST("/user/SendRoute")
     Call<UserRouteData> SendUserRoute(@Body UserRouteData data);
 
-    @POST("/analysis")
+    @POST("/analysis/GetAnalData")
     Call<AnalResponse> GetAnalList(@Body AnalData data);
 
-    //@POST("/AnalRoute/Present")
-   // Call <AnalResponse> AnalPresentRoute(@Body AnalData data);
-
-    //@POST("/analysis/Present")
-    //Call
+    @POST("/analysis/Present")
+    Call <GeneralResponse> AnalPresentRoute(@Body UserPresentData data);
 
     @POST("/analysis/Past")
-    Call <SettingResponse> AnalPastRoute(@Body AnalData data);
+    Call <GeneralResponse> AnalPastRoute(@Body AnalData data);
 
     @POST("/analysis/UpdateIsRead")
-    Call<SettingResponse> UpdateAnalIsRead(@Body AnalData data);
+    Call<GeneralResponse> UpdateAnalIsRead(@Body AnalData data);
 }

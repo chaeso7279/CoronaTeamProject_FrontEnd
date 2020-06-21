@@ -19,6 +19,7 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.service.autofill.UserData;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
@@ -28,6 +29,7 @@ import android.widget.Toast;
 
 import com.example.atchui.database.PatientRouteData;
 import com.example.atchui.database.SettingData;
+import com.example.atchui.database.UserPresentData;
 import com.example.atchui.network.DataEventListener;
 import com.example.atchui.network.RetrofitClient;
 import com.example.atchui.network.DataManager;
@@ -174,10 +176,9 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                 //Intent intent = new Intent(MainActivity.this, HelpActivity.class);
                 //startActivity(intent);
 
-                //DataManager.getInstance().GetAnalysisList();
-                // 임시
-                int size = DataManager.getInstance().lstAnal.size();
-                Log.e(TAG,"anal Lst Size: " + size);
+                // 임시로 사용자 위치(위도, 경도 서버에 보내는걸로 변경)
+                // 사용자 위도 경도 얻어와서 넣어야함
+                DataManager.getInstance().AnalPresentRoute(current_lat, current_long);
             }
         });
 

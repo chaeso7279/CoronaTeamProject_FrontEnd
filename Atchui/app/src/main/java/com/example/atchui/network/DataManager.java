@@ -1,16 +1,15 @@
 package com.example.atchui.network;
 
 import android.util.Log;
-import android.widget.Toast;
 
 import com.example.atchui.database.AnalData;
 import com.example.atchui.database.AnalResponse;
+import com.example.atchui.database.GeneralResponse;
 import com.example.atchui.database.PatientRouteData;
 import com.example.atchui.database.PatientRouteResponse;
 import com.example.atchui.database.SettingData;
-import com.example.atchui.database.SettingResponse;
+import com.example.atchui.database.UserPresentData;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.util.ArrayList;
@@ -88,16 +87,16 @@ public class DataManager {
             return;
 
         SettingData data = new SettingData(user_id, radius, period);
-        service.userOption(data).enqueue(new Callback<SettingResponse>() {
+        service.userOption(data).enqueue(new Callback<GeneralResponse>() {
             @Override
-            public void onResponse(Call<SettingResponse> call, Response<SettingResponse> response) {
-                SettingResponse result = response.body();
+            public void onResponse(Call<GeneralResponse> call, Response<GeneralResponse> response) {
+                GeneralResponse result = response.body();
 
                 Log.e("성공",result.getMessage());
             }
 
             @Override
-            public void onFailure(Call<SettingResponse> call, Throwable t) {
+            public void onFailure(Call<GeneralResponse> call, Throwable t) {
                 Log.e("실패", t.getMessage());
             }
         });
@@ -197,27 +196,27 @@ public class DataManager {
         });
     }
 
-    // 현재 사용자 위치 분석하기
-    //public void AnalPresentRoute(int userRouteID) {
-    //    if(!bInit)
-    //        return;
-//
-    //    AnalData data = new AnalData();
-    //    data.m_userID = user_id;
-    //    data.m_userRouteID =  userRouteID;
-//
-    //    service.AnalPresentRoute(data).enqueue(new Callback<AnalResponse>() {
-    //        @Override
-    //        public void onResponse(Call<AnalResponse> call, Response<AnalResponse> response) {
-    //            Log.e("성공", "Anal Route Present");
-    //        }
-//
-    //        @Override
-    //        public void onFailure(Call<AnalResponse> call, Throwable t) {
-    //            Log.e("실패", "Anal Route Present");
-    //        }
-    //    });
-    //}
+    //현재 사용자 위치 분석하기
+    public void AnalPresentRoute(double latitude, double longitude) {
+        if(!bInit)
+            return;
+
+        UserPresentData data = new UserPresentData(user_id, latitude, longitude);
+
+        service.AnalPresentRoute(data).enqueue(new Callback<GeneralResponse>() {
+            @Override
+            public void onResponse(Call<GeneralResponse> call, Response<GeneralResponse> response) {
+                Log.e("성공", "Anal Route Present" + response.message());
+                GetAnalysisList();
+            }
+
+            @Override
+            public void onFailure(Call<GeneralResponse> call, Throwable t) {
+                Log.e("실패", "Anal Route Present");
+            }
+        });
+
+    }
 
     // 과거 사용자 동선 분석하기
     public void AnalPastRoute(){
@@ -227,15 +226,15 @@ public class DataManager {
         AnalData data = new AnalData();
         data.m_userID = user_id;
 
-        service.AnalPastRoute(data).enqueue(new Callback<SettingResponse>() {
+        service.AnalPastRoute(data).enqueue(new Callback<GeneralResponse>() {
             @Override
-            public void onResponse(Call<SettingResponse> call, Response<SettingResponse> response) {
+            public void onResponse(Call<GeneralResponse> call, Response<GeneralResponse> response) {
                 Log.e("성공", "Anal Route Past" + response.message());
                 GetAnalysisList();
             }
 
             @Override
-            public void onFailure(Call<SettingResponse> call, Throwable t) {
+            public void onFailure(Call<GeneralResponse> call, Throwable t) {
                 Log.e("실패", "Anal Route Past");
             }
         });
@@ -250,15 +249,15 @@ public class DataManager {
         data.m_analID = analID;
         data.m_IsRead = bIsRead? 1 : 0;
 
-        service.UpdateAnalIsRead(data).enqueue(new Callback<SettingResponse>() {
+        service.UpdateAnalIsRead(data).enqueue(new Callback<GeneralResponse>() {
             @Override
-            public void onResponse(Call<SettingResponse> call, Response<SettingResponse> response) {
+            public void onResponse(Call<GeneralResponse> call, Response<GeneralResponse> response) {
                 GetAnalysisList();
                 Log.e("성공", "Anal Update IsRead");
             }
 
             @Override
-            public void onFailure(Call<SettingResponse> call, Throwable t) {
+            public void onFailure(Call<GeneralResponse> call, Throwable t) {
                 Log.e("실패", "Anal Update IsRead");
             }
         });

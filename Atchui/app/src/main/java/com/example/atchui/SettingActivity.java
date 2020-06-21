@@ -4,11 +4,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Toast;
 
 // DB 테스트
+import com.example.atchui.database.GeneralResponse;
 import com.example.atchui.database.SettingData;
-import com.example.atchui.database.SettingResponse;
 import com.example.atchui.network.RetrofitClient;
 import com.example.atchui.network.ServiceAPI;
 
@@ -26,23 +25,5 @@ public class SettingActivity extends AppCompatActivity {
 
         // db 테스트를 위한 ServiceAPI 객체 생성
         service = RetrofitClient.getClient().create(ServiceAPI.class);
-    }
-
-    public void sendToServer(SettingData data)
-    {
-        service.userOption(data).enqueue(new Callback<SettingResponse>() {
-           @Override
-           public void onResponse(Call<SettingResponse> call, Response<SettingResponse> response) {
-                SettingResponse result = response.body();
-               // if(result.getCode() == 200)
-                 //   Toast.makeText(SettingActivity.this, result.getMessage(), Toast.LENGTH_SHORT).show();
-           }
-
-           @Override
-           public void onFailure(Call<SettingResponse> call, Throwable t) {
-               // Toast.makeText(SettingActivity.this, "옵션 데이터 베이스 넣기 실패", Toast.LENGTH_SHORT).show();
-                Log.e("옵션 데이터 베이스 넣기 실패", t.getMessage());
-           }
-       });
     }
 }
